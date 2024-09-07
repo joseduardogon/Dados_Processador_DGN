@@ -34,11 +34,19 @@ def iniciar_interface_dados(caminho_arquivo, dados_formatados):
 
         area_texto.config(state=tk.DISABLED)  # Impede edição dos dados
 
+        def calcular_e_exibir_pontuacoes(dados_formatados):
+            """Calcula e exibe as pontuações."""
+            caminho_json = calcular_pontos.criar_arquivo_json_temporario(dados_formatados)
+            if caminho_json:
+                pontuacoes = calcular_pontos.calcular_pontuacao(caminho_json)
+                if pontuacoes:
+                    calcular_pontos.exibir_pontuacoes(pontuacoes)
+
         # Botão para calcular pontos
         botao_calcular = tk.Button(
             janela_dados,
             text="Calcular Pontos",
-            command=lambda: calcular_pontos.calcular_e_exibir_pontuacoes(dados_formatados),
+            command=lambda: calcular_e_exibir_pontuacoes(dados_formatados),  # Correção aqui
             bg="#2ECC71",  # Cor verde
             fg="#FFFFFF",
             font=("Arial", 12, "bold"),

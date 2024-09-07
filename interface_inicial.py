@@ -110,9 +110,11 @@ def atualizar_sugestoes(event, chave):
     sugestoes = historico.obter_sugestoes(chave)
 
     if texto:
-        widget.config(values=[s for s in sugestoes if texto.lower() in s.lower()])
+        if isinstance(widget, ttk.Combobox):  # Verifica se é um Combobox
+            widget.config(values=[s for s in sugestoes if texto.lower() in s.lower()])
     else:
-        widget.config(values=sugestoes)
+        if isinstance(widget, ttk.Combobox):  # Verifica se é um Combobox
+            widget.config(values=sugestoes)
 
 def formatar_data(event):
     """

@@ -12,16 +12,16 @@ try:
     with open(PESOS_ARQUIVO, "r") as f:
         PESOS = json.load(f)
 except FileNotFoundError:
-    # Definir pesos padrão caso o arquivo não seja encontrado
+# Definir pesos padrão caso o arquivo não seja encontrado
     PESOS = {
-        "DIGITALIZACAO(SCANNER)": 0.006666666666666667,
-        "CONTROLEDEQUALIDADE": 0.005,
-        "CLASSIFICACAO": 0.015,
-        "VERIFICACAO": 0.08,
-        "OCR2": 0,
-        "VALIDACAO2": 0,
-        "EXPORTACAO": 0,
-        "SUSPENSOEXPORTACAO": 0
+    "DIGITALIZACAO": 0.006666666666666667,  # Correção aqui
+    "CONTROLEDEQUALIDADE": 0.005,
+    "CLASSIFICACAO": 0.015,
+    "VERIFICACAO": 0.08,
+    "OCR2": 0,
+    "VALIDACAO2": 0,
+    "EXPORTACAO": 0,
+    "SUSPENSOEXPORTACAO": 0
     }
 
 class Funcionario:
@@ -36,9 +36,11 @@ class Funcionario:
 
     def _calcular_pontos(self):
         """Calcula os pontos do funcionário basedos em suas atividades."""
-        pontos = {"DIGIT": 0, "CQ": 0, "CLASS": 0, "VERIF": 0, "SUSPENSOEXPORTACAO": 0}
+        pontos = {"DIGIT": 0, "CQ": 0, "CLASS": 0, "VERIFICACAO": 0, "SUSPENSOEXPORTACAO": 0}
         if self.atividade:
             chave_atividade = unidecode(self.atividade).replace(" ", "").upper()
+            if chave_atividade == "DIGITALIZACAO(SCANNER)":  # Correção aqui
+                chave_atividade = "DIGITALIZACAO"  # Nova chave
             if chave_atividade in PESOS:
                 pontos[chave_atividade] += self.imagens_aprovadas * PESOS.get(chave_atividade, 0)
                 pontos[chave_atividade] += self.documentos_aprovados * PESOS.get(chave_atividade, 0)
