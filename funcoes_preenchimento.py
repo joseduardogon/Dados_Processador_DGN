@@ -1,19 +1,21 @@
-# funcoes_preenchimento.py
-
+"""Módulo com funções auxiliares para interface gráfica."""
+import os
 import tkinter as tk
 from tkinter import messagebox, Text
 import calcular_pontos
 
 def iniciar_interface_dados(caminho_arquivo, dados_formatados):
-    """Inicializa a interface gráfica para exibir os dados formatados.
+    """
+    Cria uma nova janela para exibir os dados formatados do arquivo 
+    e um botão para calcular os pontos.
 
     Args:
-        caminho_arquivo (str): Caminho para o arquivo de dados formatado.
-        dados_formatados (list): Lista de strings contendo os dados formatados.
+        caminho_arquivo (str): O caminho do arquivo que está sendo aberto.
+        dados_formatados (list): Dados formatados para exibição.
     """
     try:
         janela_dados = tk.Toplevel()
-        janela_dados.title("Dados do Arquivo")
+        janela_dados.title(f"Dados do Arquivo - {os.path.basename(caminho_arquivo)}")
         janela_dados.configure(bg="#2C2C2C")
 
         # Área de texto para exibir os dados formatados
@@ -27,23 +29,23 @@ def iniciar_interface_dados(caminho_arquivo, dados_formatados):
         area_texto.pack(expand=True, fill="both", padx=20, pady=20)
 
         # Inserir os dados formatados na área de texto
-        exibir_dados_formatados(area_texto, dados_formatados)
+        for dado in dados_formatados:
+            area_texto.insert(tk.END, dado + "\n")
 
         area_texto.config(state=tk.DISABLED)  # Impede edição dos dados
 
         # Botão para calcular pontos
-        botao_calcular = calcular_pontos.criar_botao_calcular(janela_dados, dados_formatados)
+        botao_calcular = tk.Button(
+            janela_dados,
+            text="Calcular Pontos",
+            command=lambda: calcular_pontos.calcular_e_exibir_pontuacoes(dados_formatados),
+            bg="#2ECC71",  # Cor verde
+            fg="#FFFFFF",
+            font=("Arial", 12, "bold"),
+            borderwidth=0,
+            relief="flat",
+        )
         botao_calcular.pack(pady=(0, 20))
 
     except Exception as e:
         messagebox.showerror("Erro", f"Ocorreu um erro ao exibir os dados: {e}")
-
-def exibir_dados_formatados(area_texto, dados_formatados):
-    """Exibe os dados formatados na área de texto.
-
-    Args:
-        area_texto (tk.Text): Widget de área de texto para exibir os dados.
-        dados_formatados (list): Lista de strings contendo os dados formatados.
-    """
-    for dado in dados_formatados:
-        area_texto.insert(tk.END, dado + "\n")
