@@ -13,9 +13,6 @@ import calcular_pontos
 import logica_aplicacao
 import funcoes_preenchimento
 
-ARQUIVO_HISTORICO = 'historico.json'
-HISTORICO = funcoes_preenchimento.carregar_historico()
-
 # Variável global para armazenar o caminho do arquivo selecionado
 caminho_arquivo_txt = None
 
@@ -71,7 +68,7 @@ def processar_dados():
                 raise Exception("Não foi possível salvar os dados.")
 
             # Atualizar o histórico após o processamento
-            historico.atualizar_historico(nome_supervisor, unidade, data)
+            historico.atualizar_historico(nome_supervisor, unidade)
         except ValueError as e:
             messagebox.showerror("Erro de Validação", str(e))
         except Exception as e:

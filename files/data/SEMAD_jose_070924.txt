@@ -1,0 +1,242 @@
+Supervisor: jose Data de Envio: 2024-09-07 12:12:10 Data Informada: 070924 Unidade: SEMAD
+
+
+Funcionario: Sara
+Atividade: Verificacao
+Pastas Aprovadas: 5
+Imagens Aprovadas: 5570
+Documentos Aprovados: 365
+Tempo Aprovado: 06:07:42
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 5
+Total de Imagens: 5570
+Total de Documentos: 365
+Total de Tempo: 06:07:42
+
+
+Funcionario: Kayo
+Atividade: Suspenso Exportacao
+Pastas Aprovadas: 11
+Imagens Aprovadas: 8547
+Documentos Aprovados: 301
+Tempo Aprovado: 00:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 11
+Total de Imagens: 8547
+Total de Documentos: 301
+Total de Tempo: 00:00:00
+
+
+Funcionario: Admin
+Atividade: Exportacao
+Pastas Aprovadas: 0
+Imagens Aprovadas: 0
+Documentos Aprovados: 0
+Tempo Aprovado: 00:00:00
+Pastas Rejeitadas: 4
+Imagens Rejeitadas: 2751
+Documentos Rejeitados: 95
+Tempo Rejeitado: 00:08:08
+Total de Pastas: 4
+Total de Imagens: 2751
+Total de Documentos: 95
+Total de Tempo: 00:08:08
+
+
+Funcionario: Admin
+Atividade: Suspenso Exportacao
+Pastas Aprovadas: 6
+Imagens Aprovadas: 4366
+Documentos Aprovados: 154
+Tempo Aprovado: 00:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 6
+Total de Imagens: 4366
+Total de Documentos: 154
+Total de Tempo: 00:00:00
+
+
+Funcionario: RafaelH
+Atividade: Verificacao
+Pastas Aprovadas: 8
+Imagens Aprovadas: 9460
+Documentos Aprovados: 216
+Tempo Aprovado: 06:29:06
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 8
+Total de Imagens: 9460
+Total de Documentos: 216
+Total de Tempo: 06:29:06
+
+
+Funcionario: LUIZPAULO
+Atividade: Verificacao
+Pastas Aprovadas: 7
+Imagens Aprovadas: 8141
+Documentos Aprovados: 295
+Tempo Aprovado: 07:05:48
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 7
+Total de Imagens: 8141
+Total de Documentos: 295
+Total de Tempo: 07:05:48
+
+
+Funcionario: Rillary
+Atividade: Digitalizacao (Scanner)
+Pastas Aprovadas: 4
+Imagens Aprovadas: 6909
+Documentos Aprovados: 0
+Tempo Aprovado: 07:13:52
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 4
+Total de Imagens: 6909
+Total de Documentos: 0
+Total de Tempo: 07:13:52
+
+
+Funcionario: priscylla
+Atividade: Verificacao
+Pastas Aprovadas: 12
+Imagens Aprovadas: 13868
+Documentos Aprovados: 361
+Tempo Aprovado: 09:00:34
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 12
+Total de Imagens: 13868
+Total de Documentos: 361
+Total de Tempo: 09:00:34
+
+
+Funcionario: usu_robo_1
+Atividade: OCR2
+Pastas Aprovadas: 32
+Imagens Aprovadas: 37432
+Documentos Aprovados: 1339
+Tempo Aprovado: 11:24:24
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 32
+Total de Imagens: 37432
+Total de Documentos: 1339
+Total de Tempo: 11:24:24
+
+
+Funcionario: usu_robo_1
+Atividade: Validacao 2
+Pastas Aprovadas: 46
+Imagens Aprovadas: 53982
+Documentos Aprovados: 1859
+Tempo Aprovado: 00:04:19
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 46
+Total de Imagens: 53982
+Total de Documentos: 1859
+Total de Tempo: 00:04:19
+
+
+Funcionario: usu_robo_2
+Atividade: Exportacao
+Pastas Aprovadas: 0
+Imagens Aprovadas: 0
+Documentos Aprovados: 0
+Tempo Aprovado: 00:00:00
+Pastas Rejeitadas: 10
+Imagens Rejeitadas: 10764
+Documentos Rejeitados: 389
+Tempo Rejeitado: 00:17:00
+Total de Pastas: 10
+Total de Imagens: 10764
+Total de Documentos: 389
+Total de Tempo: 00:17:00
+
+
+Funcionario: usu_robo_2
+Atividade: OCR2
+Pastas Aprovadas: 11
+Imagens Aprovadas: 13087
+Documentos Aprovados: 401
+Tempo Aprovado: 02:32:45
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 11
+Total de Imagens: 13087
+Total de Documentos: 401
+Total de Tempo: 02:32:45
+
+
+Funcionario: usu_robo_3
+Atividade: Exportacao
+Pastas Aprovadas: 31
+Imagens Aprovadas: 36312
+Documentos Aprovados: 1204
+Tempo Aprovado: 01:48:44
+Pastas Rejeitadas: 10
+Imagens Rejeitadas: 8817
+Documentos Rejeitados: 310
+Tempo Rejeitado: 31/12/1899 08:38:59
+Total de Pastas: 43
+Total de Imagens: 46118
+Total de Documentos: 1551
+Total de Tempo: 31/12/1899 10:27:43
+
+
+Funcionario: usu_robo_5
+Atividade: Exportacao
+Pastas Aprovadas: 0
+Imagens Aprovadas: 0
+Documentos Aprovados: 0
+Tempo Aprovado: 00:00:00
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 1226
+Documentos Rejeitados: 40
+Tempo Rejeitado: 00:01:29
+Total de Pastas: 1
+Total de Imagens: 1226
+Total de Documentos: 40
+Total de Tempo: 00:01:29
+
+
+Funcionario: usu_robo_6
+Atividade: Exportacao
+Pastas Aprovadas: 0
+Imagens Aprovadas: 0
+Documentos Aprovados: 0
+Tempo Aprovado: 00:00:00
+Pastas Rejeitadas: 2
+Imagens Rejeitadas: 1947
+Documentos Rejeitados: 98
+Tempo Rejeitado: 00:02:17
+Total de Pastas: 2
+Total de Imagens: 1947
+Total de Documentos: 98
+Total de Tempo: 00:02:17
+
