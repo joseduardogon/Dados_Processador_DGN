@@ -15,6 +15,7 @@ def _carregar_historico():
             return json.load(f)
     except FileNotFoundError:
         return {"nome_supervisor": [], "unidade": []}
+HISTORICO = _carregar_historico()
 
 def _salvar_historico(historico):
     """Salva o histórico no arquivo."""
@@ -32,4 +33,4 @@ def atualizar_historico(nome_supervisor, unidade):
 
 def obter_sugestoes(chave):
     """Retorna as sugestões para a chave especificada do histórico."""
-    return _carregar_historico().get(chave, [])
+    return HISTORICO.get(chave, [])  # Utiliza a variável global HISTORICO

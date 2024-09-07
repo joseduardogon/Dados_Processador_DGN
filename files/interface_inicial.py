@@ -11,6 +11,10 @@ import historico_preenchimento as historico
 import interface_elementos as elementos
 import calcular_pontos
 import logica_aplicacao
+import funcoes_preenchimento
+
+ARQUIVO_HISTORICO = 'historico.json'
+HISTORICO = funcoes_preenchimento.carregar_historico()
 
 # Variável global para armazenar o caminho do arquivo selecionado
 caminho_arquivo_txt = None

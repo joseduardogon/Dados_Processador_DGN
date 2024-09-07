@@ -3,6 +3,8 @@ import os
 import tkinter as tk
 from tkinter import messagebox, Text
 import calcular_pontos
+ARQUIVO_HISTORICO = 'historico.json'
+
 
 def iniciar_interface_dados(caminho_arquivo, dados_formatados):
     """
