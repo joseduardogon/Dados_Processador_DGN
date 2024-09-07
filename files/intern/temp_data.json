@@ -1,82 +1,72 @@
 [
     {
-        "Funcionario": "Sara",
-        "Atividade": "Verificacao",
-        "Pastas Aprovadas": "5",
-        "Imagens Aprovadas": "5570",
-        "Documentos Aprovados": "365",
-        "Tempo Aprovado": "06:07:42",
-        "Pastas Rejeitadas": "0",
-        "Imagens Rejeitadas": "0",
-        "Documentos Rejeitados": "0",
-        "Tempo Rejeitado": "00:00:00",
-        "Total de Pastas": "5",
-        "Total de Imagens": "5570",
-        "Total de Documentos": "365",
-        "Total de Tempo": "06:07:42"
+        "nome": "Sara",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 5570,
+        "documentos_aprovados": 365,
+        "pontos": {
+            "DIGIT": 0,
+            "CQ": 0,
+            "CLASS": 0,
+            "VERIFICACAO": 29.2,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 29.2
+        }
     },
     {
-        "Funcionario": "RafaelH",
-        "Atividade": "Verificacao",
-        "Pastas Aprovadas": "8",
-        "Imagens Aprovadas": "9460",
-        "Documentos Aprovados": "216",
-        "Tempo Aprovado": "06:29:06",
-        "Pastas Rejeitadas": "0",
-        "Imagens Rejeitadas": "0",
-        "Documentos Rejeitados": "0",
-        "Tempo Rejeitado": "00:00:00",
-        "Total de Pastas": "8",
-        "Total de Imagens": "9460",
-        "Total de Documentos": "216",
-        "Total de Tempo": "06:29:06"
+        "nome": "RafaelH",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 9460,
+        "documentos_aprovados": 216,
+        "pontos": {
+            "DIGIT": 0,
+            "CQ": 0,
+            "CLASS": 0,
+            "VERIFICACAO": 17.28,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 17.28
+        }
     },
     {
-        "Funcionario": "LUIZPAULO",
-        "Atividade": "Verificacao",
-        "Pastas Aprovadas": "7",
-        "Imagens Aprovadas": "8141",
-        "Documentos Aprovados": "295",
-        "Tempo Aprovado": "07:05:48",
-        "Pastas Rejeitadas": "0",
-        "Imagens Rejeitadas": "0",
-        "Documentos Rejeitados": "0",
-        "Tempo Rejeitado": "00:00:00",
-        "Total de Pastas": "7",
-        "Total de Imagens": "8141",
-        "Total de Documentos": "295",
-        "Total de Tempo": "07:05:48"
+        "nome": "LUIZPAULO",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 8141,
+        "documentos_aprovados": 295,
+        "pontos": {
+            "DIGIT": 0,
+            "CQ": 0,
+            "CLASS": 0,
+            "VERIFICACAO": 23.6,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 23.6
+        }
     },
     {
-        "Funcionario": "Rillary",
-        "Atividade": "Digitalizacao (Scanner)",
-        "Pastas Aprovadas": "4",
-        "Imagens Aprovadas": "6909",
-        "Documentos Aprovados": "0",
-        "Tempo Aprovado": "07:13:52",
-        "Pastas Rejeitadas": "0",
-        "Imagens Rejeitadas": "0",
-        "Documentos Rejeitados": "0",
-        "Tempo Rejeitado": "00:00:00",
-        "Total de Pastas": "4",
-        "Total de Imagens": "6909",
-        "Total de Documentos": "0",
-        "Total de Tempo": "07:13:52"
+        "nome": "Rillary",
+        "atividade": "Digitalizacao (Scanner)",
+        "imagens_aprovadas": 6909,
+        "documentos_aprovados": 0,
+        "pontos": {
+            "DIGIT": 0,
+            "CQ": 0,
+            "CLASS": 0,
+            "VERIFICACAO": 0,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 0
+        }
     },
     {
-        "Funcionario": "priscylla",
-        "Atividade": "Verificacao",
-        "Pastas Aprovadas": "12",
-        "Imagens Aprovadas": "13868",
-        "Documentos Aprovados": "361",
-        "Tempo Aprovado": "09:00:34",
-        "Pastas Rejeitadas": "0",
-        "Imagens Rejeitadas": "0",
-        "Documentos Rejeitados": "0",
-        "Tempo Rejeitado": "00:00:00",
-        "Total de Pastas": "12",
-        "Total de Imagens": "13868",
-        "Total de Documentos": "361",
-        "Total de Tempo": "09:00:34"
+        "nome": "priscylla",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 13868,
+        "documentos_aprovados": 361,
+        "pontos": {
+            "DIGIT": 0,
+            "CQ": 0,
+            "CLASS": 0,
+            "VERIFICACAO": 28.88,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 28.88
+        }
     }
 ]

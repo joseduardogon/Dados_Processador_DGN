@@ -39,11 +39,12 @@ class Funcionario:
         pontos = {"DIGIT": 0, "CQ": 0, "CLASS": 0, "VERIFICACAO": 0, "SUSPENSOEXPORTACAO": 0}
         if self.atividade:
             chave_atividade = unidecode(self.atividade).replace(" ", "").upper()
-            if chave_atividade == "DIGITALIZACAO(SCANNER)":  # Correção aqui
-                chave_atividade = "DIGITALIZACAO"  # Nova chave
+            chave_atividade = chave_atividade.replace("(", "").replace(")", "")
             if chave_atividade in PESOS:
-                pontos[chave_atividade] += self.imagens_aprovadas * PESOS.get(chave_atividade, 0)
-                pontos[chave_atividade] += self.documentos_aprovados * PESOS.get(chave_atividade, 0)
+                if chave_atividade == "VERIFICACAO":  # Condição especial para Verificacao
+                    pontos[chave_atividade] += self.documentos_aprovados * PESOS.get(chave_atividade, 0)
+                else:
+                    pontos[chave_atividade] += self.imagens_aprovadas * PESOS.get(chave_atividade, 0)
         pontos["Total"] = sum(pontos.values())
         return pontos
 
