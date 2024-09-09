@@ -1,0 +1,18 @@
+{
+    "Igor": {
+        "DIGITALIZACAO": 40.0,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 0,
+        "VERIFICACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "Total": 48.0
+    },
+    "Joana": {
+        "DIGITALIZACAO": 0,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 180.0,
+        "VERIFICACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "Total": 205.0
+    }
+}

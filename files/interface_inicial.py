@@ -12,14 +12,16 @@ import interface_elementos as elementos
 import calcular_pontos
 import logica_aplicacao
 import funcoes_preenchimento
+import processar_formatados
+from processar_formatados import calcular_pontos_arquivo_formatado
 
 # Variável global para armazenar o caminho do arquivo selecionado
 caminho_arquivo_txt = None
 
 def abrir_arquivo_formatado():
     """
-    Permite que o usuário selecione um arquivo formatado, abra-o 
-    em uma nova janela e permita o cálculo de pontos.
+    Permite que o usuário selecione um arquivo formatado, calcule os pontos
+    e exiba os resultados.
     """
     caminho_arquivo = filedialog.askopenfilename(
         initialdir=os.path.join("files", "data"),
@@ -28,13 +30,14 @@ def abrir_arquivo_formatado():
     )
     if caminho_arquivo:
         try:
-            with open(caminho_arquivo, 'r', encoding='utf-8') as f:
-                dados_formatados = f.read().strip().split('\n\n')
-                funcoes.iniciar_interface_dados(caminho_arquivo, dados_formatados)
-        except FileNotFoundError:
-            messagebox.showerror("Erro", "Arquivo não encontrado.")
+            pontuacoes = processar_formatados.calcular_pontos_arquivo_formatado(caminho_arquivo)
+            if pontuacoes:
+                # Adaptação para exibir as pontuações do arquivo formatado
+                calcular_pontos.exibir_pontuacoes(pontuacoes) 
+            else:
+                messagebox.showwarning("Aviso", "Nenhum dado encontrado para calcular os pontos.")
         except Exception as e:
-            messagebox.showerror("Erro", f"Ocorreu um erro ao abrir o arquivo: {e}")
+            messagebox.showerror("Erro", f"Ocorreu um erro ao processar o arquivo: {e}")
 
 def processar_dados():
     """

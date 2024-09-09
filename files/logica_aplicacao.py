@@ -48,7 +48,7 @@ def salvar_dados(nome_supervisor, data, unidade, caminho_arquivo_txt):
                 dados_formatados.append(
                     f"""
 Funcionario: {campos[1]}
-Atividade: {campos[2]}
+Atividade: {campos[2] if campos[2] != 'Digitalizacao (Scanner)' else 'Digitalizacao'}
 Pastas Aprovadas: {campos[3]}
 Imagens Aprovadas: {campos[4]}
 Documentos Aprovados: {campos[5]}
