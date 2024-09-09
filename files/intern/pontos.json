@@ -1,0 +1,37 @@
+{
+    "Ana": {
+        "DIGIT": 0,
+        "CQ": 0,
+        "CLASS": 0,
+        "VERIFICACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "DIGITALIZACAO": 80.0,
+        "Total": 80.0
+    },
+    "Bruno": {
+        "DIGIT": 0,
+        "CQ": 0,
+        "CLASS": 0,
+        "VERIFICACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "CONTROLEDEQUALIDADE": 30.0,
+        "Total": 30.0
+    },
+    "Carlos": {
+        "DIGIT": 0,
+        "CQ": 0,
+        "CLASS": 0,
+        "VERIFICACAO": 32.0,
+        "SUSPENSOEXPORTACAO": 0,
+        "Total": 32.0
+    },
+    "Diana": {
+        "DIGIT": 0,
+        "CQ": 0,
+        "CLASS": 0,
+        "VERIFICACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "CLASSIFICACAO": 270.0,
+        "Total": 270.0
+    }
+}

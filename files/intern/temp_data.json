@@ -1,72 +1,65 @@
 [
     {
-        "nome": "Sara",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 5570,
-        "documentos_aprovados": 365,
-        "pontos": {
-            "DIGIT": 0,
-            "CQ": 0,
-            "CLASS": 0,
-            "VERIFICACAO": 29.2,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 29.2
-        }
-    },
-    {
-        "nome": "RafaelH",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 9460,
-        "documentos_aprovados": 216,
-        "pontos": {
-            "DIGIT": 0,
-            "CQ": 0,
-            "CLASS": 0,
-            "VERIFICACAO": 17.28,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 17.28
-        }
-    },
-    {
-        "nome": "LUIZPAULO",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 8141,
-        "documentos_aprovados": 295,
-        "pontos": {
-            "DIGIT": 0,
-            "CQ": 0,
-            "CLASS": 0,
-            "VERIFICACAO": 23.6,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 23.6
-        }
-    },
-    {
-        "nome": "Rillary",
+        "nome": "Ana",
         "atividade": "Digitalizacao (Scanner)",
-        "imagens_aprovadas": 6909,
-        "documentos_aprovados": 0,
+        "imagens_aprovadas": 12000,
+        "documentos_aprovados": 100,
+        "pastas_aprovadas": 10,
         "pontos": {
             "DIGIT": 0,
             "CQ": 0,
             "CLASS": 0,
             "VERIFICACAO": 0,
             "SUSPENSOEXPORTACAO": 0,
-            "Total": 0
+            "DIGITALIZACAO": 80.0,
+            "Total": 80.0
         }
     },
     {
-        "nome": "priscylla",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 13868,
-        "documentos_aprovados": 361,
+        "nome": "Bruno",
+        "atividade": "Controle de Qualidade",
+        "imagens_aprovadas": 6000,
+        "documentos_aprovados": 50,
+        "pastas_aprovadas": 5,
         "pontos": {
             "DIGIT": 0,
             "CQ": 0,
             "CLASS": 0,
-            "VERIFICACAO": 28.88,
+            "VERIFICACAO": 0,
             "SUSPENSOEXPORTACAO": 0,
-            "Total": 28.88
+            "CONTROLEDEQUALIDADE": 30.0,
+            "Total": 30.0
+        }
+    },
+    {
+        "nome": "Carlos",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 10000,
+        "documentos_aprovados": 400,
+        "pastas_aprovadas": 8,
+        "pontos": {
+            "DIGIT": 0,
+            "CQ": 0,
+            "CLASS": 0,
+            "VERIFICACAO": 32.0,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 32.0
+        }
+    },
+    {
+        "nome": "Diana",
+        "atividade": "Classificacao",
+        "imagens_aprovadas": 18000,
+        "documentos_aprovados": 150,
+        "pastas_aprovadas": 15,
+        "pontos": {
+            "DIGIT": 0,
+            "CQ": 0,
+            "CLASS": 0,
+            "VERIFICACAO": 0,
+            "SUSPENSOEXPORTACAO": 0,
+            "CLASSIFICACAO": 270.0,
+            "Total": 270.0
         }
     }
 ]

@@ -1,98 +1,113 @@
+# calcular_pontos.py
 import os
 import json
 from unidecode import unidecode
 import tkinter as tk
 
+# Dicionario para mapeamento de pesos
+ATIVIDADES_MAPEAMENTO = {
+    "Controle de Qualidade": "CONTROLEDEQUALIDADE",
+    "Verificacao": "VERIFICACAO",
+    "Digitalizacao (Scanner)": "DIGITALIZACAO",
+    "Classificacao": "CLASSIFICACAO"
+}
+
 # Constantes para os caminhos dos arquivos
 PESOS_ARQUIVO = os.path.join("files", "intern", "pesos.json")
 TEMP_DATA_ARQUIVO = os.path.join("files", "intern", "temp_data.json")
+PONTOS_ARQUIVO = os.path.join("files", "intern", "pontos.json")
 
 # Carregar os pesos do arquivo JSON
 try:
     with open(PESOS_ARQUIVO, "r") as f:
         PESOS = json.load(f)
 except FileNotFoundError:
-# Definir pesos padrão caso o arquivo não seja encontrado
+    # Definir pesos padrão caso o arquivo não seja encontrado
     PESOS = {
-    "DIGITALIZACAO": 0.006666666666666667,  # Correção aqui
-    "CONTROLEDEQUALIDADE": 0.005,
-    "CLASSIFICACAO": 0.015,
-    "VERIFICACAO": 0.08,
-    "OCR2": 0,
-    "VALIDACAO2": 0,
-    "EXPORTACAO": 0,
-    "SUSPENSOEXPORTACAO": 0
+        "DIGITALIZACAO": 0.006666666666666667,
+        "CONTROLEDEQUALIDADE": 0.005,
+        "CLASSIFICACAO": 0.015,
+        "VERIFICACAO": 0.08,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
+        "SUSPENSOEXPORTACAO": 0
     }
 
 class Funcionario:
-    """Representa um funcionário e seus pontos de produtividade."""
+    """Representa um funcionário."""
 
-    def __init__(self, nome, atividade=None, imagens_aprovadas=0, documentos_aprovados=0):
+    def __init__(self, nome, atividade=None, imagens_aprovadas=0, documentos_aprovados=0, pastas_aprovadas=0):
         self.nome = nome
         self.atividade = atividade
         self.imagens_aprovadas = imagens_aprovadas
         self.documentos_aprovados = documentos_aprovados
-        self.pontos = self._calcular_pontos()
+        self.pastas_aprovadas = pastas_aprovadas
+        # Calcula os pontos no construtor após definir os atributos
+        self.pontos = self.calcular_pontos()
 
-    def _calcular_pontos(self):
-        """Calcula os pontos do funcionário basedos em suas atividades."""
+    def calcular_pontos(self):
+        """Calcula os pontos do funcionário com base em suas atividades."""
+        print(f"Calculando pontos para {self.nome} - Atividade: {self.atividade}")
         pontos = {"DIGIT": 0, "CQ": 0, "CLASS": 0, "VERIFICACAO": 0, "SUSPENSOEXPORTACAO": 0}
         if self.atividade:
-            chave_atividade = unidecode(self.atividade).replace(" ", "").upper()
-            chave_atividade = chave_atividade.replace("(", "").replace(")", "")
-            if chave_atividade in PESOS:
-                if chave_atividade == "VERIFICACAO":  # Condição especial para Verificacao
-                    pontos[chave_atividade] += self.documentos_aprovados * PESOS.get(chave_atividade, 0)
+            # Obtém a chave do dicionário PESOS a partir do mapeamento
+            chave_atividade = ATIVIDADES_MAPEAMENTO.get(self.atividade) 
+            print(f"Chave de atividade: {chave_atividade}")
+            if chave_atividade and chave_atividade in PESOS:
+                if chave_atividade == "VERIFICACAO":
+                    pontos[chave_atividade] = self.documentos_aprovados * PESOS.get(chave_atividade, 0)
+                    print(f"Pontos VERIFICACAO: {pontos[chave_atividade]}")
                 else:
-                    pontos[chave_atividade] += self.imagens_aprovadas * PESOS.get(chave_atividade, 0)
+                    pontos[chave_atividade] = self.imagens_aprovadas * PESOS.get(chave_atividade, 0)
+                    print(f"Pontos {chave_atividade}: {pontos[chave_atividade]}")
+            else:
+                print(f"Atividade '{self.atividade}' não encontrada no dicionário de mapeamento ou de pesos.")
         pontos["Total"] = sum(pontos.values())
+        print(f"Pontos Totais: {pontos['Total']}\n")
         return pontos
 
-    def __str__(self):
-        """Retorna uma representação em string do funcionário."""
-        return f"Funcionário: {self.nome}\n" + \
-               "\n".join(f"  {atividade}: {valor:.2f}" for atividade, valor in self.pontos.items())
+    def to_dict(self):
+        """Retorna um dicionário com os dados do funcionário."""
+        return {
+            "nome": self.nome,
+            "atividade": self.atividade,
+            "imagens_aprovadas": self.imagens_aprovadas,
+            "documentos_aprovados": self.documentos_aprovados,
+            "pastas_aprovadas": self.pastas_aprovadas,
+            "pontos": self.pontos,
+        }
 
 def _extrair_dados_relevantes(dados_formatados):
     """Extrai dados relevantes para cálculo de pontuação."""
     funcionarios = []
-    atividades_relevantes = ["Controle de Qualidade", "Verificacao", 
+    atividades_relevantes = ["Controle de Qualidade", "Verificacao",
                               "Digitalizacao (Scanner)", "Classificacao"]
 
     for dado in dados_formatados:
-        nome = None
-        atividade = None
-        imagens_aprovadas = 0
-        documentos_aprovados = 0
+        info_funcionario = {}
         for linha in dado.strip().split("\n"):
             if ": " in linha:
                 chave, valor = linha.split(": ")
-                if chave == "Funcionario":
-                    nome = valor
-                elif chave == "Atividade" and valor in atividades_relevantes:
-                    atividade = valor
-                elif chave == "Imagens Aprovadas":
-                    imagens_aprovadas = int(valor)
-                elif chave == "Documentos Aprovados":
-                    documentos_aprovados = int(valor)
-        if nome and atividade:
-            funcionario = Funcionario(nome, atividade, imagens_aprovadas, documentos_aprovados)
-            funcionarios.append(funcionario)
+                info_funcionario[chave] = valor
+        if "Funcionario" in info_funcionario and "Atividade" in info_funcionario:
+            if info_funcionario["Atividade"] in atividades_relevantes:
+                funcionario = Funcionario(
+                    info_funcionario["Funcionario"],
+                    info_funcionario["Atividade"],
+                    int(info_funcionario.get("Imagens Aprovadas", 0)),
+                    int(info_funcionario.get("Documentos Aprovados", 0)),
+                    int(info_funcionario.get("Pastas Aprovadas", 0))
+                )
+                funcionarios.append(funcionario)
 
     return funcionarios
-
 
 def criar_arquivo_json_temporario(dados_formatados):
     """Cria um arquivo JSON temporário com os dados relevantes."""
     try:
         funcionarios = _extrair_dados_relevantes(dados_formatados)
-        dados_json = [{
-            "nome": func.nome,
-            "atividade": func.atividade,
-            "imagens_aprovadas": func.imagens_aprovadas,
-            "documentos_aprovados": func.documentos_aprovados,
-            "pontos": func.pontos
-        } for func in funcionarios] 
+        dados_json = [func.to_dict() for func in funcionarios] 
         with open(TEMP_DATA_ARQUIVO, 'w', encoding='utf-8') as f:
             json.dump(dados_json, f, ensure_ascii=False, indent=4)
         return TEMP_DATA_ARQUIVO
@@ -100,27 +115,39 @@ def criar_arquivo_json_temporario(dados_formatados):
         print(f"Erro ao criar arquivo JSON: {e}")
         return None
 
-def calcular_pontuacao(caminho_json):
-    """Calcula a pontuação de todos os funcionários do arquivo JSON."""
+def calcular_e_salvar_pontuacoes(caminho_json):
+    """Calcula as pontuações e salva em um novo arquivo JSON."""
     try:
         with open(caminho_json, 'r', encoding='utf-8') as f:
             dados = json.load(f)
 
-        funcionarios = [Funcionario(
-            d["nome"],
-            d["atividade"],
-            d["imagens_aprovadas"],
-            d["documentos_aprovados"]
-        ) for d in dados]
+        pontuacoes = {}
+        for d in dados:
+            # Cria o objeto Funcionario e calcula os pontos
+            funcionario = Funcionario(
+                d["nome"],
+                d["atividade"],
+                d["imagens_aprovadas"],
+                d["documentos_aprovados"],
+                d["pastas_aprovadas"]
+            )
+            pontuacoes[funcionario.nome] = funcionario.pontos # Armazena os pontos calculados
 
-        return {func.nome: func.pontos for func in funcionarios}
+        with open(PONTOS_ARQUIVO, 'w', encoding='utf-8') as f:
+            json.dump(pontuacoes, f, ensure_ascii=False, indent=4)
+
+        return pontuacoes
 
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print(f"Erro ao ler arquivo JSON: {e}")
         return None
 
-def _exibir_pontuacoes_na_interface(janela_pontos, pontuacoes):
-    """Exibe as pontuações na interface gráfica."""
+def exibir_pontuacoes(pontuacoes):
+    """Cria a janela e exibe as pontuações."""
+    janela_pontos = tk.Toplevel()
+    janela_pontos.title("Pontuação dos Funcionários")
+    janela_pontos.configure(bg="#202020")
+    
     funcionario_max_pontos = max(pontuacoes, key=lambda k: pontuacoes[k]['Total'])
     pontos_max = pontuacoes[funcionario_max_pontos]['Total']
 
@@ -150,21 +177,13 @@ def _exibir_pontuacoes_na_interface(janela_pontos, pontuacoes):
 
     area_texto.config(state=tk.DISABLED)
 
-def exibir_pontuacoes(pontuacoes):
-    """Cria a janela e exibe as pontuações."""
-    janela_pontos = tk.Toplevel()
-    janela_pontos.title("Pontuação dos Funcionários")
-    janela_pontos.configure(bg="#202020")
-    _exibir_pontuacoes_na_interface(janela_pontos, pontuacoes)
-
-
 def criar_botao_calcular(janela, dados_formatados):
     """Cria o botão 'Calcular Pontos' na janela."""
     def chamar_calcular_pontuacao():
-        """Chama as funções para calcular e exibir pontuações."""
+        """Chama as funções para calcular, salvar e exibir pontuações."""
         caminho_json = criar_arquivo_json_temporario(dados_formatados)
         if caminho_json:
-            pontuacoes = calcular_pontuacao(caminho_json)
+            pontuacoes = calcular_e_salvar_pontuacoes(caminho_json)
             if pontuacoes:
                 exibir_pontuacoes(pontuacoes)
 
