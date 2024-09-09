@@ -1,0 +1,66 @@
+Supervisor: jose Data de Envio: 2024-09-09 00:13:25 Data Informada: 090924 Unidade: xcvsdv
+
+
+Funcionario: Igor
+Atividade: Digitalizacao (Scanner)
+Pastas Aprovadas: 5
+Imagens Aprovadas: 6000
+Documentos Aprovados: 50
+Tempo Aprovado: 04:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 5
+Total de Imagens: 6000
+Total de Documentos: 50
+Total de Tempo: 04:00:00
+
+
+Funcionario: Igor
+Atividade: Verificacao
+Pastas Aprovadas: 3
+Imagens Aprovadas: 4000
+Documentos Aprovados: 100
+Tempo Aprovado: 03:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 3
+Total de Imagens: 4000
+Total de Documentos: 100
+Total de Tempo: 03:00:00
+
+
+Funcionario: Joana
+Atividade: Classificacao
+Pastas Aprovadas: 10
+Imagens Aprovadas: 12000
+Documentos Aprovados: 100
+Tempo Aprovado: 08:00:00
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 100
+Documentos Rejeitados: 10
+Tempo Rejeitado: 00:10:00
+Total de Pastas: 11
+Total de Imagens: 12100
+Total de Documentos: 110
+Total de Tempo: 08:10:00
+
+
+Funcionario: Joana
+Atividade: Controle de Qualidade
+Pastas Aprovadas: 4
+Imagens Aprovadas: 5000
+Documentos Aprovados: 40
+Tempo Aprovado: 03:30:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 4
+Total de Imagens: 5000
+Total de Documentos: 40
+Total de Tempo: 03:30:00
+

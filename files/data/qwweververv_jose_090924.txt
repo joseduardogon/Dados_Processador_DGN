@@ -1,0 +1,322 @@
+Supervisor: jose Data de Envio: 2024-09-09 00:20:47 Data Informada: 090924 Unidade: qwweververv
+
+
+Funcionario: Funcionario7
+Atividade: Verificacao
+Pastas Aprovadas: 3
+Imagens Aprovadas: 3000
+Documentos Aprovados: 120
+Tempo Aprovado: 02:30:00
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 50
+Documentos Rejeitados: 5
+Tempo Rejeitado: 00:05:00
+Total de Pastas: 4
+Total de Imagens: 3050
+Total de Documentos: 125
+Total de Tempo: 02:35:00
+
+
+Funcionario: Funcionario3
+Atividade: Classificacao
+Pastas Aprovadas: 8
+Imagens Aprovadas: 9600
+Documentos Aprovados: 80
+Tempo Aprovado: 07:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 8
+Total de Imagens: 9600
+Total de Documentos: 80
+Total de Tempo: 07:00:00
+
+
+Funcionario: Funcionario1
+Atividade: Digitalizacao (Scanner)
+Pastas Aprovadas: 15
+Imagens Aprovadas: 18000
+Documentos Aprovados: 150
+Tempo Aprovado: 12:00:00
+Pastas Rejeitadas: 2
+Imagens Rejeitadas: 200
+Documentos Rejeitados: 20
+Tempo Rejeitado: 00:20:00
+Total de Pastas: 17
+Total de Imagens: 18200
+Total de Documentos: 170
+Total de Tempo: 12:20:00
+
+
+Funcionario: Funcionario9
+Atividade: Controle de Qualidade
+Pastas Aprovadas: 5
+Imagens Aprovadas: 6000
+Documentos Aprovados: 50
+Tempo Aprovado: 04:00:00
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 100
+Documentos Rejeitados: 10
+Tempo Rejeitado: 00:10:00
+Total de Pastas: 6
+Total de Imagens: 6100
+Total de Documentos: 60
+Total de Tempo: 04:10:00
+
+
+Funcionario: Funcionario5
+Atividade: Verificacao
+Pastas Aprovadas: 12
+Imagens Aprovadas: 14400
+Documentos Aprovados: 480
+Tempo Aprovado: 10:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 12
+Total de Imagens: 14400
+Total de Documentos: 480
+Total de Tempo: 10:00:00
+
+
+Funcionario: Funcionario2
+Atividade: Digitalizacao (Scanner)
+Pastas Aprovadas: 10
+Imagens Aprovadas: 12000
+Documentos Aprovados: 100
+Tempo Aprovado: 08:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 10
+Total de Imagens: 12000
+Total de Documentos: 100
+Total de Tempo: 08:00:00
+
+
+Funcionario: Funcionario1
+Atividade: Controle de Qualidade
+Pastas Aprovadas: 4
+Imagens Aprovadas: 4800
+Documentos Aprovados: 40
+Tempo Aprovado: 03:30:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 4
+Total de Imagens: 4800
+Total de Documentos: 40
+Total de Tempo: 03:30:00
+
+
+Funcionario: Funcionario8
+Atividade: Verificacao
+Pastas Aprovadas: 7
+Imagens Aprovadas: 8400
+Documentos Aprovados: 280
+Tempo Aprovado: 06:00:00
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 100
+Documentos Rejeitados: 10
+Tempo Rejeitado: 00:10:00
+Total de Pastas: 8
+Total de Imagens: 8500
+Total de Documentos: 290
+Total de Tempo: 06:10:00
+
+
+Funcionario: Funcionario4
+Atividade: Classificacao
+Pastas Aprovadas: 6
+Imagens Aprovadas: 7200
+Documentos Aprovados: 60
+Tempo Aprovado: 05:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 6
+Total de Imagens: 7200
+Total de Documentos: 60
+Total de Tempo: 05:00:00
+
+
+Funcionario: Funcionario6
+Atividade: Digitalizacao (Scanner)
+Pastas Aprovadas: 8
+Imagens Aprovadas: 9600
+Documentos Aprovados: 80
+Tempo Aprovado: 06:30:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 8
+Total de Imagens: 9600
+Total de Documentos: 80
+Total de Tempo: 06:30:00
+
+
+Funcionario: Funcionario2
+Atividade: Verificacao
+Pastas Aprovadas: 5
+Imagens Aprovadas: 6000
+Documentos Aprovados: 200
+Tempo Aprovado: 04:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 5
+Total de Imagens: 6000
+Total de Documentos: 200
+Total de Tempo: 04:00:00
+
+
+Funcionario: Funcionario10
+Atividade: Classificacao
+Pastas Aprovadas: 10
+Imagens Aprovadas: 12000
+Documentos Aprovados: 100
+Tempo Aprovado: 08:00:00
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 100
+Documentos Rejeitados: 10
+Tempo Rejeitado: 00:10:00
+Total de Pastas: 11
+Total de Imagens: 12100
+Total de Documentos: 110
+Total de Tempo: 08:10:00
+
+
+Funcionario: Funcionario7
+Atividade: Classificacao
+Pastas Aprovadas: 5
+Imagens Aprovadas: 6000
+Documentos Aprovados: 50
+Tempo Aprovado: 04:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 5
+Total de Imagens: 6000
+Total de Documentos: 50
+Total de Tempo: 04:00:00
+
+
+Funcionario: Funcionario3
+Atividade: Digitalizacao (Scanner)
+Pastas Aprovadas: 12
+Imagens Aprovadas: 14400
+Documentos Aprovados: 120
+Tempo Aprovado: 10:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 12
+Total de Imagens: 14400
+Total de Documentos: 120
+Total de Tempo: 10:00:00
+
+
+Funcionario: Funcionario5
+Atividade: Digitalizacao (Scanner)
+Pastas Aprovadas: 7
+Imagens Aprovadas: 8400
+Documentos Aprovados: 70
+Tempo Aprovado: 06:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 7
+Total de Imagens: 8400
+Total de Documentos: 70
+Total de Tempo: 06:00:00
+
+
+Funcionario: Funcionario9
+Atividade: Verificacao
+Pastas Aprovadas: 9
+Imagens Aprovadas: 10800
+Documentos Aprovados: 360
+Tempo Aprovado: 08:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 9
+Total de Imagens: 10800
+Total de Documentos: 360
+Total de Tempo: 08:00:00
+
+
+Funcionario: Funcionario8
+Atividade: Classificacao
+Pastas Aprovadas: 4
+Imagens Aprovadas: 4800
+Documentos Aprovados: 40
+Tempo Aprovado: 03:30:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 4
+Total de Imagens: 4800
+Total de Documentos: 40
+Total de Tempo: 03:30:00
+
+
+Funcionario: Funcionario4
+Atividade: Digitalizacao (Scanner)
+Pastas Aprovadas: 9
+Imagens Aprovadas: 10800
+Documentos Aprovados: 90
+Tempo Aprovado: 07:30:00
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 100
+Documentos Rejeitados: 10
+Tempo Rejeitado: 00:10:00
+Total de Pastas: 10
+Total de Imagens: 10900
+Total de Documentos: 100
+Total de Tempo: 07:40:00
+
+
+Funcionario: Funcionario10
+Atividade: Digitalizacao (Scanner)
+Pastas Aprovadas: 6
+Imagens Aprovadas: 7200
+Documentos Aprovados: 60
+Tempo Aprovado: 05:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 6
+Total de Imagens: 7200
+Total de Documentos: 60
+Total de Tempo: 05:00:00
+
+
+Funcionario: Funcionario6
+Atividade: Verificacao
+Pastas Aprovadas: 4
+Imagens Aprovadas: 4800
+Documentos Aprovados: 160
+Tempo Aprovado: 03:12:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 00:00:00
+Total de Pastas: 4
+Total de Imagens: 4800
+Total de Documentos: 160
+Total de Tempo: 03:12:00
+

@@ -1,37 +1,112 @@
 {
-    "Ana": {
-        "DIGIT": 0,
-        "CQ": 0,
-        "CLASS": 0,
-        "VERIFICACAO": 0,
+    "Funcionario7": {
+        "DIGITALIZACAO": 0,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 90.0,
+        "VERIFICACAO": 9.6,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
-        "DIGITALIZACAO": 80.0,
-        "Total": 80.0
+        "Total": 99.6
     },
-    "Bruno": {
-        "DIGIT": 0,
-        "CQ": 0,
-        "CLASS": 0,
+    "Funcionario3": {
+        "DIGITALIZACAO": 96.0,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 144.0,
         "VERIFICACAO": 0,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
+        "Total": 240.0
+    },
+    "Funcionario1": {
+        "DIGITALIZACAO": 120.00000000000001,
+        "CONTROLEDEQUALIDADE": 24.0,
+        "CLASSIFICACAO": 0,
+        "VERIFICACAO": 0,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "Total": 144.0
+    },
+    "Funcionario9": {
+        "DIGITALIZACAO": 0,
         "CONTROLEDEQUALIDADE": 30.0,
-        "Total": 30.0
-    },
-    "Carlos": {
-        "DIGIT": 0,
-        "CQ": 0,
-        "CLASS": 0,
-        "VERIFICACAO": 32.0,
+        "CLASSIFICACAO": 0,
+        "VERIFICACAO": 28.8,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
-        "Total": 32.0
+        "Total": 58.8
     },
-    "Diana": {
-        "DIGIT": 0,
-        "CQ": 0,
-        "CLASS": 0,
+    "Funcionario5": {
+        "DIGITALIZACAO": 56.00000000000001,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 0,
+        "VERIFICACAO": 38.4,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "Total": 94.4
+    },
+    "Funcionario2": {
+        "DIGITALIZACAO": 80.0,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 0,
+        "VERIFICACAO": 16.0,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "Total": 96.0
+    },
+    "Funcionario8": {
+        "DIGITALIZACAO": 0,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 72.0,
+        "VERIFICACAO": 22.400000000000002,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "Total": 94.4
+    },
+    "Funcionario4": {
+        "DIGITALIZACAO": 72.0,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 108.0,
         "VERIFICACAO": 0,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
-        "CLASSIFICACAO": 270.0,
-        "Total": 270.0
+        "Total": 180.0
+    },
+    "Funcionario6": {
+        "DIGITALIZACAO": 64.0,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 0,
+        "VERIFICACAO": 12.8,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "Total": 76.8
+    },
+    "Funcionario10": {
+        "DIGITALIZACAO": 48.0,
+        "CONTROLEDEQUALIDADE": 0,
+        "CLASSIFICACAO": 180.0,
+        "VERIFICACAO": 0,
+        "OCR2": 0,
+        "VALIDACAO2": 0,
+        "EXPORTACAO": 0,
+        "SUSPENSOEXPORTACAO": 0,
+        "Total": 228.0
     }
 }

@@ -49,20 +49,24 @@ class Funcionario:
     def calcular_pontos(self):
         """Calcula os pontos do funcionário com base em suas atividades."""
         print(f"Calculando pontos para {self.nome} - Atividade: {self.atividade}")
-        pontos = {"DIGIT": 0, "CQ": 0, "CLASS": 0, "VERIFICACAO": 0, "SUSPENSOEXPORTACAO": 0}
+        pontos = {"DIGITALIZACAO": 0, "CONTROLEDEQUALIDADE": 0, "CLASSIFICACAO": 0, "VERIFICACAO": 0, "SUSPENSOEXPORTACAO": 0}  
         if self.atividade:
-            # Obtém a chave do dicionário PESOS a partir do mapeamento
-            chave_atividade = ATIVIDADES_MAPEAMENTO.get(self.atividade) 
+            # 1. Remove os parênteses:
+            chave_atividade = unidecode(self.atividade).replace("(", "").replace(")", "") 
+            # 2. Remove os espaços e coloca em maiúsculas:
+            chave_atividade = chave_atividade.replace(" ", "").upper()  
             print(f"Chave de atividade: {chave_atividade}")
-            if chave_atividade and chave_atividade in PESOS:
+            if chave_atividade == "DIGITALIZACAOSCANNER":
+                chave_atividade = "DIGITALIZACAO"
+            if chave_atividade in PESOS:
                 if chave_atividade == "VERIFICACAO":
-                    pontos[chave_atividade] = self.documentos_aprovados * PESOS.get(chave_atividade, 0)
-                    print(f"Pontos VERIFICACAO: {pontos[chave_atividade]}")
+                    pontos["VERIFICACAO"] = self.documentos_aprovados * PESOS.get(chave_atividade, 0)
+                    print(f"Pontos VERIFICACAO: {pontos['VERIFICACAO']}")
                 else:
-                    pontos[chave_atividade] = self.imagens_aprovadas * PESOS.get(chave_atividade, 0)
+                    pontos[chave_atividade] = self.imagens_aprovadas * PESOS.get(chave_atividade, 0)  
                     print(f"Pontos {chave_atividade}: {pontos[chave_atividade]}")
             else:
-                print(f"Atividade '{self.atividade}' não encontrada no dicionário de mapeamento ou de pesos.")
+                print(f"Atividade '{self.atividade}' não encontrada no dicionário de pesos.")
         pontos["Total"] = sum(pontos.values())
         print(f"Pontos Totais: {pontos['Total']}\n")
         return pontos
@@ -123,20 +127,35 @@ def calcular_e_salvar_pontuacoes(caminho_json):
 
         pontuacoes = {}
         for d in dados:
-            # Cria o objeto Funcionario e calcula os pontos
-            funcionario = Funcionario(
+            nome_funcionario = d["nome"]
+            
+            # Verifica se o funcionário já existe no dicionário
+            if nome_funcionario not in pontuacoes:
+                # Inicializa com as chaves completas do dicionário PESOS
+                pontuacoes[nome_funcionario] = {chave: 0 for chave in PESOS}
+                pontuacoes[nome_funcionario]["Total"] = 0
+
+            # Calcula os pontos da atividade atual
+            pontos_atividade = Funcionario(
                 d["nome"],
                 d["atividade"],
                 d["imagens_aprovadas"],
                 d["documentos_aprovados"],
                 d["pastas_aprovadas"]
-            )
-            pontuacoes[funcionario.nome] = funcionario.pontos # Armazena os pontos calculados
+            ).calcular_pontos()
+
+            # Acumula os pontos da atividade no dicionário do funcionário
+            for chave in pontos_atividade:
+                pontuacoes[nome_funcionario][chave] += pontos_atividade[chave]
 
         with open(PONTOS_ARQUIVO, 'w', encoding='utf-8') as f:
             json.dump(pontuacoes, f, ensure_ascii=False, indent=4)
 
         return pontuacoes
+
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Erro ao ler arquivo JSON: {e}")
+        return None
 
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print(f"Erro ao ler arquivo JSON: {e}")
