@@ -1,302 +1,92 @@
 [
     {
-        "nome": "Funcionario7",
+        "nome": "Joao",
         "atividade": "Verificacao",
-        "imagens_aprovadas": 3000,
-        "documentos_aprovados": 120,
+        "imagens_aprovadas": 4860,
+        "documentos_aprovados": 4860,
+        "pastas_aprovadas": 4,
+        "pontos": {
+            "DIGITALIZACAO": 0,
+            "CONTROLEDEQUALIDADE": 0,
+            "CLASSIFICACAO": 0,
+            "VERIFICACAO": 388.8,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 388.8
+        }
+    },
+    {
+        "nome": "Duane",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 2300,
+        "documentos_aprovados": 2300,
+        "pastas_aprovadas": 2,
+        "pontos": {
+            "DIGITALIZACAO": 0,
+            "CONTROLEDEQUALIDADE": 0,
+            "CLASSIFICACAO": 0,
+            "VERIFICACAO": 184.0,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 184.0
+        }
+    },
+    {
+        "nome": "Larissa",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 2809,
+        "documentos_aprovados": 2809,
+        "pastas_aprovadas": 2,
+        "pontos": {
+            "DIGITALIZACAO": 0,
+            "CONTROLEDEQUALIDADE": 0,
+            "CLASSIFICACAO": 0,
+            "VERIFICACAO": 224.72,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 224.72
+        }
+    },
+    {
+        "nome": "Nathalia",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 3461,
+        "documentos_aprovados": 3461,
         "pastas_aprovadas": 3,
         "pontos": {
             "DIGITALIZACAO": 0,
             "CONTROLEDEQUALIDADE": 0,
             "CLASSIFICACAO": 0,
-            "VERIFICACAO": 9.6,
+            "VERIFICACAO": 276.88,
             "SUSPENSOEXPORTACAO": 0,
-            "Total": 9.6
+            "Total": 276.88
         }
     },
     {
-        "nome": "Funcionario3",
-        "atividade": "Classificacao",
-        "imagens_aprovadas": 9600,
-        "documentos_aprovados": 80,
-        "pastas_aprovadas": 8,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 144.0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 144.0
-        }
-    },
-    {
-        "nome": "Funcionario1",
-        "atividade": "Digitalizacao (Scanner)",
-        "imagens_aprovadas": 18000,
-        "documentos_aprovados": 150,
-        "pastas_aprovadas": 15,
-        "pontos": {
-            "DIGITALIZACAO": 120.00000000000001,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 120.00000000000001
-        }
-    },
-    {
-        "nome": "Funcionario9",
-        "atividade": "Controle de Qualidade",
-        "imagens_aprovadas": 6000,
-        "documentos_aprovados": 50,
-        "pastas_aprovadas": 5,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 30.0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 30.0
-        }
-    },
-    {
-        "nome": "Funcionario5",
+        "nome": "anaclara",
         "atividade": "Verificacao",
-        "imagens_aprovadas": 14400,
-        "documentos_aprovados": 480,
-        "pastas_aprovadas": 12,
+        "imagens_aprovadas": 1245,
+        "documentos_aprovados": 1245,
+        "pastas_aprovadas": 1,
         "pontos": {
             "DIGITALIZACAO": 0,
             "CONTROLEDEQUALIDADE": 0,
             "CLASSIFICACAO": 0,
-            "VERIFICACAO": 38.4,
+            "VERIFICACAO": 99.60000000000001,
             "SUSPENSOEXPORTACAO": 0,
-            "Total": 38.4
+            "Total": 99.60000000000001
         }
     },
     {
-        "nome": "Funcionario2",
-        "atividade": "Digitalizacao (Scanner)",
-        "imagens_aprovadas": 12000,
-        "documentos_aprovados": 100,
-        "pastas_aprovadas": 10,
-        "pontos": {
-            "DIGITALIZACAO": 80.0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 80.0
-        }
-    },
-    {
-        "nome": "Funcionario1",
-        "atividade": "Controle de Qualidade",
-        "imagens_aprovadas": 4800,
-        "documentos_aprovados": 40,
-        "pastas_aprovadas": 4,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 24.0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 24.0
-        }
-    },
-    {
-        "nome": "Funcionario8",
+        "nome": "estefanyalves",
         "atividade": "Verificacao",
-        "imagens_aprovadas": 8400,
-        "documentos_aprovados": 280,
-        "pastas_aprovadas": 7,
+        "imagens_aprovadas": 2521,
+        "documentos_aprovados": 2521,
+        "pastas_aprovadas": 2,
         "pontos": {
             "DIGITALIZACAO": 0,
             "CONTROLEDEQUALIDADE": 0,
             "CLASSIFICACAO": 0,
-            "VERIFICACAO": 22.400000000000002,
+            "VERIFICACAO": 201.68,
             "SUSPENSOEXPORTACAO": 0,
-            "Total": 22.400000000000002
-        }
-    },
-    {
-        "nome": "Funcionario4",
-        "atividade": "Classificacao",
-        "imagens_aprovadas": 7200,
-        "documentos_aprovados": 60,
-        "pastas_aprovadas": 6,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 108.0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 108.0
-        }
-    },
-    {
-        "nome": "Funcionario6",
-        "atividade": "Digitalizacao (Scanner)",
-        "imagens_aprovadas": 9600,
-        "documentos_aprovados": 80,
-        "pastas_aprovadas": 8,
-        "pontos": {
-            "DIGITALIZACAO": 64.0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 64.0
-        }
-    },
-    {
-        "nome": "Funcionario2",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 6000,
-        "documentos_aprovados": 200,
-        "pastas_aprovadas": 5,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 16.0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 16.0
-        }
-    },
-    {
-        "nome": "Funcionario10",
-        "atividade": "Classificacao",
-        "imagens_aprovadas": 12000,
-        "documentos_aprovados": 100,
-        "pastas_aprovadas": 10,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 180.0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 180.0
-        }
-    },
-    {
-        "nome": "Funcionario7",
-        "atividade": "Classificacao",
-        "imagens_aprovadas": 6000,
-        "documentos_aprovados": 50,
-        "pastas_aprovadas": 5,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 90.0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 90.0
-        }
-    },
-    {
-        "nome": "Funcionario3",
-        "atividade": "Digitalizacao (Scanner)",
-        "imagens_aprovadas": 14400,
-        "documentos_aprovados": 120,
-        "pastas_aprovadas": 12,
-        "pontos": {
-            "DIGITALIZACAO": 96.0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 96.0
-        }
-    },
-    {
-        "nome": "Funcionario5",
-        "atividade": "Digitalizacao (Scanner)",
-        "imagens_aprovadas": 8400,
-        "documentos_aprovados": 70,
-        "pastas_aprovadas": 7,
-        "pontos": {
-            "DIGITALIZACAO": 56.00000000000001,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 56.00000000000001
-        }
-    },
-    {
-        "nome": "Funcionario9",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 10800,
-        "documentos_aprovados": 360,
-        "pastas_aprovadas": 9,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 28.8,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 28.8
-        }
-    },
-    {
-        "nome": "Funcionario8",
-        "atividade": "Classificacao",
-        "imagens_aprovadas": 4800,
-        "documentos_aprovados": 40,
-        "pastas_aprovadas": 4,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 72.0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 72.0
-        }
-    },
-    {
-        "nome": "Funcionario4",
-        "atividade": "Digitalizacao (Scanner)",
-        "imagens_aprovadas": 10800,
-        "documentos_aprovados": 90,
-        "pastas_aprovadas": 9,
-        "pontos": {
-            "DIGITALIZACAO": 72.0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 72.0
-        }
-    },
-    {
-        "nome": "Funcionario10",
-        "atividade": "Digitalizacao (Scanner)",
-        "imagens_aprovadas": 7200,
-        "documentos_aprovados": 60,
-        "pastas_aprovadas": 6,
-        "pontos": {
-            "DIGITALIZACAO": 48.0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 48.0
-        }
-    },
-    {
-        "nome": "Funcionario6",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 4800,
-        "documentos_aprovados": 160,
-        "pastas_aprovadas": 4,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 12.8,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 12.8
+            "Total": 201.68
         }
     }
 ]

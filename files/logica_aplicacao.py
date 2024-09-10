@@ -1,20 +1,16 @@
 # logica_aplicacao.py
 import os
-from datetime import datetime
 
-def salvar_dados(nome_supervisor, data, unidade, caminho_arquivo_txt):
-    """Processa os dados do arquivo TXT e retorna os dados formatados.
-
-    Args:
-        nome_supervisor (str): Nome do supervisor.
-        data (str): Data no formato desejado.
-        unidade (str): Unidade.
-        caminho_arquivo_txt (str): Caminho para o arquivo TXT a ser processado.
-
-    Returns:
-        tuple: Uma tupla contendo o novo caminho do arquivo e os dados formatados, 
-               ou (None, None) em caso de erro.
+def salvar_dados(
+    entrada_nome_supervisor, entrada_data, entrada_unidade, caminho_arquivo_txt
+):
+    """Processa os dados do arquivo TXT, remove funcionários com prefixo 'usu'
+       e atividades inválidas, e retorna os dados formatados.
     """
+    nome_supervisor = entrada_nome_supervisor
+    data = entrada_data
+    unidade = entrada_unidade
+
     # Remover caracteres especiais do nome do arquivo
     nome_supervisor = "".join(e for e in nome_supervisor if e.isalnum())
     data_limpa = "".join(e for e in data if e.isdigit())
@@ -27,13 +23,20 @@ def salvar_dados(nome_supervisor, data, unidade, caminho_arquivo_txt):
         # Criar uma lista para armazenar os dados formatados
         dados_formatados = []
 
+        # Atividades válidas
+        atividades_validas = [
+            "Controle de Qualidade",
+            "Verificacao",
+            "Digitalizacao (Scanner)",
+            "Classificacao"
+        ]
+
         # Dicionário de substituições para caracteres problemáticos
         substituicoes = {
             "Ã§": "c",
             "Ã£": "a",
             "Ã³": "o",
             "Âº": "o",
-            # Adicione outras substituições conforme necessário
         }
 
         # Pular a primeira linha (cabeçalho)
@@ -44,9 +47,11 @@ def salvar_dados(nome_supervisor, data, unidade, caminho_arquivo_txt):
                 for i in range(len(campos)):
                     for chave, valor in substituicoes.items():
                         campos[i] = campos[i].replace(chave, valor)
-
-                dados_formatados.append(
-                    f"""
+                
+                # Verifica se o funcionário possui o prefixo "usu" e se a atividade é válida
+                if not campos[1].startswith("usu") and campos[2] in atividades_validas and campos[1] != "Admin":
+                    dados_formatados.append(
+                        f"""
 Funcionario: {campos[1]}
 Atividade: {campos[2] if campos[2] != 'Digitalizacao (Scanner)' else 'Digitalizacao'}
 Pastas Aprovadas: {campos[3]}
@@ -62,7 +67,7 @@ Total de Imagens: {campos[12]}
 Total de Documentos: {campos[13]}
 Total de Tempo: {campos[14]}
 """
-                )
+                    )
 
         pasta_dados = "files/data"
         os.makedirs(pasta_dados, exist_ok=True)
@@ -71,21 +76,15 @@ Total de Tempo: {campos[14]}
         )
         novo_caminho_arquivo = os.path.join(pasta_dados, novo_nome_arquivo)
 
-        # Obter data e hora atual
-        data_hora_envio = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        # Escrever dados formatados no arquivo com a nova linha de cabeçalho
+        # Salvar os dados formatados no arquivo
         with open(novo_caminho_arquivo, "w") as arquivo_formatado:
-            # Adicionar a linha de cabeçalho
-            arquivo_formatado.write(f"Supervisor: {nome_supervisor} Data de Envio: {data_hora_envio} Data Informada: {data} Unidade: {unidade}\n\n")
-            # Escrever os dados formatados
             for dado in dados_formatados:
                 arquivo_formatado.write(dado + "\n")
 
         # Excluir o arquivo original após o processamento
         os.remove(caminho_arquivo_txt)
 
-        return novo_caminho_arquivo, dados_formatados  # Retornar dados_formatados também
+        return novo_caminho_arquivo, dados_formatados
     except Exception as e:
         print(f"Ocorreu um erro ao salvar os dados: {e}")
-        return None, None  # Retornar None para ambos em caso de erro
+        return None, None

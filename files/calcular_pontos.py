@@ -9,6 +9,7 @@ ATIVIDADES_MAPEAMENTO = {
     "Controle de Qualidade": "CONTROLEDEQUALIDADE",
     "Verificacao": "VERIFICACAO",
     "Digitalizacao (Scanner)": "DIGITALIZACAO",
+    "Digitaliacao": "DIGITALIZACAO",
     "Classificacao": "CLASSIFICACAO"
 }
 
@@ -56,17 +57,15 @@ class Funcionario:
             # 2. Remove os espaços e coloca em maiúsculas:
             chave_atividade = chave_atividade.replace(" ", "").upper()  
             print(f"Chave de atividade: {chave_atividade}")
-            if chave_atividade == "DIGITALIZACAOSCANNER":
-                chave_atividade = "DIGITALIZACAO"
+            
+            # Verifica se a chave da atividade existe no dicionário PESOS
             if chave_atividade in PESOS:
                 if chave_atividade == "VERIFICACAO":
-                    pontos["VERIFICACAO"] = self.documentos_aprovados * PESOS.get(chave_atividade, 0)
-                    print(f"Pontos VERIFICACAO: {pontos['VERIFICACAO']}")
+                    pontos[chave_atividade] = self.documentos_aprovados * PESOS.get(chave_atividade, 0)
+                    print(f"Pontos VERIFICACAO: {pontos[chave_atividade]}")
                 else:
                     pontos[chave_atividade] = self.imagens_aprovadas * PESOS.get(chave_atividade, 0)  
                     print(f"Pontos {chave_atividade}: {pontos[chave_atividade]}")
-            else:
-                print(f"Atividade '{self.atividade}' não encontrada no dicionário de pesos.")
         pontos["Total"] = sum(pontos.values())
         print(f"Pontos Totais: {pontos['Total']}\n")
         return pontos

@@ -13,10 +13,17 @@ def processar_funcionario(info_funcionario, pontuacoes):
         int(info_funcionario.get("Documentos Aprovados", 0)),
         int(info_funcionario.get("Pastas Aprovadas", 0))
     )
-    if funcionario.nome in pontuacoes:
-        pontuacoes[funcionario.nome]["Total"] += funcionario.calcular_pontos()["Total"]
+
+    # Calcula os pontos do funcionário para a atividade atual
+    pontos_atuais = funcionario.calcular_pontos()
+
+    if funcionario.nome not in pontuacoes:
+        pontuacoes[funcionario.nome] = pontos_atuais  # Cria uma nova entrada se o funcionário não existir
     else:
-        pontuacoes[funcionario.nome] = funcionario.calcular_pontos()
+        # Acumula os pontos de cada atividade individualmente
+        for chave, valor in pontos_atuais.items():
+            pontuacoes[funcionario.nome][chave] += valor 
+
     return pontuacoes
 
 def calcular_pontos_arquivo_formatado(caminho_arquivo):
@@ -25,31 +32,31 @@ def calcular_pontos_arquivo_formatado(caminho_arquivo):
         with open(caminho_arquivo, "r", encoding="utf-8") as f:
             linhas = f.readlines()
 
-        print(f"Linhas do arquivo: {linhas}")  # Debug
-
         pontuacoes = {}
         info_funcionario_atual = {}
 
         for linha in linhas[1:]:  # Pula a primeira linha (cabeçalho)
             linha = linha.strip()
-            print(f"Processando linha: {linha}")  # Debug
 
             if linha.startswith("Funcionario:"):
-                # Processa o funcionário anterior se houver dados
-                if info_funcionario_atual: 
+                # Salva o nome do funcionário atual
+                nome_funcionario_atual = linha.split(": ")[1]
+
+                # Se já houver dados do funcionário, processe-o
+                if info_funcionario_atual:  
                     pontuacoes = processar_funcionario(info_funcionario_atual, pontuacoes)
 
-                # Inicia um novo dicionário para o próximo funcionário
-                info_funcionario_atual = {"nome": linha.split(": ")[1]}
+                # Reinicia o dicionário para o próximo funcionário
+                info_funcionario_atual = {"nome": nome_funcionario_atual}  
             elif ": " in linha:
                 chave, valor = linha.split(": ")
                 info_funcionario_atual[chave] = valor
 
         # Processa o último funcionário do arquivo
-        if info_funcionario_atual:  
+        if info_funcionario_atual:
             pontuacoes = processar_funcionario(info_funcionario_atual, pontuacoes)
 
-        print(f"Pontuações calculadas: {pontuacoes}")  # Debug
+        print(f"Pontuações calculadas: {pontuacoes}")
 
         # Salva as pontuações em um novo arquivo JSON
         caminho_pontos_arquivo = os.path.join("files", "intern", "pontos_formatados.json")
