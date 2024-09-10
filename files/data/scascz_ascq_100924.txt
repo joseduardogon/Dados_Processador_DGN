@@ -1,0 +1,16 @@
+
+Funcionario: Admin
+Atividade: Verificacao
+Pastas Aprovadas: 8
+Imagens Aprovadas: 7586
+Documentos Aprovados: 7572
+Tempo Aprovado: 0:00:00
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 0:00:00
+Total de Pastas: 8
+Total de Imagens: 7586
+Total de Documentos: 7572
+Total de Tempo: 0:00:00
+

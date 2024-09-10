@@ -14,6 +14,7 @@ import logica_aplicacao
 import funcoes_preenchimento
 import processar_formatados
 from processar_formatados import calcular_pontos_arquivo_formatado
+from aba_configuracoes import AbaConfiguracoes
 
 # Variável global para armazenar o caminho do arquivo selecionado
 caminho_arquivo_txt = None
@@ -165,7 +166,10 @@ botao_arquivos_anteriores = tk.Button(
     borderwidth=2,
     relief="raised",
 )
-botao_arquivos_anteriores.pack(pady=10, padx=20, side="top", anchor="ne")
+botao_arquivos_anteriores.pack(pady=10, padx=40, side="top", anchor="ne")
+
+aba_configuracoes = AbaConfiguracoes(janela)
+aba_configuracoes.posicionar_botao_engrenagem
 
 # Nome do Supervisor
 label_nome_supervisor = tk.Label(

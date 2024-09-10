@@ -1,0 +1,96 @@
+
+Funcionario: Joao
+Atividade: Verificacao
+Pastas Aprovadas: 4
+Imagens Aprovadas: 4860
+Documentos Aprovados: 4860
+Tempo Aprovado: 8:46:19
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 0:00:00
+Total de Pastas: 4
+Total de Imagens: 4860
+Total de Documentos: 4860
+Total de Tempo: 8:46:19
+
+
+Funcionario: Duane
+Atividade: Verificacao
+Pastas Aprovadas: 2
+Imagens Aprovadas: 2300
+Documentos Aprovados: 2300
+Tempo Aprovado: 0:01:04
+Pastas Rejeitadas: 8
+Imagens Rejeitadas: 6725
+Documentos Rejeitados: 6692
+Tempo Rejeitado: 8:41:53
+Total de Pastas: 10
+Total de Imagens: 9025
+Total de Documentos: 8992
+Total de Tempo: 8:42:57
+
+
+Funcionario: Larissa
+Atividade: Verificacao
+Pastas Aprovadas: 2
+Imagens Aprovadas: 2809
+Documentos Aprovados: 2809
+Tempo Aprovado: 8:50:50
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 0:00:00
+Total de Pastas: 2
+Total de Imagens: 2809
+Total de Documentos: 2809
+Total de Tempo: 8:50:50
+
+
+Funcionario: Nathalia
+Atividade: Verificacao
+Pastas Aprovadas: 3
+Imagens Aprovadas: 3461
+Documentos Aprovados: 3461
+Tempo Aprovado: 8:49:58
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 0:00:00
+Total de Pastas: 3
+Total de Imagens: 3461
+Total de Documentos: 3461
+Total de Tempo: 8:49:58
+
+
+Funcionario: anaclara
+Atividade: Verificacao
+Pastas Aprovadas: 1
+Imagens Aprovadas: 1245
+Documentos Aprovados: 1245
+Tempo Aprovado: 7:55:13
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 912
+Documentos Rejeitados: 911
+Tempo Rejeitado: 0:15:01
+Total de Pastas: 2
+Total de Imagens: 2157
+Total de Documentos: 2156
+Total de Tempo: 8:10:14
+
+
+Funcionario: estefanyalves
+Atividade: Verificacao
+Pastas Aprovadas: 2
+Imagens Aprovadas: 2521
+Documentos Aprovados: 2521
+Tempo Aprovado: 1:49:10
+Pastas Rejeitadas: 2
+Imagens Rejeitadas: 1548
+Documentos Rejeitados: 1541
+Tempo Rejeitado: 0:09:48
+Total de Pastas: 4
+Total de Imagens: 4069
+Total de Documentos: 4062
+Total de Tempo: 1:58:58
+
