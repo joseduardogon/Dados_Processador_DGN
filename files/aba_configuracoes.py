@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 import os
 import shutil
+from manipular_arquivos import abrir_lista_arquivos
 
 class AbaConfiguracoes:
     """Classe para criar e controlar a aba de configurações."""
@@ -92,7 +93,7 @@ class AbaConfiguracoes:
         self.botao_modificar = tk.Button(
             self.frame_botoes,
             text="MODIFICAR ARQUIVO",
-            command=self.limpar_dados,
+            command=abrir_lista_arquivos,
             bg="#4C4C4C",
             fg="#FFFFFF",
             width= 30,
