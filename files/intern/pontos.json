@@ -3,66 +3,66 @@
         "DIGITALIZACAO": 0,
         "CONTROLEDEQUALIDADE": 0,
         "CLASSIFICACAO": 0,
-        "VERIFICACAO": 388.8,
+        "VERIFICACAO": 162.32,
         "OCR2": 0,
         "VALIDACAO2": 0,
         "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
-        "Total": 388.8
+        "Total": 162.32
     },
     "Duane": {
         "DIGITALIZACAO": 0,
         "CONTROLEDEQUALIDADE": 0,
         "CLASSIFICACAO": 0,
-        "VERIFICACAO": 184.0,
+        "VERIFICACAO": 97.12,
         "OCR2": 0,
         "VALIDACAO2": 0,
         "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
-        "Total": 184.0
+        "Total": 97.12
     },
     "Larissa": {
         "DIGITALIZACAO": 0,
         "CONTROLEDEQUALIDADE": 0,
         "CLASSIFICACAO": 0,
-        "VERIFICACAO": 224.72,
+        "VERIFICACAO": 103.60000000000001,
         "OCR2": 0,
         "VALIDACAO2": 0,
         "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
-        "Total": 224.72
+        "Total": 103.60000000000001
     },
     "Nathalia": {
         "DIGITALIZACAO": 0,
         "CONTROLEDEQUALIDADE": 0,
         "CLASSIFICACAO": 0,
-        "VERIFICACAO": 276.88,
+        "VERIFICACAO": 352.64,
         "OCR2": 0,
         "VALIDACAO2": 0,
         "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
-        "Total": 276.88
+        "Total": 352.64
     },
     "anaclara": {
         "DIGITALIZACAO": 0,
         "CONTROLEDEQUALIDADE": 0,
         "CLASSIFICACAO": 0,
-        "VERIFICACAO": 99.60000000000001,
+        "VERIFICACAO": 0.0,
         "OCR2": 0,
         "VALIDACAO2": 0,
         "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
-        "Total": 99.60000000000001
+        "Total": 0.0
     },
     "estefanyalves": {
         "DIGITALIZACAO": 0,
         "CONTROLEDEQUALIDADE": 0,
         "CLASSIFICACAO": 0,
-        "VERIFICACAO": 201.68,
+        "VERIFICACAO": 0.0,
         "OCR2": 0,
         "VALIDACAO2": 0,
         "EXPORTACAO": 0,
         "SUSPENSOEXPORTACAO": 0,
-        "Total": 201.68
+        "Total": 0.0
     }
 }

@@ -1,0 +1,96 @@
+
+Funcionario: Joao
+Atividade: Verificacao
+Pastas Aprovadas: 2
+Imagens Aprovadas: 2029
+Documentos Aprovados: 2029
+Tempo Aprovado: 2:40:36
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 0:00:00
+Total de Pastas: 2
+Total de Imagens: 2029
+Total de Documentos: 2029
+Total de Tempo: 2:40:36
+
+
+Funcionario: Duane
+Atividade: Verificacao
+Pastas Aprovadas: 1
+Imagens Aprovadas: 1214
+Documentos Aprovados: 1214
+Tempo Aprovado: 0:00:09
+Pastas Rejeitadas: 2
+Imagens Rejeitadas: 1973
+Documentos Rejeitados: 1963
+Tempo Rejeitado: 5:55:15
+Total de Pastas: 3
+Total de Imagens: 3187
+Total de Documentos: 3177
+Total de Tempo: 5:55:24
+
+
+Funcionario: Larissa
+Atividade: Verificacao
+Pastas Aprovadas: 1
+Imagens Aprovadas: 1295
+Documentos Aprovados: 1295
+Tempo Aprovado: 0:43:10
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 0:00:00
+Total de Pastas: 1
+Total de Imagens: 1295
+Total de Documentos: 1295
+Total de Tempo: 0:43:10
+
+
+Funcionario: Nathalia
+Atividade: Verificacao
+Pastas Aprovadas: 4
+Imagens Aprovadas: 4408
+Documentos Aprovados: 4408
+Tempo Aprovado: 7:37:48
+Pastas Rejeitadas: 0
+Imagens Rejeitadas: 0
+Documentos Rejeitados: 0
+Tempo Rejeitado: 0:00:00
+Total de Pastas: 4
+Total de Imagens: 4408
+Total de Documentos: 4408
+Total de Tempo: 7:37:48
+
+
+Funcionario: anaclara
+Atividade: Verificacao
+Pastas Aprovadas: 0
+Imagens Aprovadas: 0
+Documentos Aprovados: 0
+Tempo Aprovado: 0:00:00
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 912
+Documentos Rejeitados: 911
+Tempo Rejeitado: 2:39:01
+Total de Pastas: 1
+Total de Imagens: 912
+Total de Documentos: 911
+Total de Tempo: 2:39:01
+
+
+Funcionario: estefanyalves
+Atividade: Verificacao
+Pastas Aprovadas: 0
+Imagens Aprovadas: 0
+Documentos Aprovados: 0
+Tempo Aprovado: 0:00:00
+Pastas Rejeitadas: 1
+Imagens Rejeitadas: 1013
+Documentos Rejeitados: 1014
+Tempo Rejeitado: 1:15:53
+Total de Pastas: 1
+Total de Imagens: 1013
+Total de Documentos: 1014
+Total de Tempo: 1:15:53
+

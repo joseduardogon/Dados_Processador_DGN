@@ -2,91 +2,91 @@
     {
         "nome": "Joao",
         "atividade": "Verificacao",
-        "imagens_aprovadas": 4860,
-        "documentos_aprovados": 4860,
-        "pastas_aprovadas": 4,
+        "imagens_aprovadas": 2029,
+        "documentos_aprovados": 2029,
+        "pastas_aprovadas": 2,
         "pontos": {
             "DIGITALIZACAO": 0,
             "CONTROLEDEQUALIDADE": 0,
             "CLASSIFICACAO": 0,
-            "VERIFICACAO": 388.8,
+            "VERIFICACAO": 162.32,
             "SUSPENSOEXPORTACAO": 0,
-            "Total": 388.8
+            "Total": 162.32
         }
     },
     {
         "nome": "Duane",
         "atividade": "Verificacao",
-        "imagens_aprovadas": 2300,
-        "documentos_aprovados": 2300,
-        "pastas_aprovadas": 2,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 184.0,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 184.0
-        }
-    },
-    {
-        "nome": "Larissa",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 2809,
-        "documentos_aprovados": 2809,
-        "pastas_aprovadas": 2,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 224.72,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 224.72
-        }
-    },
-    {
-        "nome": "Nathalia",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 3461,
-        "documentos_aprovados": 3461,
-        "pastas_aprovadas": 3,
-        "pontos": {
-            "DIGITALIZACAO": 0,
-            "CONTROLEDEQUALIDADE": 0,
-            "CLASSIFICACAO": 0,
-            "VERIFICACAO": 276.88,
-            "SUSPENSOEXPORTACAO": 0,
-            "Total": 276.88
-        }
-    },
-    {
-        "nome": "anaclara",
-        "atividade": "Verificacao",
-        "imagens_aprovadas": 1245,
-        "documentos_aprovados": 1245,
+        "imagens_aprovadas": 1214,
+        "documentos_aprovados": 1214,
         "pastas_aprovadas": 1,
         "pontos": {
             "DIGITALIZACAO": 0,
             "CONTROLEDEQUALIDADE": 0,
             "CLASSIFICACAO": 0,
-            "VERIFICACAO": 99.60000000000001,
+            "VERIFICACAO": 97.12,
             "SUSPENSOEXPORTACAO": 0,
-            "Total": 99.60000000000001
+            "Total": 97.12
+        }
+    },
+    {
+        "nome": "Larissa",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 1295,
+        "documentos_aprovados": 1295,
+        "pastas_aprovadas": 1,
+        "pontos": {
+            "DIGITALIZACAO": 0,
+            "CONTROLEDEQUALIDADE": 0,
+            "CLASSIFICACAO": 0,
+            "VERIFICACAO": 103.60000000000001,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 103.60000000000001
+        }
+    },
+    {
+        "nome": "Nathalia",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 4408,
+        "documentos_aprovados": 4408,
+        "pastas_aprovadas": 4,
+        "pontos": {
+            "DIGITALIZACAO": 0,
+            "CONTROLEDEQUALIDADE": 0,
+            "CLASSIFICACAO": 0,
+            "VERIFICACAO": 352.64,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 352.64
+        }
+    },
+    {
+        "nome": "anaclara",
+        "atividade": "Verificacao",
+        "imagens_aprovadas": 0,
+        "documentos_aprovados": 0,
+        "pastas_aprovadas": 0,
+        "pontos": {
+            "DIGITALIZACAO": 0,
+            "CONTROLEDEQUALIDADE": 0,
+            "CLASSIFICACAO": 0,
+            "VERIFICACAO": 0.0,
+            "SUSPENSOEXPORTACAO": 0,
+            "Total": 0.0
         }
     },
     {
         "nome": "estefanyalves",
         "atividade": "Verificacao",
-        "imagens_aprovadas": 2521,
-        "documentos_aprovados": 2521,
-        "pastas_aprovadas": 2,
+        "imagens_aprovadas": 0,
+        "documentos_aprovados": 0,
+        "pastas_aprovadas": 0,
         "pontos": {
             "DIGITALIZACAO": 0,
             "CONTROLEDEQUALIDADE": 0,
             "CLASSIFICACAO": 0,
-            "VERIFICACAO": 201.68,
+            "VERIFICACAO": 0.0,
             "SUSPENSOEXPORTACAO": 0,
-            "Total": 201.68
+            "Total": 0.0
         }
     }
 ]
