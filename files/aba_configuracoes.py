@@ -1,7 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 import os
+import shutil
 
 class AbaConfiguracoes:
     """Classe para criar e controlar a aba de configurações."""
@@ -73,7 +74,7 @@ class AbaConfiguracoes:
         self.frame_titulo.columnconfigure(0, weight=0) # Coluna 0 não se expande
         self.frame_titulo.columnconfigure(1, weight=1) # Coluna 1 se expande para centralizar o título
 
-        # Cria os botões de configuração 
+        # Cria os botão de cadastro
         self.botao_cadastrar_preparo = tk.Button(
             self.frame_botoes,
             text="CADASTRAR PREPARADORES",
@@ -87,7 +88,7 @@ class AbaConfiguracoes:
         )
         self.botao_cadastrar_preparo.grid(row=1, column=1, sticky="s", pady= 10)
 
-         # Cria os botões de configuração 
+         # Cria os botao de modificação 
         self.botao_modificar = tk.Button(
             self.frame_botoes,
             text="MODIFICAR ARQUIVO",
@@ -101,7 +102,7 @@ class AbaConfiguracoes:
         )
         self.botao_modificar.grid(row=2, column=1, sticky="s", pady= 10)
 
-         # Cria os botões de configuração 
+         # Cria o botão de exportar 
         self.botao_exportar = tk.Button(
             self.frame_botoes,
             text="EXPORTAR",
@@ -115,6 +116,7 @@ class AbaConfiguracoes:
         )
         self.botao_exportar.grid(row=3, column=1, sticky="s", pady= 10)
 
+        #Criar o botão de Limapr os Dados do projeto
         self.botao_limpar = tk.Button(
             self.frame_botoes,
             text="LIMPAR DADOS",
@@ -127,7 +129,7 @@ class AbaConfiguracoes:
             relief="raised"
         )
         self.botao_limpar.grid(row=4, column=1, sticky="s", pady= (350, 10))
-        # ... (adicione outros botões de configuração aqui) ...
+        # ... (adicionar outros botões de configuração aqui) ...
 
     def alternar_aba(self):
         """Alterna a visibilidade da aba de configurações com animação."""
@@ -158,10 +160,98 @@ class AbaConfiguracoes:
         self.frame_aba.place_forget() # Remove o frame da aba
 
     def limpar_dados(self):
-        """Exemplo de função para alterar o tema da aplicação (ainda não implementada)."""
-        print("Função 'alterar_tema' ainda não implementada.")
-        # Implemente aqui a lógica para alterar o tema da aplicação
+        """Exclui o arquivo de histórico e todos os arquivos no diretório 'data'."""
 
+        # Caminhos para o arquivo de histórico e o diretório de dados
+        caminho_historico = os.path.join("files", "intern", "historico.json")
+        caminho_data = os.path.join("files", "data")
+
+        def confirmar_exclusao():
+            """Função para confirmar a exclusão dos dados."""
+            if messagebox.askyesno("Confirmação", "Tem certeza que deseja excluir todos os dados salvos?\nEsta ação não poderá ser desfeita."):
+                # Se o usuário confirmar, exclui os dados
+                try:
+                    # Exclui o arquivo de histórico
+                    if os.path.exists(caminho_historico):
+                        os.remove(caminho_historico)
+                        print(f"Arquivo de histórico '{caminho_historico}' excluído com sucesso.")
+                    else:
+                        print(f"Arquivo de histórico '{caminho_historico}' não encontrado.")
+
+                    # Exclui todos os arquivos no diretório 'data'
+                    if os.path.exists(caminho_data):
+                        for filename in os.listdir(caminho_data):
+                            file_path = os.path.join(caminho_data, filename)
+                            try:
+                                if os.path.isfile(file_path) or os.path.islink(file_path):
+                                    os.unlink(file_path)
+                                elif os.path.isdir(file_path):
+                                    shutil.rmtree(file_path)
+                                print(f"Arquivo/diretório '{file_path}' excluído com sucesso.")
+                            except Exception as e:
+                                print(f"Falha ao excluir '{file_path}'. Erro: {e}")
+                    else:
+                        print(f"Diretório de dados '{caminho_data}' não encontrado.")
+
+                    messagebox.showinfo("Sucesso", "Todos os dados foram excluídos com sucesso.")
+                except Exception as e:
+                    messagebox.showerror("Erro", f"Erro ao limpar os dados: {e}")
+
+                janela_confirmacao.destroy()
+
+        # Cria a janela de confirmação
+        janela_confirmacao = tk.Toplevel()
+        janela_confirmacao.title("Confirmação")
+        janela_confirmacao.configure(bg="#202020")
+
+        # Centralizar a janela de confirmação
+        janela_confirmacao.update_idletasks()  # Atualiza a geometria da janela
+        largura_janela = janela_confirmacao.winfo_width()
+        altura_janela = janela_confirmacao.winfo_height()
+        largura_tela = janela_confirmacao.winfo_screenwidth()
+        altura_tela = janela_confirmacao.winfo_screenheight()
+        posicao_x = (largura_tela // 2) - (largura_janela // 2)
+        posicao_y = (altura_tela // 2) - (altura_janela // 2)
+        janela_confirmacao.geometry(f"+{posicao_x}+{posicao_y}")
+
+        # Label com a mensagem de aviso
+        label_aviso = tk.Label(
+            janela_confirmacao,
+            text="ESSA AÇÃO EXCLUIRÁ TODOS OS DADOS SALVOS, TEM CERTEZA QUE DESEJA CONTINUAR?",
+            bg="#202020",
+            fg="white",
+            font=("Arial", 8, "bold"),
+            wraplength=300  # Define o comprimento máximo da linha
+        )
+        label_aviso.pack(pady=20, padx= 10)
+
+        # Frame para os botões
+        frame_botoes = tk.Frame(janela_confirmacao, bg="#202020")
+        frame_botoes.pack()
+
+        # Botão "Sim" (em vermelho)
+        botao_sim = tk.Button(
+            frame_botoes,
+            text="Sim",
+            command=confirmar_exclusao,
+            bg="red",
+            fg="white",
+            font=("Arial", 10, "bold"),
+            width=10
+        )
+        botao_sim.pack(side="left", padx=10, pady= 10)
+
+        # Botão "Não"
+        botao_nao = tk.Button(
+            frame_botoes,
+            text="Não",
+            command=janela_confirmacao.destroy,
+            bg="#202020",
+            fg="white",
+            font=("Arial", 10),
+            width=10
+        )
+        botao_nao.pack(side="left", padx=10)
     def posicionar_botao_engrenagem(self, botao_arquivos_anteriores):
         """Posiciona o botão de engrenagem no canto superior direito,
         ajustando-se ao redimensionamento da janela.
@@ -169,4 +259,4 @@ class AbaConfiguracoes:
         botao_arquivos_anteriores.update_idletasks()
         x = botao_arquivos_anteriores.winfo_x() + botao_arquivos_anteriores.winfo_width() + 10
         y = botao_arquivos_anteriores.winfo_y()
-        self.botao_engrenagem.place(x=x, y=y, anchor="ne", relx=0.95, rely=0)
+        self.botao_engrenagem.place(x=x, y=y, anchor="ne", relx=0.95, rely=0)   
