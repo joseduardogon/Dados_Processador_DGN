@@ -12,10 +12,38 @@ class AbaConfiguracoes:
         self.frame_aba.pack_propagate(False) 
         self.aberta = False
 
+        # Frame para o título e o botão de fechar
+        self.frame_titulo = tk.Frame(self.frame_aba, bg="#2C2C2C")
+        self.frame_titulo.pack(side="top", fill="x")
+
+        # Botão "X" para fechar a aba (agora empacotado à esquerda)
+        self.botao_fechar = tk.Button(
+            self.frame_titulo,
+            text="X",
+            command=self.fechar_aba,
+            bg="#2C2C2C",
+            fg="white",
+            font=("Arial", 12, "bold"),
+            relief="flat",
+            bd=0,
+            highlightthickness=0
+        )
+        self.botao_fechar.pack(side="left", padx=10)  # Empacota à esquerda
+
+        # Título "Configurações" (agora empacotado à direita)
+        self.label_titulo = tk.Label(
+            self.frame_titulo, 
+            text="Configurações", 
+            font=("Poppins", 14, "bold"),
+            fg="white",
+            bg="#2C2C2C"
+        )
+        self.label_titulo.pack(side="right", padx=0, pady=5, expand = True, fill = "x")  # Empacota à direita
+        
         # Carrega o ícone e redimensiona para 20x20
         caminho_icone = os.path.join("files", "intern", "gear.png")
         imagem_icone = Image.open(caminho_icone)
-        imagem_icone = imagem_icone.resize((20, 20), Image.LANCZOS) 
+        imagem_icone = imagem_icone.resize((32, 32), Image.LANCZOS) 
         self.icone = ImageTk.PhotoImage(imagem_icone)
 
         # Cria o botão de engrenagem
@@ -25,7 +53,8 @@ class AbaConfiguracoes:
             command=self.alternar_aba,
             bg="#202020",
             borderwidth=0,
-            relief="flat"
+            relief="flat",
+            activebackground = "#202020"
         )
         self.botao_engrenagem.image = self.icone
         # Define a posição inicial do botão (fora da tela)
@@ -45,13 +74,18 @@ class AbaConfiguracoes:
             self.abrir_aba()
 
     def abrir_aba(self):
-        """Abre a aba de configurações deslizando da direita."""
+        """Abre a aba de configurações deslizando da direita para a esquerda."""
         self.aberta = True
-        largura_janela = self.master.winfo_width() # Obtem a largura da janela principal
-        self.frame_aba.place(x=largura_janela, y=0, relheight=1, width=0)
+        largura_janela = self.master.winfo_width()
+        largura_aba = 360 # Largura final da aba
+
+        # Define a posição inicial da aba na borda direita
+        self.frame_aba.place(x=largura_janela - largura_aba, y=0, relheight=1, width=largura_aba) 
         self.frame_aba.lift()
-        for largura in range(0, 361, 10):
-            self.frame_aba.config(width=largura)
+
+        # Animação: move a aba para a esquerda diminuindo o valor de x
+        for posicao_x in range(largura_janela - largura_aba, largura_janela - largura_aba // 2, -10): 
+            self.frame_aba.place(x=posicao_x)
             self.master.update()
 
     def fechar_aba(self):
