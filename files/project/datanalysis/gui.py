@@ -1,9 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QFileDialog, QMessageBox
 import requests
 import csv
-import importar_arquivo
+import importar_arquivo, manipular_database
 from datanalysis.importar_arquivo import ler_excel_para_dicionarios
+from datanalysis.manipular_database import criar_arquivos_usuario
 
 
 class Janela(QWidget):
@@ -35,9 +36,13 @@ class Janela(QWidget):
             "Todos os arquivos (*);;Arquivos de Texto (*.txt);;Arquivos Excel (*.xlsx)"  # Filtros de arquivos
         )
         if caminho_arquivo:  # Verifica se o usuário selecionou um arquivo
-            print(f"Arquivo selecionado: {caminho_arquivo}")
-            dados = ler_excel_para_dicionarios(caminho_arquivo);
-            importar_arquivo.printar_dicionarios(dados)
+            try:
+                dados = importar_arquivo.ler_excel_para_dicionarios(caminho_arquivo)
+                importar_arquivo.printar_dicionarios(dados)
+                importar_arquivo.validar_dicionarios(dados)
+                criar_arquivos_usuario(dados)
+            except ValueError as erro:
+                QMessageBox.warning(self, "Erro", str(erro))
 
     def salvar_dados(self):
         caminho_arquivo, _ = QFileDialog.getSaveFileName(self, "Salvar arquivo CSV", "", "CSV (*.csv)")
