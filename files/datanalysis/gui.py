@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QTableWi
 import requests
 import csv
 import importar_arquivo, manipular_database
-from datanalysis.importar_arquivo import ler_excel_para_dicionarios
-from datanalysis.manipular_database import criar_arquivos_usuario
+from importar_arquivo import ler_excel_para_dicionarios
+from manipular_database import criar_arquivos_usuario
 
 
 class Janela(QWidget):
