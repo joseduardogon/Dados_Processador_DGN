@@ -1,57 +1,97 @@
-import openpyxl
-import csv
-import os
-from datetime import date, time, datetime
-import pandas as pd
-from pymongo import MongoClient
-from pymongo.server_api import ServerApi
-from urllib.parse import quote_plus
-
-# URI de Conexão do MongoDB (Defina a URI correta do MongoDB Atlas)
-URI = "mongodb+srv://pycharm:coding@datanalysis.k1lnl.mongodb.net/?retryWrites=true&w=majority&appName=Datanalysis"
-
+import sqlite3
+from datetime import date, time
 
 def conectar_banco():
-    """Conecta-se ao banco de dados do MongoDB Atlas."""
+    """Conecta-se ao banco de dados SQLite."""
     try:
-        client = MongoClient(URI, server_api=ServerApi('1'))
-        db = client['diginotas']
-        colecao = db['funcionarios']
-        return colecao
+        con = sqlite3.connect('meu_banco.db')
+        cursor = con.cursor()
+        return con, cursor
     except Exception as e:
-        print(f"Erro ao conectar ao MongoDB: {e}")
-        return None
+        print(f"Erro ao conectar ao SQLite: {e}")
+        return None, None
 
+def inserir_dados_no_banco(dados):
+    """Insere os dados no banco de dados."""
 
-def inserir_dados_no_banco(dados, uri=URI):
-    """Insere os dados no MongoDB."""
+    con, cursor = conectar_banco()
+
+    if con and cursor:
+        for dicionario in dados:
+            data_atual = date.today().strftime("%Y-%m-%d")
+
+            # Conversão dos tipos de dados:
+            for chave in ('Tempo Aprovado', 'Tempo Rejeitado', 'Total de Tempo'):
+                if isinstance(dicionario.get(chave), time):
+                    dicionario[chave] = dicionario[chave].strftime('%H:%M:%S')  # Formato hora
+
+            nome_usuario = dicionario['Usuário'].replace(" ", "")  # Remover espaços
+            nome_tabela = nome_usuario
+
+            # Verificar se a tabela existe:
+            cursor.execute(f"PRAGMA table_info({nome_tabela})")
+            resultado = cursor.fetchall()
+            tabela_existe = bool(resultado)
+
+            # Cria a tabela caso não exista:
+            if not tabela_existe:
+                criar_tabela_sql = f"""
+                    CREATE TABLE {nome_tabela} (
+                        Data DATE PRIMARY KEY, 
+                        Status TEXT,
+                        Fase TEXT,
+                        Pastas_Aprovadas INTEGER, 
+                        Imagens_Aprovadas INTEGER, 
+                        Documentos_Aprovados INTEGER,
+                        Tempo_Aprovado TEXT,
+                        Pastas_Rejeitadas INTEGER,
+                        Imagens_Rejeitadas INTEGER, 
+                        Documentos_Rejeitados INTEGER, 
+                        Tempo_Rejeitado TEXT, 
+                        Total_de_Pastas INTEGER, 
+                        Total_de_Imagens INTEGER, 
+                        Total_de_Documentos INTEGER,
+                        Tempo_Total TEXT 
+                    )
+                """
+                cursor.execute(criar_tabela_sql)
+                print(f"Tabela '{nome_tabela}' criada com sucesso.")
+                con.commit()
+
+            # Insere os dados (ou atualiza se a data já existir):
+            colunas = ', '.join(dicionario.keys())
+            placeholders = ', '.join(['?'] * len(dicionario))
+            valores = list(dicionario.values())
+
+            sql = f"""
+                INSERT OR REPLACE INTO {nome_tabela} (Data, {colunas}) 
+                VALUES (?, {placeholders})
+            """
+
+            try:
+                cursor.execute(sql, [data_atual] + valores)
+                con.commit()
+                print(f"Dados inseridos na tabela '{nome_tabela}'.")
+            except sqlite3.Error as e:
+                print(f"Erro ao inserir dados na tabela '{nome_tabela}': {e}")
+
+        con.close()
+    else:
+        print("Erro ao conectar ao banco de dados.")
+
+def ler_dados_do_banco(nome_tabela):
+    """Lê os dados da tabela especificada no SQLite."""
+
     try:
-        colecao = conectar_banco()
-        if colecao is not None:
-            for dicionario in dados:
-                data_atual = date.today().strftime('%Y-%m-%d')
-
-                # Converter os campos de tempo para objetos datetime
-                for chave in ('Tempo Aprovado', 'Tempo Rejeitado', 'Total de Tempo'):
-                    if 'Tempo Aprovado' in dicionario and isinstance(dicionario[chave], time):
-                        #  Converter para datetime.datetime
-                        dicionario[chave] = datetime.combine(date.today(), dicionario[chave])
-
-                dicionario['data_insercao'] = data_atual
-                result = colecao.insert_one(dicionario)
-                print(f"Dados inseridos no banco de dados com ID: {result.inserted_id}")
-    except Exception as e:
-        print(f"Erro ao inserir os dados no MongoDB: {e}")
-        return False
-
-
-def ler_dados_do_banco(uri=URI):
-    """Lê os dados do MongoDB."""
-    try:
-        colecao = conectar_banco()
-        if colecao is not None:
-            dados = list(colecao.find())
+        con, cursor = conectar_banco()
+        if con and cursor:
+            # Usando parâmetros para evitar SQL injection
+            cursor.execute(f"SELECT * FROM {nome_tabela}")
+            dados = cursor.fetchall()
             return dados
-    except Exception as e:
-        print(f"Erro ao ler os dados do MongoDB: {e}")
-        return []  # Retorna uma lista vazia em caso de erro
+        else:
+            print("Erro ao conectar ao banco de dados.")
+            return []
+    except sqlite3.Error as e:
+        print(f"Erro ao ler dados da tabela '{nome_tabela}': {e}")
+        return []

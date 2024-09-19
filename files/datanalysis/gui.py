@@ -1,31 +1,34 @@
 import sys
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QTableWidget, QTableWidgetItem,
-                             QVBoxLayout, QHBoxLayout, QMessageBox, QComboBox, QFileDialog, QFileDialog)
-import csv
+                             QVBoxLayout, QHBoxLayout, QMessageBox, QComboBox, QFileDialog)
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 import os
-
-from analista_dados.files.datanalysis.importar_arquivo import printar_dicionarios
 from importar_arquivo import ler_excel_para_dicionarios
-from manipular_database import inserir_dados_no_banco, ler_dados_do_banco
+from manipular_database import inserir_dados_no_banco, ler_dados_do_banco, conectar_banco
+from datetime import date, time, datetime
 
 class Janela(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Controle de Produtividade")
+        self.setWindowIcon(QIcon('icon.png'))  # Substitua  'icon.png' pelo caminho  do  seu ícone
         self.layout = QVBoxLayout()
         self.tabela = QTableWidget()
-        self.tabela.setEditTriggers(QTableWidget.AllEditTriggers)  # Permite editar todas as células
+        self.tabela.setEditTriggers(QTableWidget.NoEditTriggers)  #  Desabilitar  edição na tabela
+
+        # Criando  o  ComboBox  para  seleção do  usuário
+        self.combo_usuario = QComboBox()
+        self.atualizar_combo()
+        self.layout.addWidget(QLabel("Selecione o Usuário:"))
+        self.layout.addWidget(self.combo_usuario)
 
         self.botoes()
         self.layout.addWidget(QLabel("Dados de Funcionários:"))
         self.layout.addWidget(self.tabela)
         self.setLayout(self.layout)
 
-        # ComboBox para escolher o funcionário
-        self.combo_usuario = QComboBox()
-        self.atualizar_combo()
-        self.layout.addWidget(self.combo_usuario)
-
+        # Conecta  o  evento  de  seleção  da  ComboBox  à  função  `carregar_dados`
         self.combo_usuario.currentIndexChanged.connect(self.carregar_dados)
 
     def botoes(self):
@@ -41,90 +44,63 @@ class Janela(QWidget):
     def selecionar_arquivo(self):
         """Abre uma caixa de diálogo para o usuário selecionar o arquivo."""
         caminho_arquivo, _ = QFileDialog.getOpenFileName(
-            self,  # A janela pai
-            "Selecione um arquivo",  # Título da janela
-            "C:\\Users\\josed\\codes\\project\\teste",  # Diretório inicial (vazio: o usuário escolhe)
-            "Todos os arquivos (*);;Arquivos de Texto (*.txt);;Arquivos Excel (*.xlsx)"  # Filtros de arquivos
+            self,
+            "Selecione um arquivo",
+            "",
+            "Todos os arquivos (*);;Arquivos de Texto (*.txt);;Arquivos Excel (*.xlsx)"
         )
-        if caminho_arquivo:  # Verifica se o usuário selecionou um arquivo
+        if caminho_arquivo:
             try:
                 dados = ler_excel_para_dicionarios(caminho_arquivo)
-                printar_dicionarios(dados)
-                inserir_dados_no_banco(dados)  # Insere os dados no banco de dados
-                self.popular_tabela(ler_dados_do_banco())  # Carrega os dados do banco de dados
+                if inserir_dados_no_banco(dados):
+                    print("Dados inseridos com sucesso!")
+                    self.atualizar_combo() # Atualiza a ComboBox com os novos usuários
+                else:
+                    QMessageBox.warning(self, "Erro", "Erro ao inserir os dados.")
             except ValueError as erro:
                 QMessageBox.warning(self, "Erro", str(erro))
-                print(f"Erro: {erro}")
+                print(f"Erro ao ler o arquivo: {erro}")
 
     def popular_tabela(self, dados):
-        """Popula a tabela com dados do MongoDB."""
-        # Limpa a tabela anterior
+        """Popula a tabela com dados do SQLite."""
         self.tabela.clear()
+        # Define a  quantidade  de colunas  baseado nos dados:
+        if dados:
+            self.tabela.setColumnCount(len(dados[0]))
+            # Define  os  cabeçalhos:
+            self.tabela.setHorizontalHeaderLabels(dados[0].keys())
+        else:
+            self.tabela.setColumnCount(0)
+            self.tabela.setHorizontalHeaderLabels([])
 
-        # Define a estrutura da tabela
-        self.tabela.setColumnCount(15)
-        self.tabela.setHorizontalHeaderLabels(
-            ['Legenda', 'Status', 'Fase', 'Pastas Aprovadas', 'Imagens Aprovadas', 'Documentos Aprovados',
-             'Tempo Aprovado', 'Pastas Rejeitadas', 'Imagens Rejeitadas', 'Documentos Rejeitados',
-             'Tempo Rejeitado', 'Total de Pastas', 'Total de Imagens', 'Total de Documentos',
-             'Total de Tempo'])
-
-        # Popula a tabela com os dados do MongoDB
         self.tabela.setRowCount(len(dados))
-        row = 0
-        for documento in dados:
-            col = 0
-            for chave in documento:
-                # Define o valor para cada célula da tabela
-                if chave == '2023-10-26':
-                    self.tabela.setItem(row, col, QTableWidgetItem(str(documento[chave]['Tempo Aprovado'])))
-                else:
-                    self.tabela.setItem(row, col, QTableWidgetItem(str(documento[chave])))
-                col += 1
-            row += 1
+        for row, documento in enumerate(dados):
+            for col, (chave, valor) in enumerate(documento.items()):
+                # Converter para string  (se necessário):
+                if isinstance(valor, (date, datetime, time)):
+                    valor = valor.strftime("%Y-%m-%d %H:%M:%S")
+                item = QTableWidgetItem(str(valor))
+                self.tabela.setItem(row, col, item)
+
 
     def atualizar_combo(self):
-        """Atualiza a ComboBox com os nomes dos arquivos CSV."""
+        """Atualiza a ComboBox com os nomes das tabelas do banco de dados (funcionários)."""
         self.combo_usuario.clear()
-        for filename in os.listdir('data'):
-            if filename.endswith('.csv'):
-                nome_usuario = os.path.splitext(filename)[0]
-                self.combo_usuario.addItem(nome_usuario)
+        con, cursor = conectar_banco()
+        if con and cursor:
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+            tabelas = cursor.fetchall()
+            con.close()
+
+            for tabela in tabelas:
+                if tabela[0] != 'sqlite_sequence':  # Ignora a tabela sqlite_sequence (interna)
+                    self.combo_usuario.addItem(tabela[0])
 
     def carregar_dados(self):
-        """Carrega os dados do arquivo CSV selecionado no ComboBox."""
-        usuario_selecionado = self.combo_usuario.currentText()
-        if usuario_selecionado:
-            caminho_arquivo = os.path.join('data', f"{usuario_selecionado}.csv")
-            with open(caminho_arquivo, 'r') as arquivo:
-                leitor = csv.DictReader(arquivo)  # Lê como dicionário para manter a estrutura das colunas
-                # Conversão para a estrutura que você está usando (com Tempo Aprovado etc)
-                dados = []
-                for linha in leitor:
-                    dados.append({
-                        'Legenda': linha['Legenda'],
-                        'Status': linha['Status'],
-                        'Fase': linha['Fase'],
-                        'Pastas Aprovadas': linha['Pastas Aprovadas'],
-                        'Imagens Aprovadas': linha['Imagens Aprovadas'],
-                        'Documentos Aprovadas': linha['Documentos Aprovadas'],
-                        'Tempo Aprovado': linha['Tempo Aprovado'],
-                        'Pastas Rejeitadas': linha['Pastas Rejeitadas'],
-                        'Imagens Rejeitadas': linha['Imagens Rejeitadas'],
-                        'Documentos Rejeitados': linha['Documentos Rejeitados'],
-                        'Tempo Rejeitado': linha['Tempo Rejeitado'],
-                        'Total de Pastas': linha['Total de Pastas'],
-                        'Total de Imagens': linha['Total de Imagens'],
-                        'Total de Documentos': linha['Total de Documentos'],
-                        'Total de Tempo': linha['Total de Tempo'],
-                        '2023-10-26': {
-                            'Tempo Aprovado': linha['Tempo Aprovado'],
-                        },
-                        '2023-10-27': {
-                            'Tempo Aprovado': linha['Tempo Aprovado'],
-                        }
-                    })
-                self.popular_tabela(dados)
+        """Carrega os dados do funcionário selecionado na ComboBox."""
+        nome_tabela = self.combo_usuario.currentText()
+        dados = ler_dados_do_banco(nome_tabela)  #  Busca os  dados do  SQLite
+        self.popular_tabela(dados)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
