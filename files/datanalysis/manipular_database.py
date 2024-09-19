@@ -1,26 +1,57 @@
 import openpyxl
 import csv
 import os
-from datetime import date
+from datetime import date, time, datetime
+import pandas as pd
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
+from urllib.parse import quote_plus
 
-def criar_arquivos_usuario(dados, pasta_base='data'):
-    """Cria um arquivo CSV para cada usuário no diretório data."""
+# URI de Conexão do MongoDB (Defina a URI correta do MongoDB Atlas)
+URI = "mongodb+srv://pycharm:coding@datanalysis.k1lnl.mongodb.net/?retryWrites=true&w=majority&appName=Datanalysis"
 
-    data_hoje = date.today().strftime('%Y-%m-%d')  # Formato 'AAAA-MM-DD'
-    for dicionario in dados:
-        nome_usuario = dicionario['Usuário']
-        nome_arquivo = f"{nome_usuario}.csv"
-        caminho_arquivo = os.path.join(pasta_base, nome_arquivo)
 
-        with open(caminho_arquivo, 'w', newline='', encoding='latin-1') as arquivo:
-            escritor = csv.writer(arquivo)
+def conectar_banco():
+    """Conecta-se ao banco de dados do MongoDB Atlas."""
+    try:
+        client = MongoClient(URI, server_api=ServerApi('1'))
+        db = client['diginotas']
+        colecao = db['funcionarios']
+        return colecao
+    except Exception as e:
+        print(f"Erro ao conectar ao MongoDB: {e}")
+        return None
 
-            # Escreve o cabeçalho (legenda + data de hoje)
-            cabecalho = ['Legenda'] + [data_hoje]
-            escritor.writerow(cabecalho)
 
-            # Escreve os dados (linha por linha, cada linha é um dicionário)
-            for chave in dicionario:
-                # Ignora as chaves "Status" e "Usuário"
-                if chave != 'Status' and chave != 'Usuário':
-                    escritor.writerow([chave] + [dicionario[chave]])
+def inserir_dados_no_banco(dados, uri=URI):
+    """Insere os dados no MongoDB."""
+    try:
+        colecao = conectar_banco()
+        if colecao is not None:
+            for dicionario in dados:
+                data_atual = date.today().strftime('%Y-%m-%d')
+
+                # Converter os campos de tempo para objetos datetime
+                for chave in ('Tempo Aprovado', 'Tempo Rejeitado', 'Total de Tempo'):
+                    if 'Tempo Aprovado' in dicionario and isinstance(dicionario[chave], time):
+                        #  Converter para datetime.datetime
+                        dicionario[chave] = datetime.combine(date.today(), dicionario[chave])
+
+                dicionario['data_insercao'] = data_atual
+                result = colecao.insert_one(dicionario)
+                print(f"Dados inseridos no banco de dados com ID: {result.inserted_id}")
+    except Exception as e:
+        print(f"Erro ao inserir os dados no MongoDB: {e}")
+        return False
+
+
+def ler_dados_do_banco(uri=URI):
+    """Lê os dados do MongoDB."""
+    try:
+        colecao = conectar_banco()
+        if colecao is not None:
+            dados = list(colecao.find())
+            return dados
+    except Exception as e:
+        print(f"Erro ao ler os dados do MongoDB: {e}")
+        return []  # Retorna uma lista vazia em caso de erro
