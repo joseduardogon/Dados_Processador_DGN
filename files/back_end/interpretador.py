@@ -18,7 +18,7 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
         # Itera sobre as linhas da planilha a partir da segunda linha (índice 1)
         for row in sheet.iter_rows(min_row=2, values_only=True):
             # Cria uma lista com os dados da linha, pulando o campo "Computador" e "Local"
-            dados = list(row[:1]) + list(row[2:17]) + list(row[19:]) + [supervisor, unidade]
+            dados = list(row[:1]) + [''] + list(row[2:17]) + list(row[19:]) + [supervisor, unidade]
 
             print(f"Dados a serem inseridos: {dados}")
 
@@ -86,7 +86,7 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade):
 
                 dados = linha.strip().split(';')
                 del dados[1]  # Remove "Computador"
-                del dados[17] # Remove local
+                del dados[17]  # Remove local
 
                 # Ignora o último campo se ele for vazio ou tiver apenas espaços em branco
                 if dados[-1].strip() == "":
@@ -118,11 +118,40 @@ def validar_arquivo(caminho_arquivo, supervisor, unidade):
     print(f"Supervisor: {supervisor}, Unidade: {unidade}")
     nome_arquivo, extensao = os.path.splitext(caminho_arquivo)
     if extensao.lower() == '.txt':
-        # (Validação do cabeçalho para .txt - código já existente)
+        # Validação do cabeçalho para arquivos .txt
+        cabecalho_esperado = "Usuário;Computador;Ordem;Cod. Projeto;Cod. Lote;Cod. Pasta;Projeto;Lote;Pasta;Fase;Fase Destino;Imgs. Antes;Imgs. Depois;Docs. Antes;Docs. Depois;Início;Término;Tempo Gasto;Local"
+        with open(caminho_arquivo, 'r', encoding='latin-1') as arquivo:
+            primeira_linha = arquivo.readline().strip()  # Lê a primeira linha
+            if primeira_linha != cabecalho_esperado:
+                print(f"Erro: Cabeçalho do arquivo .txt inválido!")
+                return False
         print("--- Arquivo TXT válido! Chamando dicionario_txt... ---")
         dicionario_txt(caminho_arquivo, supervisor, unidade)
         return True
     elif extensao.lower() == '.xlsx':
+        try:
+            workbook = openpyxl.load_workbook(caminho_arquivo, read_only=True)
+            sheet = workbook.active  # Pega a planilha ativa
+
+            # Validação do número de colunas
+            if sheet.max_column != 19:
+                print(
+                    f"Erro: Número de colunas inválido no arquivo .xlsx! (Esperado: 19, Encontrado: {sheet.max_column})")
+                return False
+
+            # Validação dos nomes das colunas (cabeçalho)
+            cabecalho_esperado = ["Usuário", "Computador", "Ordem", "Cod. Projeto", "Cod. Lote", "Cod. Pasta",
+                                   "Projeto", "Lote", "Pasta", "Fase", "Fase Destino", "Imgs. Antes",
+                                   "Imgs. Depois", "Docs. Antes", "Docs. Depois", "Início", "Término",
+                                   "Tempo Gasto", "Local"]
+
+            for i in range(1, sheet.max_column + 1):  # Percorre as colunas do cabeçalho
+                if sheet.cell(row=1, column=i).value != cabecalho_esperado[i - 1]:
+                    print(f"Erro: Nome da coluna inválido no arquivo .xlsx! (Coluna: {i})")
+                    return False
+        except Exception as e:
+            print(f"Erro ao abrir ou processar o arquivo .xlsx: {e}")
+            return False
         print("--- Arquivo XLSX válido! Chamando dicionario_xlsx... ---")
         dicionario_xlsx(caminho_arquivo, supervisor, unidade)
         return True
