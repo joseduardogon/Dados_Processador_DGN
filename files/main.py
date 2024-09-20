@@ -43,6 +43,11 @@ class App:
         self.splash = SplashScreen()
         self.splash.show()
 
+        # Configuração do timer para atualização da barra de progresso
+        self.timer_progresso = QTimer()
+        self.timer_progresso.timeout.connect(self.atualizar_progresso)
+        self.timer_progresso.start(50)  # A cada 100ms a barra é atualizada
+
         # Simula um processo de inicialização (3 segundos)
         QTimer.singleShot(3000, self.iniciar_janela_principal)
 
@@ -50,8 +55,16 @@ class App:
 
     def iniciar_janela_principal(self):
         self.janela_principal = MainWindow()
-        self.janela_principal.showMaximized()
+        self.janela_principal.showMaximized()  # Maximiza a janela primeiro
+        self.janela_principal.centrar_widget(self.janela_principal.botao_selecionar) # Centraliza DEPOIS
         self.splash.close()
+
+    def atualizar_progresso(self):
+        valor_atual = self.splash.progresso.value()
+        if valor_atual < 100:
+            self.splash.progresso.setValue(valor_atual + 3) # Incrementa de 1 em 1
+        else:
+            self.timer_progresso.stop()
 
 if __name__ == '__main__':
     aplicacao = App()
