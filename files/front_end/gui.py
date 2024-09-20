@@ -1,17 +1,20 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QFileDialog, QMessageBox, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import Qt
 from analista_dados.files.back_end.interpretador import validar_arquivo
+from .styles import STYLESHEET
 
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Sistema de Digitalização")
         self.setStyleSheet("background-color: #f0f0f0;")
+        self.setStyleSheet(STYLESHEET)
 
         # Layouts
         layout_principal = QVBoxLayout()
         layout_campos = QHBoxLayout()
         layout_botoes = QHBoxLayout()
+
 
         # Rótulos e campos de entrada
         label_supervisor = QLabel("Nome do Supervisor:", self)
@@ -34,10 +37,20 @@ class MainWindow(QWidget):
         self.botao_selecionar.setEnabled(False)
         layout_botoes.addWidget(self.botao_selecionar)
 
+        # Botão Cancelar
+        self.botao_cancelar = QPushButton("Cancelar", self)
+        self.botao_cancelar.clicked.connect(self.cancelar_selecao)
+        self.botao_cancelar.setEnabled(False)
+        layout_botoes.addWidget(self.botao_cancelar)
+
         # Adicionando layouts ao layout principal
         layout_principal.addLayout(layout_campos)
         layout_principal.addLayout(layout_botoes)
         self.setLayout(layout_principal)
+
+        self.botao_confirmar.setObjectName("botao_confirmar")
+        self.botao_selecionar.setObjectName("botao_selecionar")
+        self.botao_cancelar.setObjectName("botao_cancelar")
 
         # Centraliza o botão na tela
         self.centrar_widget(self.botao_selecionar)
@@ -58,12 +71,21 @@ class MainWindow(QWidget):
         unidade = self.campo_unidade.text()
         if supervisor and unidade:
             self.botao_selecionar.setEnabled(True)
+            self.botao_cancelar.setEnabled(True)  # Habilita o botão Cancelar
             QMessageBox.information(self, "Sucesso", "Campos preenchidos corretamente!")
-            # Desabilita os campos após a confirmação
             self.campo_supervisor.setEnabled(False)
             self.campo_unidade.setEnabled(False)
         else:
             QMessageBox.warning(self, "Erro", "Preencha todos os campos!")
+
+    def cancelar_selecao(self):
+        """Limpa os campos e desabilita os botões."""
+        self.campo_supervisor.setText("")
+        self.campo_unidade.setText("")
+        self.campo_supervisor.setEnabled(True)
+        self.campo_unidade.setEnabled(True)
+        self.botao_selecionar.setEnabled(False)
+        self.botao_cancelar.setEnabled(False)
 
     def abrir_seletor_arquivo(self):
         """Abre a janela de diálogo para seleção de arquivo e valida a extensão."""
