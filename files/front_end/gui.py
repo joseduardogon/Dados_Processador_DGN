@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QPushButton, QFileDialog, QMessageBox, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QMenuBar, QMenu, QAction  # Importe QMainWindow
 from PyQt5.QtCore import Qt
-from analista_dados.files.back_end.interpretador import validar_arquivo
+from PyQt5.QtGui import QPixmap
+from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET  # Importa a stylesheet
 
 
@@ -13,11 +14,21 @@ class MainWindow(QMainWindow):
         # 1. Criar a barra de menus
         barra_menus = self.menuBar() # Use self.menuBar()
 
+        label_logo = QLabel(self)
+        pixmap_logo = QPixmap("front_end/logo.png")
+        label_logo.setPixmap(pixmap_logo)
+        label_logo.setFixedSize(pixmap_logo.width(), pixmap_logo.height())
+        barra_menus.setCornerWidget(label_logo, Qt.TopLeftCorner)  # Define o logo no canto superior esque
+
         menu_arquivo = QMenu("Arquivo", self)
         barra_menus.addMenu(menu_arquivo)
 
         menu_configuracoes = QMenu("Configurações", self)
         barra_menus.addMenu(menu_configuracoes)
+        acao_excluir_dados = QAction("Excluir Dados do Banco", self)
+        menu_configuracoes.addAction(acao_excluir_dados)
+
+        acao_excluir_dados.triggered.connect(self.excluir_dados)
 
         acao_importar = QAction("Importar Arquivo", self)
         menu_arquivo.addAction(acao_importar)
@@ -131,3 +142,12 @@ class MainWindow(QMainWindow):
             else:
                 # Arquivo inválido - mostre uma mensagem de erro
                 QMessageBox.warning(self, "Erro", "Tipo de arquivo inválido. Selecione um arquivo .txt ou .xlsx.")
+
+    def excluir_dados(self):
+        """Exclui os dados do banco de dados (apenas para protótipo!)."""
+        resposta = QMessageBox.question(self, "Confirmação",
+                                        "Tem certeza que deseja excluir TODOS os dados do banco de dados?",
+                                        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if resposta == QMessageBox.Yes:
+            excluir_dados_banco()  # Chame a função de interpretador.py
+            QMessageBox.information(self, "Sucesso", "Dados excluídos do banco de dados!")

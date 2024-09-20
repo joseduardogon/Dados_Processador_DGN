@@ -57,4 +57,23 @@ STYLESHEET = """
         padding: 8px;               /* Espaçamento interno de 8 pixels */
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
     }
+    
+    QMenuBar {
+        background-color: #f0f0f0; /* Cor de fundo da barra de menus */
+    }
+
+    QMenuBar::item { /* Estilos dos itens de menu (Arquivo, Configurações) */
+        spacing: 30px; /* Espaçamento entre os menus */
+        padding: 5px 10px;
+        background: transparent; /* Fundo transparente para os menus */
+        border-radius: 5px;
+    }
+
+    QMenuBar::item:selected { /* Estilo quando o menu está selecionado */
+        background-color: #ddd;  /* Cor de fundo cinza claro */
+    }
+
+    QMenuBar::item:pressed {  /* Estilo quando o menu é pressionado */
+        background: #ccc;       /* Cor de fundo cinza mais escuro */
+    }
 """

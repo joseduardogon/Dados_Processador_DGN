@@ -158,3 +158,15 @@ def validar_arquivo(caminho_arquivo, supervisor, unidade):
     else:
         print("--- Extensão de arquivo inválida! ---")
         return False
+
+def excluir_dados_banco():
+    """Exclui todos os dados da tabela 'atividades_digitalizacao'."""
+    try:
+        conexao = sqlite3.connect("database/banco_producao.db")
+        cursor = conexao.cursor()
+        cursor.execute("DELETE FROM atividades_digitalizacao")
+        conexao.commit()
+        conexao.close()
+        print("Todos os dados do banco de dados foram excluídos.")
+    except sqlite3.Error as e:
+        print(f"Erro ao excluir dados do banco de dados: {e}")
