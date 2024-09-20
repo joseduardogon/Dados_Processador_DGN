@@ -1,21 +1,42 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QFileDialog, QMessageBox, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QPushButton, QFileDialog, QMessageBox, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QMenuBar, QMenu, QAction  # Importe QMainWindow
 from PyQt5.QtCore import Qt
 from analista_dados.files.back_end.interpretador import validar_arquivo
-from .styles import STYLESHEET
+from .styles import STYLESHEET  # Importa a stylesheet
 
-class MainWindow(QWidget):
+
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Sistema de Digitalização")
-        self.setStyleSheet(STYLESHEET)  # Aplica a stylesheet
+        self.setStyleSheet(STYLESHEET)
 
-        # Layouts
-        layout_principal = QVBoxLayout()  # Layout principal agora é vertical
-        layout_campos = QVBoxLayout()  # Layout vertical para os campos
-        layout_botao_confirmar = QHBoxLayout()  # Layout para o botão Confirmar
-        layout_botoes_arquivo = QHBoxLayout()  # Layout para os botões de arquivo
+        # 1. Criar a barra de menus
+        barra_menus = self.menuBar() # Use self.menuBar()
+
+        menu_arquivo = QMenu("Arquivo", self)
+        barra_menus.addMenu(menu_arquivo)
+
+        menu_configuracoes = QMenu("Configurações", self)
+        barra_menus.addMenu(menu_configuracoes)
+
+        acao_importar = QAction("Importar Arquivo", self)
+        menu_arquivo.addAction(acao_importar)
+
+        acao_preferencias = QAction("Preferências", self)
+        menu_configuracoes.addAction(acao_preferencias)
+
+        # 2. Criar um widget central para os layouts
+        widget_central = QWidget()
+        self.setCentralWidget(widget_central)
+
+        # 3. Layouts
+        layout_principal = QVBoxLayout()
+        layout_campos = QVBoxLayout()
+        layout_botao_confirmar = QHBoxLayout()
+        layout_botoes_arquivo = QHBoxLayout()
 
         # Rótulos e campos de entrada
+        print("Criando rótulos e campos de entrada...")
         label_supervisor = QLabel("Nome do Supervisor:", self)
         self.campo_supervisor = QLineEdit(self)
         layout_campos.addWidget(label_supervisor)
@@ -25,43 +46,51 @@ class MainWindow(QWidget):
         self.campo_unidade = QLineEdit(self)
         layout_campos.addWidget(label_unidade)
         layout_campos.addWidget(self.campo_unidade)
-
-        # Centraliza o layout dos campos no layout principal
-        layout_principal.addLayout(layout_campos)
-        layout_campos.setAlignment(Qt.AlignCenter)
+        print("Rótulos e campos de entrada criados e adicionados ao layout.")
 
         # Botões
+        print("Criando botões...")
         self.botao_confirmar = QPushButton("Confirmar", self)
         self.botao_confirmar.clicked.connect(self.validar_campos)
-        layout_botao_confirmar.addWidget(self.botao_confirmar)  # Adiciona ao layout específico
-        layout_botao_confirmar.setAlignment(Qt.AlignCenter)  # Centraliza o botão "Confirmar"
+        layout_botao_confirmar.addWidget(self.botao_confirmar)
+        layout_botao_confirmar.setAlignment(Qt.AlignCenter)
 
         self.botao_selecionar = QPushButton("Selecionar Arquivo", self)
         self.botao_selecionar.clicked.connect(self.abrir_seletor_arquivo)
         self.botao_selecionar.setEnabled(False)
-        layout_botoes_arquivo.addWidget(self.botao_selecionar)  # Adiciona ao layout específico
+        layout_botoes_arquivo.addWidget(self.botao_selecionar)
 
-        # Botão Cancelar
         self.botao_cancelar = QPushButton("Cancelar", self)
         self.botao_cancelar.clicked.connect(self.cancelar_selecao)
         self.botao_cancelar.setEnabled(False)
-        layout_botoes_arquivo.addWidget(self.botao_cancelar)  # Adiciona ao layout específico
+        layout_botoes_arquivo.addWidget(self.botao_cancelar)
+        print("Botões criados e adicionados aos layouts.")
 
         # Adicionando layouts ao layout principal
+        print("Adicionando layouts ao layout principal...")
         layout_principal.addLayout(layout_campos)
-        layout_principal.addLayout(layout_botao_confirmar)  # Adiciona o layout do botão Confirmar
-        layout_principal.addLayout(layout_botoes_arquivo)  # Adiciona o layout dos botões de arquivo
-        self.setLayout(layout_principal)
+        layout_principal.addLayout(layout_botao_confirmar)
+        layout_principal.addLayout(layout_botoes_arquivo)
+        print("Layouts adicionados ao layout principal.")
 
+        print("Definindo layout principal na janela...")
+        self.setLayout(layout_principal)
+        print("Layout principal definido na janela.")
+
+        # Define os objectName dos botões
+        print("Definindo objectNames dos botões...")
         self.botao_confirmar.setObjectName("botao_confirmar")
         self.botao_selecionar.setObjectName("botao_selecionar")
         self.botao_cancelar.setObjectName("botao_cancelar")
-
-        # Centraliza o botão na tela
-        self.centrar_widget(self.botao_selecionar)
+        print("objectNames dos botões definidos.")
 
         # Define as flags da janela para permitir bordas
+        print("Definindo flags da janela...")
         self.setWindowFlags(self.windowFlags() | Qt.Window)
+        widget_central.setLayout(layout_principal)
+        print("Flags da janela definidas.")
+
+        print("----- Fim do __init__ da MainWindow -----")
 
     def centrar_widget(self, widget):
         """Centraliza um widget na janela."""
