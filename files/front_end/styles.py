@@ -48,7 +48,13 @@ STYLESHEET = """
     }
 
     QLineEdit {  /* Aplica estilo a todos os campos de texto (QLineEdit) */
-        border: 1px solid #ccc; /* Define uma borda sólida com 1 pixel de largura e cor cinza claro (#ccc) */
-        padding: 5px;           /* Define um espaçamento interno (padding) de 5 pixels em todos os lados */
+        background-color: white;   /* Cor de fundo branca */
+        color: #333;                /* Cor do texto cinza escuro */
+        font-family: Arial;          /* Fonte Arial */
+        font-size: 14px;            /* Tamanho da fonte 14 pixels */
+        border: 2px solid #007BFF;  /* Borda sólida azul com 2 pixels de largura */
+        border-radius: 8px;         /* Borda arredondada com raio de 8 pixels */
+        padding: 8px;               /* Espaçamento interno de 8 pixels */
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
     }
 """

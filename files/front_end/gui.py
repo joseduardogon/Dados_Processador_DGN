@@ -7,14 +7,13 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Sistema de Digitalização")
-        self.setStyleSheet("background-color: #f0f0f0;")
-        self.setStyleSheet(STYLESHEET)
+        self.setStyleSheet(STYLESHEET)  # Aplica a stylesheet
 
         # Layouts
-        layout_principal = QVBoxLayout()
-        layout_campos = QHBoxLayout()
-        layout_botoes = QHBoxLayout()
-
+        layout_principal = QVBoxLayout()  # Layout principal agora é vertical
+        layout_campos = QVBoxLayout()  # Layout vertical para os campos
+        layout_botao_confirmar = QHBoxLayout()  # Layout para o botão Confirmar
+        layout_botoes_arquivo = QHBoxLayout()  # Layout para os botões de arquivo
 
         # Rótulos e campos de entrada
         label_supervisor = QLabel("Nome do Supervisor:", self)
@@ -27,25 +26,31 @@ class MainWindow(QWidget):
         layout_campos.addWidget(label_unidade)
         layout_campos.addWidget(self.campo_unidade)
 
+        # Centraliza o layout dos campos no layout principal
+        layout_principal.addLayout(layout_campos)
+        layout_campos.setAlignment(Qt.AlignCenter)
+
         # Botões
         self.botao_confirmar = QPushButton("Confirmar", self)
         self.botao_confirmar.clicked.connect(self.validar_campos)
-        layout_botoes.addWidget(self.botao_confirmar)
+        layout_botao_confirmar.addWidget(self.botao_confirmar)  # Adiciona ao layout específico
+        layout_botao_confirmar.setAlignment(Qt.AlignCenter)  # Centraliza o botão "Confirmar"
 
         self.botao_selecionar = QPushButton("Selecionar Arquivo", self)
         self.botao_selecionar.clicked.connect(self.abrir_seletor_arquivo)
         self.botao_selecionar.setEnabled(False)
-        layout_botoes.addWidget(self.botao_selecionar)
+        layout_botoes_arquivo.addWidget(self.botao_selecionar)  # Adiciona ao layout específico
 
         # Botão Cancelar
         self.botao_cancelar = QPushButton("Cancelar", self)
         self.botao_cancelar.clicked.connect(self.cancelar_selecao)
         self.botao_cancelar.setEnabled(False)
-        layout_botoes.addWidget(self.botao_cancelar)
+        layout_botoes_arquivo.addWidget(self.botao_cancelar)  # Adiciona ao layout específico
 
         # Adicionando layouts ao layout principal
         layout_principal.addLayout(layout_campos)
-        layout_principal.addLayout(layout_botoes)
+        layout_principal.addLayout(layout_botao_confirmar)  # Adiciona o layout do botão Confirmar
+        layout_principal.addLayout(layout_botoes_arquivo)  # Adiciona o layout dos botões de arquivo
         self.setLayout(layout_principal)
 
         self.botao_confirmar.setObjectName("botao_confirmar")
