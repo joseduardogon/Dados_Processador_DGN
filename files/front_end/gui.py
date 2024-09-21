@@ -6,6 +6,7 @@ from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET  # Importa a stylesheet
 
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -36,6 +37,7 @@ class MainWindow(QMainWindow):
         print("Criando abas...")
         try:
             self.criar_aba_importar()
+            self.criar_aba_desempenho()  # Nova aba
             self.criar_aba_configuracoes()
             print("Abas criadas.")
         except Exception as e:
@@ -90,7 +92,38 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print(f"Erro ao aplicar StyleSheet: {e}")
 
+        # 5. Mover a aba "Configurações" para o canto direito
+        print("Movendo aba 'Configurações'...")
+        try:
+            self.abas.tabBar().moveTab(1, 3)
+            print("Aba 'Configurações movida.")
+        except Exception as e:
+            print(f"Erro ao mover aba 'Configurações': {e}")
+
         print("----- Fim do __init__ da MainWindow -----")
+
+    def criar_aba_desempenho(self):
+        """Cria a aba 'Desempenho'."""
+        widget_principal = QWidget()
+        abas_internas = QTabWidget(widget_principal)
+        layout_principal = QVBoxLayout(widget_principal)
+        layout_principal.addWidget(abas_internas)
+
+        subaba1 = QWidget()
+        layout_subaba1 = QVBoxLayout()
+        layout_subaba1.addWidget(QPushButton("Botão na Subaba 1"))
+        subaba1.setLayout(layout_subaba1)
+
+        subaba2 = QWidget()
+        layout_subaba2 = QVBoxLayout()
+        layout_subaba2.addWidget(QLabel("Label na Subaba 2"))
+        subaba2.setLayout(layout_subaba2)
+
+        abas_internas.addTab(subaba1, "Unidade")  # Mudança de nome: Subaba 1 -> Unidade
+        abas_internas.addTab(subaba2, "Funcionarios")  # Mudança de nome: Subaba 2 -> Funcionarios
+
+        # Adiciona o widget principal com as subabas ao QTabWidget principal
+        self.abas.addTab(widget_principal, "Desempenho")  # Mudança de nome:  Aba com Subabas -> Desempenho
 
     def criar_aba_importar(self):
         """Cria a aba 'Importar Arquivo'."""
