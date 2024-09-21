@@ -6,7 +6,6 @@ from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET  # Importa a stylesheet
 
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()

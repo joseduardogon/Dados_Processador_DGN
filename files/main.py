@@ -56,7 +56,6 @@ class App:
     def iniciar_janela_principal(self):
         self.janela_principal = MainWindow()
         self.janela_principal.showMaximized()  # Maximiza a janela primeiro
-        self.janela_principal.centrar_widget(self.janela_principal.botao_selecionar) # Centraliza DEPOIS
         self.splash.close()
 
     def atualizar_progresso(self):
