@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import openpyxl
+import datetime  # Importe o módulo datetime
 
 def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
     """Processa um arquivo .xlsx e insere os dados no banco de dados."""
@@ -18,8 +19,13 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
         # Itera sobre as linhas da planilha a partir da segunda linha (índice 1)
         for row in sheet.iter_rows(min_row=2, values_only=True):
             # Cria uma lista com os dados da linha, pulando o campo "Computador" e "Local"
+            usuario = row[0]
+            # Ignora linhas em que o usuário é "Total"
+            if usuario == "Total":
+                continue
             dados = list(row[:1]) + [''] + list(row[2:17]) + list(row[19:]) + [supervisor, unidade]
-
+            data_hora_envio = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            dados.append(data_hora_envio)  # Adicione ao final da lista
             print(f"Dados a serem inseridos: {dados}")
 
             # Executa a consulta SQL para inserir os dados na tabela
@@ -27,8 +33,8 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
                 INSERT INTO atividades_digitalizacao (
                     usuario, ordem, cod_projeto, cod_lote, cod_pasta, projeto, lote, 
                     pasta, fase, fase_destino, imgs_antes, imgs_depois, docs_antes, 
-                    docs_depois, inicio, termino, tempo_gasto, supervisor, unidade 
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    docs_depois, inicio, termino, tempo_gasto, supervisor, unidade, envio
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, dados)
             print("--- Linha inserida com sucesso! ---")
 
@@ -68,7 +74,8 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade):
                 termino TEXT,
                 tempo_gasto TEXT,
                 supervisor TEXT,
-                unidade TEXT
+                unidade TEXT,
+                envio TEXT
             )
         """)
         print("--- Tabela criada (ou já existente)! ---")
@@ -76,10 +83,10 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade):
         with open(caminho_arquivo, 'r', encoding='latin-1') as arquivo:
             next(arquivo)  # Pula o cabeçalho
             for linha in arquivo:
-                print(f"Processando linha: {linha.strip()}")
+                # Ignora linhas que começam com "Total"
                 if linha.startswith("Total"):
                     continue
-
+                print(f"Processando linha: {linha.strip()}")
                 # Remove o ponto e vírgula extra do final da linha, se existir
                 if linha.endswith(";"):
                     linha = linha[:-1]
@@ -93,14 +100,15 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade):
                     dados = dados[:-1]
 
                 dados.extend([supervisor, unidade])
-
+                data_hora_envio = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                dados.append(data_hora_envio)  # Adicione ao final da lista
                 print(f"Dados a serem inseridos: {dados}")
                 cursor.execute("""
                     INSERT INTO atividades_digitalizacao (
                         usuario, ordem, cod_projeto, cod_lote, cod_pasta, projeto, lote, 
                         pasta, fase, fase_destino, imgs_antes, imgs_depois, docs_antes, 
-                        docs_depois, inicio, termino, tempo_gasto, supervisor, unidade 
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        docs_depois, inicio, termino, tempo_gasto, supervisor, unidade, envio
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, dados)
                 print("--- Linha inserida com sucesso! ---")
 
@@ -119,10 +127,14 @@ def validar_arquivo(caminho_arquivo, supervisor, unidade):
     nome_arquivo, extensao = os.path.splitext(caminho_arquivo)
     if extensao.lower() == '.txt':
         # Validação do cabeçalho para arquivos .txt
-        cabecalho_esperado = "Usuário;Computador;Ordem;Cod. Projeto;Cod. Lote;Cod. Pasta;Projeto;Lote;Pasta;Fase;Fase Destino;Imgs. Antes;Imgs. Depois;Docs. Antes;Docs. Depois;Início;Término;Tempo Gasto;Local"
+        cabecalho_esperado = "Usuário;Computador;Ordem;Cod. Projeto;Cod. Lote;Cod. Pasta;Projeto;Lote;Pasta;Fase;Fase Destino;Imgs. Antes;Imgs. Depois;Docs. Antes;Docs. Depois;Início;Término;Tempo Gasto;Local;"
         with open(caminho_arquivo, 'r', encoding='latin-1') as arquivo:
             primeira_linha = arquivo.readline().strip()  # Lê a primeira linha
-            if primeira_linha != cabecalho_esperado:
+            # Aplica strip() a cada elemento do cabeçalho do arquivo
+            cabecalho_arquivo = [campo.strip() for campo in primeira_linha.split(';')]
+            # Aplica strip() a cada elemento do cabeçalho esperado
+            cabecalho_esperado = [campo.strip() for campo in cabecalho_esperado.split(';')]
+            if cabecalho_arquivo != cabecalho_esperado:
                 print(f"Erro: Cabeçalho do arquivo .txt inválido!")
                 return False
         print("--- Arquivo TXT válido! Chamando dicionario_txt... ---")
