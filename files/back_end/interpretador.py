@@ -1,7 +1,8 @@
 import os
 import sqlite3
 import openpyxl
-import datetime  # Importe o módulo datetime
+import datetime
+from PyQt5.QtWidgets import QMessageBox
 
 def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
     """Processa um arquivo .xlsx e insere os dados no banco de dados."""
@@ -40,6 +41,9 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
 
         conexao.commit()
         conexao.close()
+
+        QMessageBox.information(None, "Sucesso", f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
+
         print(f"--- Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados. ---")
 
     except Exception as e:
@@ -114,6 +118,9 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade):
 
         conexao.commit()
         conexao.close()
+
+        QMessageBox.information(None, "Sucesso", f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
+
         print(f"--- Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados. ---")
 
     except sqlite3.Error as e:

@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QProgressBar
 from PyQt5.QtCore import Qt, QTimer, QRectF
 from PyQt5.QtGui import QFont, QPainterPath, QRegion
-from front_end.gui import MainWindow
+from analista_dados.files.front_end.gui import MainWindow
 
 class SplashScreen(QWidget):
     def __init__(self):

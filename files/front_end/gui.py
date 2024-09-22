@@ -1,10 +1,11 @@
 from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QFileDialog,
                              QMessageBox, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QMenuBar,
-                             QMenu, QAction, QTabWidget)  # Importe QMainWindow
+                             QMenu, QAction, QTabWidget, QTableWidget, QTableWidgetItem)  # Importe QMainWindow
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET  # Importa a stylesheet
+from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade
 
 
 class MainWindow(QMainWindow):
@@ -109,21 +110,51 @@ class MainWindow(QMainWindow):
         layout_principal = QVBoxLayout(widget_principal)
         layout_principal.addWidget(abas_internas)
 
-        subaba1 = QWidget()
-        layout_subaba1 = QVBoxLayout()
-        layout_subaba1.addWidget(QPushButton("Botão na Subaba 1"))
-        subaba1.setLayout(layout_subaba1)
+        self.criar_subaba_unidade(abas_internas)  # Cria a subaba "Unidade"
+        #self.criar_subaba_funcionarios(abas_internas)
+
+        self.abas.addTab(widget_principal, "Desempenho")
+        self.abas.tabBar().moveTab(1, 3)
 
         subaba2 = QWidget()
         layout_subaba2 = QVBoxLayout()
         layout_subaba2.addWidget(QLabel("Label na Subaba 2"))
         subaba2.setLayout(layout_subaba2)
 
-        abas_internas.addTab(subaba1, "Unidade")  # Mudança de nome: Subaba 1 -> Unidade
         abas_internas.addTab(subaba2, "Funcionarios")  # Mudança de nome: Subaba 2 -> Funcionarios
 
         # Adiciona o widget principal com as subabas ao QTabWidget principal
         self.abas.addTab(widget_principal, "Desempenho")  # Mudança de nome:  Aba com Subabas -> Desempenho
+
+    def criar_subaba_unidade(self, abas_internas):
+        """Cria a subaba 'Unidade'."""
+        widget_unidade = QWidget()
+        layout_unidade = QVBoxLayout(widget_unidade)
+
+        # Tabela para exibir as estatísticas da unidade
+        self.tabela_unidade = QTableWidget(widget_unidade)
+        self.tabela_unidade.setColumnCount(3)  # 3 colunas: Data, Fase, Total de Imagens
+        self.tabela_unidade.setHorizontalHeaderLabels(["Data", "Fase", "Total de Imagens"])
+        layout_unidade.addWidget(self.tabela_unidade)
+
+        abas_internas.addTab(widget_unidade, "Unidade")
+
+    def atualizar_estatisticas_unidade(self):
+        """Atualiza a tabela com as estatísticas da unidade."""
+        unidade = self.campo_unidade.text()  # Obter a unidade do campo na GUI
+        estatisticas = obter_estatisticas_unidade(unidade)
+
+        self.tabela_unidade.setRowCount(0)  # Limpa a tabela antes de adicionar dados
+
+        for data, fases in estatisticas.items():
+            for fase, total_imagens in fases.items():
+                row_position = self.tabela_unidade.rowCount()
+                self.tabela_unidade.insertRow(row_position)
+                self.tabela_unidade.setItem(row_position, 0, QTableWidgetItem(str(data)))
+                self.tabela_unidade.setItem(row_position, 1, QTableWidgetItem(fase))
+                self.tabela_unidade.setItem(row_position, 2, QTableWidgetItem(str(total_imagens)))
+
+            self.tabela_unidade.resizeColumnsToContents()  # Ajusta as colunas
 
     def criar_aba_importar(self):
         """Cria a aba 'Importar Arquivo'."""
@@ -204,6 +235,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.information(self, "Sucesso", "Campos preenchidos corretamente!")
                 self.campo_supervisor.setEnabled(False)
                 self.campo_unidade.setEnabled(False)
+                self.atualizar_estatisticas_unidade()  # Adicione esta linha
                 print("----- Fim de validar_campos -----")
             else:
                 QMessageBox.warning(self, "Erro", "Preencha todos os campos!")
