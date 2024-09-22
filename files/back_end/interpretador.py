@@ -4,6 +4,7 @@ import openpyxl
 import datetime
 from PyQt5.QtWidgets import QMessageBox
 
+
 def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
     """Processa um arquivo .xlsx e insere os dados no banco de dados."""
     print(f"--- Iniciando processamento de XLSX: {caminho_arquivo} ---")
@@ -17,6 +18,33 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
         cursor = conexao.cursor()
         print("--- Conexão com banco de dados estabelecida! ---")
 
+        # Cria tabela caso nao exista
+        cursor.execute("""
+                       CREATE TABLE IF NOT EXISTS atividades_digitalizacao (
+                           usuario TEXT,
+                           ordem INTEGER,
+                           cod_projeto INTEGER,
+                           cod_lote INTEGER,
+                           cod_pasta INTEGER,
+                           projeto TEXT,
+                           lote TEXT,
+                           pasta TEXT,
+                           fase TEXT,
+                           fase_destino TEXT,
+                           imgs_antes INTEGER,
+                           imgs_depois INTEGER,
+                           docs_antes INTEGER,
+                           docs_depois INTEGER,
+                           inicio TEXT,
+                           termino TEXT,
+                           tempo_gasto TEXT,
+                           supervisor TEXT,
+                           unidade TEXT,
+                           envio TEXT
+                       )
+                   """)
+        print("--- Tabela criada (ou já existente)! ---")
+
         # Itera sobre as linhas da planilha a partir da segunda linha (índice 1)
         for row in sheet.iter_rows(min_row=2, values_only=True):
             # Cria uma lista com os dados da linha, pulando o campo "Computador" e "Local"
@@ -24,9 +52,13 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
             # Ignora linhas em que o usuário é "Total"
             if usuario == "Total":
                 continue
-            dados = list(row[:1]) + [''] + list(row[2:17]) + list(row[19:]) + [supervisor, unidade]
+
+            inicio = row[15].strftime("%Y-%m-%d %H:%M:%S")  # Formata a data
+            termino = row[16].strftime("%Y-%m-%d %H:%M:%S")  # Formata a data
             data_hora_envio = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            dados = list(row[:1]) + list(row[2:17]) + list(row[17:18]) + [supervisor, unidade]
             dados.append(data_hora_envio)  # Adicione ao final da lista
+
             print(f"Dados a serem inseridos: {dados}")
 
             # Executa a consulta SQL para inserir os dados na tabela
@@ -42,13 +74,15 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
         conexao.commit()
         conexao.close()
 
-        QMessageBox.information(None, "Sucesso", f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
+        QMessageBox.information(None, "Sucesso",
+                                f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
 
         print(f"--- Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados. ---")
 
     except Exception as e:
         print(f"Erro ao abrir ou processar o arquivo .xlsx: {e}")
     print(f"--- Fim do processamento de XLSX: {caminho_arquivo} ---")
+
 
 def dicionario_txt(caminho_arquivo, supervisor, unidade):
     """Processa um arquivo .txt e insere os dados no banco de dados."""
@@ -58,30 +92,31 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade):
         cursor = conexao.cursor()
         print("--- Conexão com banco de dados estabelecida! ---")
 
+        # Cria tabela caso nao exista
         cursor.execute("""
-            CREATE TABLE IF NOT EXISTS atividades_digitalizacao (
-                usuario TEXT,
-                ordem INTEGER,
-                cod_projeto INTEGER,
-                cod_lote INTEGER,
-                cod_pasta INTEGER,
-                projeto TEXT,
-                lote TEXT,
-                pasta TEXT,
-                fase TEXT,
-                fase_destino TEXT,
-                imgs_antes INTEGER,
-                imgs_depois INTEGER,
-                docs_antes INTEGER,
-                docs_depois INTEGER,
-                inicio TEXT,
-                termino TEXT,
-                tempo_gasto TEXT,
-                supervisor TEXT,
-                unidade TEXT,
-                envio TEXT
-            )
-        """)
+                       CREATE TABLE IF NOT EXISTS atividades_digitalizacao (
+                           usuario TEXT,
+                           ordem INTEGER,
+                           cod_projeto INTEGER,
+                           cod_lote INTEGER,
+                           cod_pasta INTEGER,
+                           projeto TEXT,
+                           lote TEXT,
+                           pasta TEXT,
+                           fase TEXT,
+                           fase_destino TEXT,
+                           imgs_antes INTEGER,
+                           imgs_depois INTEGER,
+                           docs_antes INTEGER,
+                           docs_depois INTEGER,
+                           inicio TEXT,
+                           termino TEXT,
+                           tempo_gasto TEXT,
+                           supervisor TEXT,
+                           unidade TEXT,
+                           envio TEXT
+                       )
+                   """)
         print("--- Tabela criada (ou já existente)! ---")
 
         with open(caminho_arquivo, 'r', encoding='latin-1') as arquivo:
@@ -105,6 +140,9 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade):
 
                 dados.extend([supervisor, unidade])
                 data_hora_envio = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                # Corrigindo o formato da data
+                dados[14] = converter_para_data(dados[14], formato_entrada="%m/%d/%Y %H:%M:%S")
+                dados[15] = converter_para_data(dados[15], formato_entrada="%m/%d/%Y %H:%M:%S")
                 dados.append(data_hora_envio)  # Adicione ao final da lista
                 print(f"Dados a serem inseridos: {dados}")
                 cursor.execute("""
@@ -119,13 +157,15 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade):
         conexao.commit()
         conexao.close()
 
-        QMessageBox.information(None, "Sucesso", f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
+        QMessageBox.information(None, "Sucesso",
+                                f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
 
         print(f"--- Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados. ---")
 
     except sqlite3.Error as e:
         print(f"Erro ao inserir dados no banco de dados: {e}")
     print(f"--- Fim do processamento de TXT: {caminho_arquivo} ---")
+
 
 def validar_arquivo(caminho_arquivo, supervisor, unidade):
     """Valida e processa o arquivo."""
@@ -160,9 +200,9 @@ def validar_arquivo(caminho_arquivo, supervisor, unidade):
 
             # Validação dos nomes das colunas (cabeçalho)
             cabecalho_esperado = ["Usuário", "Computador", "Ordem", "Cod. Projeto", "Cod. Lote", "Cod. Pasta",
-                                   "Projeto", "Lote", "Pasta", "Fase", "Fase Destino", "Imgs. Antes",
-                                   "Imgs. Depois", "Docs. Antes", "Docs. Depois", "Início", "Término",
-                                   "Tempo Gasto", "Local"]
+                                  "Projeto", "Lote", "Pasta", "Fase", "Fase Destino", "Imgs. Antes",
+                                  "Imgs. Depois", "Docs. Antes", "Docs. Depois", "Início", "Término",
+                                  "Tempo Gasto", "Local"]
 
             for i in range(1, sheet.max_column + 1):  # Percorre as colunas do cabeçalho
                 if sheet.cell(row=1, column=i).value != cabecalho_esperado[i - 1]:
@@ -178,6 +218,7 @@ def validar_arquivo(caminho_arquivo, supervisor, unidade):
         print("--- Extensão de arquivo inválida! ---")
         return False
 
+
 def excluir_dados_banco():
     """Exclui todos os dados da tabela 'atividades_digitalizacao'."""
     try:
@@ -189,3 +230,23 @@ def excluir_dados_banco():
         print("Todos os dados do banco de dados foram excluídos.")
     except sqlite3.Error as e:
         print(f"Erro ao excluir dados do banco de dados: {e}")
+
+
+def converter_para_data(data_str, formato_entrada="%m/%d/%Y %H:%M:%S"):
+    """Converte uma string de data para o formato padrão 'aaaa-mm-dd hh:mm:ss'.
+
+    Args:
+        data_str (str): A string da data a ser convertida.
+        formato_entrada (str): O formato da data de entrada.
+
+    Returns:
+        str: A data no formato "aaaa-mm-dd hh:mm:ss", ou None se a conversão falhar.
+    """
+    print(f"--- Convertendo data: {data_str} ---")
+    try:
+        data_datetime = datetime.datetime.strptime(data_str, formato_entrada)
+        print(f"Data convertida: {data_datetime}")
+        return data_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    except ValueError as e:
+        print(f"Erro na conversão de data: {e}")
+        return None

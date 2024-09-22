@@ -1,12 +1,12 @@
 from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QFileDialog,
                              QMessageBox, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QMenuBar,
-                             QMenu, QAction, QTabWidget, QTableWidget, QTableWidgetItem)  # Importe QMainWindow
+                             QMenu, QAction, QTabWidget, QTableWidget, QComboBox, QTableWidgetItem)  # Importe QMainWindow
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET  # Importa a stylesheet
 from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade
-
+from .estatisticas import criar_tabela_estatisticas
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -128,33 +128,65 @@ class MainWindow(QMainWindow):
 
     def criar_subaba_unidade(self, abas_internas):
         """Cria a subaba 'Unidade'."""
-        widget_unidade = QWidget()
-        layout_unidade = QVBoxLayout(widget_unidade)
+        self.widget_unidade = QWidget()
+        layout_unidade = QVBoxLayout(self.widget_unidade)
+
+        # Seletor de datas
+        self.seletor_data = QComboBox()
+        self.seletor_data.currentIndexChanged.connect(self.atualizar_tabela_unidade) # Conecte ao método
+        layout_unidade.addWidget(self.seletor_data)
 
         # Tabela para exibir as estatísticas da unidade
-        self.tabela_unidade = QTableWidget(widget_unidade)
-        self.tabela_unidade.setColumnCount(3)  # 3 colunas: Data, Fase, Total de Imagens
-        self.tabela_unidade.setHorizontalHeaderLabels(["Data", "Fase", "Total de Imagens"])
+        self.tabela_unidade = criar_tabela_estatisticas({})
         layout_unidade.addWidget(self.tabela_unidade)
 
-        abas_internas.addTab(widget_unidade, "Unidade")
+        abas_internas.addTab(self.widget_unidade, "Unidade")
 
     def atualizar_estatisticas_unidade(self):
-        """Atualiza a tabela com as estatísticas da unidade."""
-        unidade = self.campo_unidade.text()  # Obter a unidade do campo na GUI
-        estatisticas = obter_estatisticas_unidade(unidade)
+        """Atualiza as opções de data no seletor e a tabela."""
+        unidade = self.campo_unidade.text()
+        estatisticas = obter_estatisticas_unidade(unidade) # Busca todas as datas
 
-        self.tabela_unidade.setRowCount(0)  # Limpa a tabela antes de adicionar dados
+        # Atualiza as datas no seletor
+        datas = sorted(estatisticas.keys())
+        self.seletor_data.clear()
+        self.seletor_data.addItems(datas)
 
-        for data, fases in estatisticas.items():
-            for fase, total_imagens in fases.items():
-                row_position = self.tabela_unidade.rowCount()
-                self.tabela_unidade.insertRow(row_position)
-                self.tabela_unidade.setItem(row_position, 0, QTableWidgetItem(str(data)))
-                self.tabela_unidade.setItem(row_position, 1, QTableWidgetItem(fase))
-                self.tabela_unidade.setItem(row_position, 2, QTableWidgetItem(str(total_imagens)))
+        # Atualiza a tabela (chamando atualizar_tabela_unidade)
+        self.atualizar_tabela_unidade()
 
-            self.tabela_unidade.resizeColumnsToContents()  # Ajusta as colunas
+    def atualizar_tabela_unidade(self):
+        """Atualiza a tabela com as estatísticas da unidade,
+           levando em conta a data selecionada no seletor."""
+
+        print("----- Iniciando atualizar_tabela_unidade -----")
+        try:
+            unidade = self.campo_unidade.text()
+            data_selecionada = self.seletor_data.currentText()
+
+            if data_selecionada:
+                estatisticas = obter_estatisticas_unidade(unidade, data_selecionada)
+            else:
+                estatisticas = {}  # Dicionário vazio se nenhuma data for selecionada
+
+            # --- Atualiza a tabela ---
+            self.tabela_unidade.setRowCount(0)  # Limpa a tabela
+
+            row_index = 0
+            for data, fases in estatisticas.items():
+                for fase, total_imagens in fases.items():
+                    self.tabela_unidade.insertRow(row_index)
+                    self.tabela_unidade.setItem(row_index, 0, QTableWidgetItem(str(data)))
+                    self.tabela_unidade.setItem(row_index, 1, QTableWidgetItem(fase))
+                    self.tabela_unidade.setItem(row_index, 2, QTableWidgetItem(str(total_imagens)))
+                    row_index += 1
+
+            self.tabela_unidade.resizeColumnsToContents()
+            # ---------------------------
+
+            print("----- Fim de atualizar_tabela_unidade -----")
+        except Exception as e:
+            print(f"Erro em atualizar_tabela_unidade: {e}")
 
     def criar_aba_importar(self):
         """Cria a aba 'Importar Arquivo'."""
@@ -235,7 +267,8 @@ class MainWindow(QMainWindow):
                 QMessageBox.information(self, "Sucesso", "Campos preenchidos corretamente!")
                 self.campo_supervisor.setEnabled(False)
                 self.campo_unidade.setEnabled(False)
-                self.atualizar_estatisticas_unidade()  # Adicione esta linha
+                self.atualizar_estatisticas_unidade()
+                #self.gerar_graficos_unidade()  # Adicione esta linha para chamar a função
                 print("----- Fim de validar_campos -----")
             else:
                 QMessageBox.warning(self, "Erro", "Preencha todos os campos!")
