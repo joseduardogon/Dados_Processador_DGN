@@ -55,8 +55,9 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
 
             inicio = row[15].strftime("%Y-%m-%d %H:%M:%S")  # Formata a data
             termino = row[16].strftime("%Y-%m-%d %H:%M:%S")  # Formata a data
+            tempo_gasto_str = row[17].strftime("%H:%M:%S") if row[17] is not None else ''
             data_hora_envio = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            dados = list(row[:1]) + list(row[2:17]) + list(row[17:18]) + [supervisor, unidade]
+            dados = list(row[:1]) + list(row[2:17]) + [tempo_gasto_str, supervisor, unidade]
             dados.append(data_hora_envio)  # Adicione ao final da lista
 
             print(f"Dados a serem inseridos: {dados}")
