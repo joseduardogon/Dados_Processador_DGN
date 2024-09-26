@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET  # Importa a stylesheet
-from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade, obter_anos_disponiveis, obter_dias_disponiveis, obter_meses_disponiveis
+from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade, obter_meses_anos_disponiveis
 from .estatisticas import criar_tabela_estatisticas
 
 class MainWindow(QMainWindow):
@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
             print("QTabWidget criado.")
         except Exception as e:
             print(f"Erro ao criar QTabWidget: {e}")
-            return
+            return  # Encerra a inicialização se houver erro
 
         print("Definindo QTabWidget como widget central...")
         try:
@@ -185,27 +185,22 @@ class MainWindow(QMainWindow):
             # Layout horizontal para os seletores de data
             layout_seletores_data = QHBoxLayout()
 
-            # Seletor de Ano
-            self.seletor_ano = QComboBox(self)
-            self.seletor_ano.setEnabled(False)  # Desabilitado inicialmente
-            self.seletor_ano.currentIndexChanged.connect(self.atualizar_seletor_mes)
-            layout_seletores_data.addWidget(self.seletor_ano)
+            # Seletor de Mês/Ano
+            self.seletor_mes_ano = QComboBox(self)
+            self.seletor_mes_ano.currentIndexChanged.connect(self.habilitar_campo_dia)
+            layout_seletores_data.addWidget(self.seletor_mes_ano)
 
-            # Seletor de Mês
-            self.seletor_mes = QComboBox(self)
-            self.seletor_mes.setEnabled(False)  # Desabilitado inicialmente
-            self.seletor_mes.currentIndexChanged.connect(self.atualizar_seletor_dia)
-            layout_seletores_data.addWidget(self.seletor_mes)
-
-            # Seletor de Dia
-            self.seletor_dia = QComboBox(self)
-            self.seletor_dia.setEnabled(False)  # Desabilitado inicialmente
-            layout_seletores_data.addWidget(self.seletor_dia)
+            # Campo para digitar o dia
+            self.campo_dia = QLineEdit(self)
+            self.campo_dia.setPlaceholderText("Dia")
+            self.campo_dia.setEnabled(True)  # Desabilitado inicialmente
+            self.campo_dia.setFixedWidth(120)  # Ajuste a largura conforme necessário
+            layout_seletores_data.addWidget(self.campo_dia)
 
             # Botão "Gerar"
             botao_gerar = QPushButton("Gerar", self)
             botao_gerar.setObjectName("botao_selecionar")
-            botao_gerar.setMaximumSize(80, 30)
+            botao_gerar.setMaximumSize(160,50)
             botao_gerar.clicked.connect(self.atualizar_tabela_unidade)
             layout_seletores_data.addWidget(botao_gerar)
 
@@ -217,92 +212,81 @@ class MainWindow(QMainWindow):
 
             abas_internas.addTab(self.widget_unidade, "Unidade")
 
+            # Chama a função para preencher o seletor de mes/ano
+            #self.atualizar_seletor_mes_ano()
+
             print("----- Fim de criar_subaba_unidade -----")
         except Exception as e:
             print(f"Erro em criar_subaba_unidade: {e}")
 
-    def atualizar_estatisticas_unidade(self):
-        """Atualiza as opções de ano no seletor."""
-        print("----- Iniciando atualizar_estatisticas_unidade -----")
+    def atualizar_seletor_mes_ano(self):
+        """Atualiza as opções de mês/ano no seletor."""
+        print("----- Iniciando atualizar_seletor_mes_ano -----")
         try:
+            print("Obtendo unidade do campo de texto...")
             unidade = self.campo_unidade.text()
-            anos_disponiveis = obter_anos_disponiveis(unidade)
+            print("Unidade obtida:", unidade)
 
-            # Limpa os seletores
-            self.seletor_ano.clear()
-            self.seletor_mes.clear()
-            self.seletor_dia.clear()
+            print("Obtendo meses/anos disponíveis...")
+            meses_anos_disponiveis = obter_meses_anos_disponiveis(unidade)
+            print("Meses/anos disponíveis obtidos.")
 
-            # Atualiza os anos no seletor e o habilita
-            self.seletor_ano.addItems(anos_disponiveis)
-            self.seletor_ano.setEnabled(True)
+            # Limpa e preenche o seletor de mes/ano
+            print("Limpando seletores...")
+            self.seletor_mes_ano.clear()
+            self.seletor_mes_ano.addItems(meses_anos_disponiveis)
+            print("Seletores limpos.")
 
-            print("----- Fim de atualizar_estatisticas_unidade -----")
+            # Limpa e desabilita o campo de dia
+            print("Limpando e desabilitando campo de dia...")
+            self.campo_dia.clear()
+            self.campo_dia.setEnabled(True)
+            print("Campo de dia limpo e desabilitado.")
+
+            print("----- Fim de atualizar_seletor_mes_ano -----")
         except Exception as e:
-            print(f"Erro em atualizar_estatisticas_unidade: {e}")
+            print(f"Erro em atualizar_seletor_mes_ano: {e}")
 
-    def atualizar_seletor_mes(self):
-        """Atualiza as opções de mês no seletor com base no ano selecionado."""
-        print("----- Iniciando atualizar_seletor_mes -----")
+    def habilitar_campo_dia(self):
+        """Habilita o campo para digitar o dia quando um mês/ano é selecionado."""
+        print("----- Iniciando habilitar_campo_dia -----")
         try:
-            unidade = self.campo_unidade.text()
-            ano = self.seletor_ano.currentText()
-
-            meses_disponiveis = obter_meses_disponiveis(unidade, ano)
-            self.seletor_mes.clear()
-            self.seletor_mes.addItems(meses_disponiveis)
-            self.seletor_mes.setEnabled(True)  # Habilita o seletor de mês
-
-            # Limpa o seletor de dia e o desabilita
-            self.seletor_dia.clear()
-            self.seletor_dia.setEnabled(False)
-
-            print("----- Fim de atualizar_seletor_mes -----")
+            if self.seletor_mes_ano.currentText():
+                self.campo_dia.setEnabled(True)
+            else:
+                self.campo_dia.setEnabled(True)
+            print("----- Fim de habilitar_campo_dia -----")
         except Exception as e:
-            print(f"Erro em atualizar_seletor_mes: {e}")
-
-    def atualizar_seletor_dia(self):
-        """Atualiza as opções de dia no seletor com base no ano e mês selecionados."""
-        print("----- Iniciando atualizar_seletor_dia -----")
-        try:
-            unidade = self.campo_unidade.text()
-            ano = self.seletor_ano.currentText()
-            mes = self.seletor_mes.currentText()
-
-            dias_disponiveis = obter_dias_disponiveis(unidade, ano, mes)
-            self.seletor_dia.clear()
-            self.seletor_dia.addItems(dias_disponiveis)
-            self.seletor_dia.setEnabled(True)  # Habilita o seletor de dia
-
-            print("----- Fim de atualizar_seletor_dia -----")
-        except Exception as e:
-            print(f"Erro em atualizar_seletor_dia: {e}")
+            print(f"Erro em habilitar_campo_dia: {e}")
 
     def atualizar_tabela_unidade(self):
         """Atualiza a tabela com as estatísticas da unidade."""
         print("----- Iniciando atualizar_tabela_unidade -----")
         try:
             unidade = self.campo_unidade.text()
-            ano_selecionado = self.seletor_ano.currentText()
-            mes_selecionado = self.seletor_mes.currentText()
-            dia_selecionado = self.seletor_dia.currentText()
+            mes_ano = self.seletor_mes_ano.currentText()
+            dia = self.campo_dia.text()
 
-            # Verificar se todos os seletores foram preenchidos
-            if not (ano_selecionado and mes_selecionado and dia_selecionado):
-                QMessageBox.warning(self, "Erro", "Selecione o Ano, Mês e Dia.")
+            # Verifica se o mês/ano e o dia foram selecionados
+            if not (mes_ano and dia):
+                QMessageBox.warning(self, "Erro", "Selecione o Mês/Ano e o Dia.")
                 return
 
-            # Criar a data no formato 'aaaa-mm-dd'
-            data_selecionada = f"{ano_selecionado}-{mes_selecionado.zfill(2)}-{dia_selecionado.zfill(2)}"
+            # Formata a data
+            mes, ano = mes_ano.split('/')
+            data_selecionada = f"{ano}-{mes}-{dia.zfill(2)}"  # Formato aaaa-mm-dd
+
             estatisticas = obter_estatisticas_unidade(unidade, data_selecionada)
+            if not estatisticas:
+                QMessageBox.warning(self, "Aviso", f"Não há dados disponíveis para a data {data_selecionada}.")
+                return
 
             # --- Atualiza a tabela ---
             self.tabela_unidade.setRowCount(0)  # Limpa a tabela
             row_index = 0
             for fase, total_imagens in estatisticas.items():
                 self.tabela_unidade.insertRow(row_index)
-                self.tabela_unidade.setItem(row_index, 0,
-                                            QTableWidgetItem(str(data_selecionada)))  # Usa a data selecionada
+                self.tabela_unidade.setItem(row_index, 0, QTableWidgetItem(str(data_selecionada)))  # Usa a data selecionada
                 self.tabela_unidade.setItem(row_index, 1, QTableWidgetItem(fase))
                 self.tabela_unidade.setItem(row_index, 2, QTableWidgetItem(str(total_imagens)))
                 row_index += 1
@@ -343,7 +327,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.information(self, "Sucesso", "Campos preenchidos corretamente!")
                 self.campo_supervisor.setEnabled(False)
                 self.campo_unidade.setEnabled(False)
-                self.atualizar_estatisticas_unidade()
+                self.atualizar_seletor_mes_ano()  # Chame a função aqui!
                 print("----- Fim de validar_campos -----")
             else:
                 QMessageBox.warning(self, "Erro", "Preencha todos os campos!")
@@ -386,8 +370,8 @@ class MainWindow(QMainWindow):
         print("----- Iniciando excluir_dados -----")
         try:
             resposta = QMessageBox.question(self, "Confirmação",
-                                            "Tem certeza que deseja excluir TODOS os dados do banco de dados?",
-                                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                                             "Tem certeza que deseja excluir TODOS os dados do banco de dados?",
+                                             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if resposta == QMessageBox.Yes:
                 excluir_dados_banco()
                 QMessageBox.information(self, "Sucesso", "Dados excluídos do banco de dados!")
