@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET  # Importa a stylesheet
-from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade
+from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade, obter_anos_disponiveis, obter_dias_disponiveis, obter_meses_disponiveis
 from .estatisticas import criar_tabela_estatisticas
 
 class MainWindow(QMainWindow):
@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
             print("QTabWidget criado.")
         except Exception as e:
             print(f"Erro ao criar QTabWidget: {e}")
-            return  # Encerra a inicialização se houver erro
+            return
 
         print("Definindo QTabWidget como widget central...")
         try:
@@ -97,102 +97,11 @@ class MainWindow(QMainWindow):
         print("Movendo aba 'Configurações'...")
         try:
             self.abas.tabBar().moveTab(1, 3)
-            print("Aba 'Configurações movida.")
+            print("Aba 'Configurações' movida.")
         except Exception as e:
             print(f"Erro ao mover aba 'Configurações': {e}")
 
         print("----- Fim do __init__ da MainWindow -----")
-
-    def criar_aba_desempenho(self):
-        """Cria a aba 'Desempenho'."""
-        widget_principal = QWidget()
-        abas_internas = QTabWidget(widget_principal)
-        layout_principal = QVBoxLayout(widget_principal)
-        layout_principal.addWidget(abas_internas)
-
-        self.criar_subaba_unidade(abas_internas)  # Cria a subaba "Unidade"
-        #self.criar_subaba_funcionarios(abas_internas)
-
-        self.abas.addTab(widget_principal, "Desempenho")
-        self.abas.tabBar().moveTab(1, 3)
-
-        subaba2 = QWidget()
-        layout_subaba2 = QVBoxLayout()
-        layout_subaba2.addWidget(QLabel("Label na Subaba 2"))
-        subaba2.setLayout(layout_subaba2)
-
-        abas_internas.addTab(subaba2, "Funcionarios")  # Mudança de nome: Subaba 2 -> Funcionarios
-
-        # Adiciona o widget principal com as subabas ao QTabWidget principal
-        self.abas.addTab(widget_principal, "Desempenho")  # Mudança de nome:  Aba com Subabas -> Desempenho
-
-    def criar_subaba_unidade(self, abas_internas):
-        """Cria a subaba 'Unidade'."""
-        self.widget_unidade = QWidget()
-        layout_unidade = QVBoxLayout(self.widget_unidade)
-
-        # Seletor de datas
-        self.seletor_data = QComboBox()
-        # Remova a conexão aqui:  self.seletor_data.currentIndexChanged.connect(self.atualizar_tabela_unidade)
-        layout_unidade.addWidget(self.seletor_data)
-
-        # Botão "Gerar"
-        botao_gerar = QPushButton("Gerar", self)
-        botao_gerar.clicked.connect(self.atualizar_tabela_unidade)  # Conecte ao método
-        layout_unidade.addWidget(botao_gerar)
-
-        # Tabela para exibir as estatísticas da unidade
-        self.tabela_unidade = criar_tabela_estatisticas({})
-        layout_unidade.addWidget(self.tabela_unidade)
-
-        abas_internas.addTab(self.widget_unidade, "Unidade")
-
-    def atualizar_estatisticas_unidade(self):
-        """Atualiza as opções de data no seletor."""
-        print("----- Iniciando atualizar_estatisticas_unidade -----")
-        try:
-            unidade = self.campo_unidade.text()
-            estatisticas = obter_estatisticas_unidade(unidade)  # Busca todas as datas
-
-            # Atualiza as datas no seletor
-            datas = sorted(estatisticas.keys())
-            self.seletor_data.clear()
-            self.seletor_data.addItems(datas)
-            print("----- Fim de atualizar_estatisticas_unidade -----")
-        except Exception as e:
-            print(f"Erro em atualizar_estatisticas_unidade: {e}")
-
-    def atualizar_tabela_unidade(self):
-        """Atualiza a tabela com as estatísticas da unidade."""
-        print("----- Iniciando atualizar_tabela_unidade -----")
-        try:
-            unidade = self.campo_unidade.text()
-            data_selecionada = self.seletor_data.currentText()
-
-            self.tabela_unidade.setRowCount(0)  # Limpa a tabela
-
-            if data_selecionada:
-                estatisticas = obter_estatisticas_unidade(unidade, data_selecionada)
-
-                row_index = 0
-                # Itera diretamente sobre as fases e totais (não é mais um dicionário aninhado)
-                for fase, total_imagens in estatisticas.items():
-                    self.tabela_unidade.insertRow(row_index)
-                    self.tabela_unidade.setItem(row_index, 0,
-                                                QTableWidgetItem(str(data_selecionada)))  # Usa a data selecionada
-                    self.tabela_unidade.setItem(row_index, 1, QTableWidgetItem(fase))
-                    self.tabela_unidade.setItem(row_index, 2, QTableWidgetItem(str(total_imagens)))
-                    row_index += 1
-
-            self.tabela_unidade.resizeColumnsToContents()
-
-            print("----- Fim de atualizar_tabela_unidade -----")
-        except Exception as e:
-            print(f"Erro em atualizar_tabela_unidade: {e}")
-
-            print("----- Fim de atualizar_tabela_unidade -----")
-        except Exception as e:
-            print(f"Erro em atualizar_tabela_unidade: {e}")
 
     def criar_aba_importar(self):
         """Cria a aba 'Importar Arquivo'."""
@@ -243,6 +152,167 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print(f"Erro em criar_aba_importar: {e}")
 
+    def criar_aba_desempenho(self):
+        """Cria a aba 'Desempenho'."""
+        print("----- Iniciando criar_aba_desempenho -----")
+        try:
+            widget_principal = QWidget()
+            abas_internas = QTabWidget(widget_principal)
+            layout_principal = QVBoxLayout(widget_principal)
+            layout_principal.addWidget(abas_internas)
+
+            self.criar_subaba_unidade(abas_internas)  # Cria a subaba "Unidade"
+
+            self.abas.addTab(widget_principal, "Desempenho")
+            self.abas.tabBar().moveTab(1, 3)
+
+            subaba2 = QWidget()
+            layout_subaba2 = QVBoxLayout()
+            layout_subaba2.addWidget(QLabel("Em breve"))
+            subaba2.setLayout(layout_subaba2)
+            abas_internas.addTab(subaba2, "Funcionarios")
+            print("----- Fim de criar_aba_desempenho -----")
+        except Exception as e:
+            print(f"Erro em criar_aba_desempenho: {e}")
+
+    def criar_subaba_unidade(self, abas_internas):
+        """Cria a subaba 'Unidade'."""
+        print("----- Iniciando criar_subaba_unidade -----")
+        try:
+            self.widget_unidade = QWidget()
+            layout_unidade = QVBoxLayout(self.widget_unidade)
+
+            # Layout horizontal para os seletores de data
+            layout_seletores_data = QHBoxLayout()
+
+            # Seletor de Ano
+            self.seletor_ano = QComboBox(self)
+            self.seletor_ano.setEnabled(False)  # Desabilitado inicialmente
+            self.seletor_ano.currentIndexChanged.connect(self.atualizar_seletor_mes)
+            layout_seletores_data.addWidget(self.seletor_ano)
+
+            # Seletor de Mês
+            self.seletor_mes = QComboBox(self)
+            self.seletor_mes.setEnabled(False)  # Desabilitado inicialmente
+            self.seletor_mes.currentIndexChanged.connect(self.atualizar_seletor_dia)
+            layout_seletores_data.addWidget(self.seletor_mes)
+
+            # Seletor de Dia
+            self.seletor_dia = QComboBox(self)
+            self.seletor_dia.setEnabled(False)  # Desabilitado inicialmente
+            layout_seletores_data.addWidget(self.seletor_dia)
+
+            # Botão "Gerar"
+            botao_gerar = QPushButton("Gerar", self)
+            botao_gerar.setObjectName("botao_selecionar")
+            botao_gerar.setMaximumSize(80, 30)
+            botao_gerar.clicked.connect(self.atualizar_tabela_unidade)
+            layout_seletores_data.addWidget(botao_gerar)
+
+            layout_unidade.addLayout(layout_seletores_data)
+
+            # Tabela para exibir as estatísticas da unidade
+            self.tabela_unidade = criar_tabela_estatisticas({})
+            layout_unidade.addWidget(self.tabela_unidade)
+
+            abas_internas.addTab(self.widget_unidade, "Unidade")
+
+            print("----- Fim de criar_subaba_unidade -----")
+        except Exception as e:
+            print(f"Erro em criar_subaba_unidade: {e}")
+
+    def atualizar_estatisticas_unidade(self):
+        """Atualiza as opções de ano no seletor."""
+        print("----- Iniciando atualizar_estatisticas_unidade -----")
+        try:
+            unidade = self.campo_unidade.text()
+            anos_disponiveis = obter_anos_disponiveis(unidade)
+
+            # Limpa os seletores
+            self.seletor_ano.clear()
+            self.seletor_mes.clear()
+            self.seletor_dia.clear()
+
+            # Atualiza os anos no seletor e o habilita
+            self.seletor_ano.addItems(anos_disponiveis)
+            self.seletor_ano.setEnabled(True)
+
+            print("----- Fim de atualizar_estatisticas_unidade -----")
+        except Exception as e:
+            print(f"Erro em atualizar_estatisticas_unidade: {e}")
+
+    def atualizar_seletor_mes(self):
+        """Atualiza as opções de mês no seletor com base no ano selecionado."""
+        print("----- Iniciando atualizar_seletor_mes -----")
+        try:
+            unidade = self.campo_unidade.text()
+            ano = self.seletor_ano.currentText()
+
+            meses_disponiveis = obter_meses_disponiveis(unidade, ano)
+            self.seletor_mes.clear()
+            self.seletor_mes.addItems(meses_disponiveis)
+            self.seletor_mes.setEnabled(True)  # Habilita o seletor de mês
+
+            # Limpa o seletor de dia e o desabilita
+            self.seletor_dia.clear()
+            self.seletor_dia.setEnabled(False)
+
+            print("----- Fim de atualizar_seletor_mes -----")
+        except Exception as e:
+            print(f"Erro em atualizar_seletor_mes: {e}")
+
+    def atualizar_seletor_dia(self):
+        """Atualiza as opções de dia no seletor com base no ano e mês selecionados."""
+        print("----- Iniciando atualizar_seletor_dia -----")
+        try:
+            unidade = self.campo_unidade.text()
+            ano = self.seletor_ano.currentText()
+            mes = self.seletor_mes.currentText()
+
+            dias_disponiveis = obter_dias_disponiveis(unidade, ano, mes)
+            self.seletor_dia.clear()
+            self.seletor_dia.addItems(dias_disponiveis)
+            self.seletor_dia.setEnabled(True)  # Habilita o seletor de dia
+
+            print("----- Fim de atualizar_seletor_dia -----")
+        except Exception as e:
+            print(f"Erro em atualizar_seletor_dia: {e}")
+
+    def atualizar_tabela_unidade(self):
+        """Atualiza a tabela com as estatísticas da unidade."""
+        print("----- Iniciando atualizar_tabela_unidade -----")
+        try:
+            unidade = self.campo_unidade.text()
+            ano_selecionado = self.seletor_ano.currentText()
+            mes_selecionado = self.seletor_mes.currentText()
+            dia_selecionado = self.seletor_dia.currentText()
+
+            # Verificar se todos os seletores foram preenchidos
+            if not (ano_selecionado and mes_selecionado and dia_selecionado):
+                QMessageBox.warning(self, "Erro", "Selecione o Ano, Mês e Dia.")
+                return
+
+            # Criar a data no formato 'aaaa-mm-dd'
+            data_selecionada = f"{ano_selecionado}-{mes_selecionado.zfill(2)}-{dia_selecionado.zfill(2)}"
+            estatisticas = obter_estatisticas_unidade(unidade, data_selecionada)
+
+            # --- Atualiza a tabela ---
+            self.tabela_unidade.setRowCount(0)  # Limpa a tabela
+            row_index = 0
+            for fase, total_imagens in estatisticas.items():
+                self.tabela_unidade.insertRow(row_index)
+                self.tabela_unidade.setItem(row_index, 0,
+                                            QTableWidgetItem(str(data_selecionada)))  # Usa a data selecionada
+                self.tabela_unidade.setItem(row_index, 1, QTableWidgetItem(fase))
+                self.tabela_unidade.setItem(row_index, 2, QTableWidgetItem(str(total_imagens)))
+                row_index += 1
+            self.tabela_unidade.resizeColumnsToContents()
+            # ---------------------------
+
+            print("----- Fim de atualizar_tabela_unidade -----")
+        except Exception as e:
+            print(f"Erro em atualizar_tabela_unidade: {e}")
+
     def criar_aba_configuracoes(self):
         """Cria a aba 'Configurações'."""
         print("----- Iniciando criar_aba_configuracoes -----")
@@ -274,7 +344,6 @@ class MainWindow(QMainWindow):
                 self.campo_supervisor.setEnabled(False)
                 self.campo_unidade.setEnabled(False)
                 self.atualizar_estatisticas_unidade()
-                #self.gerar_graficos_unidade()  # Adicione esta linha para chamar a função
                 print("----- Fim de validar_campos -----")
             else:
                 QMessageBox.warning(self, "Erro", "Preencha todos os campos!")
@@ -317,8 +386,8 @@ class MainWindow(QMainWindow):
         print("----- Iniciando excluir_dados -----")
         try:
             resposta = QMessageBox.question(self, "Confirmação",
-                                             "Tem certeza que deseja excluir TODOS os dados do banco de dados?",
-                                             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                                            "Tem certeza que deseja excluir TODOS os dados do banco de dados?",
+                                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if resposta == QMessageBox.Yes:
                 excluir_dados_banco()
                 QMessageBox.information(self, "Sucesso", "Dados excluídos do banco de dados!")
