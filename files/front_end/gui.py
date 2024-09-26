@@ -169,22 +169,26 @@ class MainWindow(QMainWindow):
             unidade = self.campo_unidade.text()
             data_selecionada = self.seletor_data.currentText()
 
-            # --- Atualiza a tabela ---
             self.tabela_unidade.setRowCount(0)  # Limpa a tabela
 
-            if data_selecionada:  # Só atualiza se uma data foi selecionada
+            if data_selecionada:
                 estatisticas = obter_estatisticas_unidade(unidade, data_selecionada)
+
                 row_index = 0
-                for data, fases in estatisticas.items():
-                    for fase, total_imagens in fases.items():
-                        self.tabela_unidade.insertRow(row_index)
-                        self.tabela_unidade.setItem(row_index, 0, QTableWidgetItem(str(data)))
-                        self.tabela_unidade.setItem(row_index, 1, QTableWidgetItem(fase))
-                        self.tabela_unidade.setItem(row_index, 2, QTableWidgetItem(str(total_imagens)))
-                        row_index += 1
+                # Itera diretamente sobre as fases e totais (não é mais um dicionário aninhado)
+                for fase, total_imagens in estatisticas.items():
+                    self.tabela_unidade.insertRow(row_index)
+                    self.tabela_unidade.setItem(row_index, 0,
+                                                QTableWidgetItem(str(data_selecionada)))  # Usa a data selecionada
+                    self.tabela_unidade.setItem(row_index, 1, QTableWidgetItem(fase))
+                    self.tabela_unidade.setItem(row_index, 2, QTableWidgetItem(str(total_imagens)))
+                    row_index += 1
 
             self.tabela_unidade.resizeColumnsToContents()
-            # ---------------------------
+
+            print("----- Fim de atualizar_tabela_unidade -----")
+        except Exception as e:
+            print(f"Erro em atualizar_tabela_unidade: {e}")
 
             print("----- Fim de atualizar_tabela_unidade -----")
         except Exception as e:
