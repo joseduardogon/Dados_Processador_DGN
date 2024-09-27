@@ -53,6 +53,7 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
             if usuario == "Total":
                 continue
 
+            row = ["" if cell is None else cell for cell in row]
             inicio = row[15].strftime("%Y-%m-%d %H:%M:%S")  # Formata a data
             termino = row[16].strftime("%Y-%m-%d %H:%M:%S")  # Formata a data
             tempo_gasto_str = row[17].strftime("%H:%M:%S") if row[17] is not None else ''
@@ -132,6 +133,7 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade):
                     linha = linha[:-1]
 
                 dados = linha.strip().split(';')
+                dados = ["" if dado is None else dado for dado in dados]
                 del dados[1]  # Remove "Computador"
                 del dados[17]  # Remove local
 
