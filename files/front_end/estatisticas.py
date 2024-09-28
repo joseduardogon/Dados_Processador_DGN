@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QSpinBox, QCheckBox
 
 def criar_tabela_estatisticas(dados):
     """Cria uma tabela com as estatísticas da unidade.
@@ -33,6 +33,16 @@ def criar_tabela_estatisticas(dados):
             padding: 8px;
             font-weight: bold;
         }
+
+        QSpinBox { /* Estilo para células numéricas (inteiros) */
+            background-color: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        QCheckBox { /* Estilo para células booleanas */
+            margin: 5px; /* Ajuste a margem conforme necessário */
+        }
     """)
 
     # Adiciona os dados à tabela
@@ -42,8 +52,17 @@ def criar_tabela_estatisticas(dados):
             tabela.insertRow(row_index)
             tabela.setItem(row_index, 0, QTableWidgetItem(str(data)))
             tabela.setItem(row_index, 1, QTableWidgetItem(fase))
-            tabela.setItem(row_index, 2, QTableWidgetItem(str(total_imagens)))
+
+            # Define a célula da coluna "Total de Imagens" com base no tipo de dado:
+            if isinstance(total_imagens, int):
+                item = QSpinBox()
+                item.setValue(total_imagens)
+                tabela.setCellWidget(row_index, 2, item)
+            else:
+                tabela.setItem(row_index, 2, QTableWidgetItem(str(total_imagens)))
+
             row_index += 1
+
 
     tabela.resizeColumnsToContents()  # Ajusta as colunas ao conteúdo
 

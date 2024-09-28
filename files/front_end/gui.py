@@ -4,9 +4,10 @@ from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QF
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
-from .styles import STYLESHEET  # Importa a stylesheet
+from .styles import STYLESHEET
 from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade, obter_meses_anos_disponiveis
 from .estatisticas import criar_tabela_estatisticas
+from analista_dados.files.back_end.desempenho_funcionario import obter_estatisticas_funcionario
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -162,15 +163,11 @@ class MainWindow(QMainWindow):
             layout_principal.addWidget(abas_internas)
 
             self.criar_subaba_unidade(abas_internas)  # Cria a subaba "Unidade"
+            self.criar_subaba_funcionarios(abas_internas)  # Cria a subaba "Funcionarios"
 
             self.abas.addTab(widget_principal, "Desempenho")
             self.abas.tabBar().moveTab(1, 3)
 
-            subaba2 = QWidget()
-            layout_subaba2 = QVBoxLayout()
-            layout_subaba2.addWidget(QLabel("Em breve"))
-            subaba2.setLayout(layout_subaba2)
-            abas_internas.addTab(subaba2, "Funcionarios")
             print("----- Fim de criar_aba_desempenho -----")
         except Exception as e:
             print(f"Erro em criar_aba_desempenho: {e}")
@@ -297,6 +294,77 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print(f"Erro em atualizar_tabela_unidade: {e}")
 
+    def criar_subaba_funcionarios(self, abas_internas):
+        """Cria a subaba 'Funcionarios'."""
+        print("----- Iniciando criar_subaba_funcionarios -----")
+        try:
+            self.widget_funcionarios = QWidget()
+            layout_funcionarios = QVBoxLayout(self.widget_funcionarios)
+
+            # Layout horizontal para o botão "Gerar"
+            layout_botao_gerar = QHBoxLayout()
+            botao_gerar_funcionarios = QPushButton("Gerar", self)
+            botao_gerar_funcionarios.setObjectName("botao_selecionar")
+            botao_gerar_funcionarios.setMaximumSize(80, 30)
+            botao_gerar_funcionarios.clicked.connect(self.atualizar_tabela_funcionarios)
+            layout_botao_gerar.addWidget(botao_gerar_funcionarios)
+            layout_botao_gerar.setAlignment(Qt.AlignCenter)  # Centraliza o botão
+
+            # Tabela para exibir as estatísticas dos funcionários
+            self.tabela_funcionarios = criar_tabela_estatisticas({})
+            layout_funcionarios.addWidget(self.tabela_funcionarios)
+
+            # Adiciona o layout do botão "Gerar" acima da tabela
+            layout_funcionarios.addLayout(layout_botao_gerar)
+
+            abas_internas.addTab(self.widget_funcionarios, "Funcionarios")
+
+            print("----- Fim de criar_subaba_funcionarios -----")
+        except Exception as e:
+            print(f"Erro em criar_subaba_funcionarios: {e}")
+
+    def atualizar_tabela_funcionarios(self):
+        """Atualiza a tabela com as estatísticas dos funcionários."""
+        print("----- Iniciando atualizar_tabela_funcionarios -----")
+        try:
+            print("Obtendo unidade do campo de texto...")
+            unidade = self.campo_unidade.text()
+            print("Unidade obtida:", unidade)
+
+            print("Obtendo estatísticas do funcionário...")
+            estatisticas_funcionarios = obter_estatisticas_funcionario(unidade)
+            print("Estatísticas do funcionário obtidas.")
+
+            # Define as colunas da tabela
+            print("Definindo colunas da tabela...")
+            colunas = ["Funcionário - Tarefa", "Total", "Média"]
+            self.tabela_funcionarios.setColumnCount(len(colunas))
+            self.tabela_funcionarios.setHorizontalHeaderLabels(colunas)
+            print("Colunas da tabela definidas.")
+
+            print("Limpando tabela...")
+            self.tabela_funcionarios.setRowCount(0)  # Limpa a tabela
+            print("Tabela limpa.")
+
+            print("Preenchendo a tabela...")
+            row_index = 0
+            for funcionario_tarefa, dados in estatisticas_funcionarios.items():
+                print(f"Processando funcionário/tarefa: {funcionario_tarefa}")
+
+                self.tabela_funcionarios.insertRow(row_index)
+                self.tabela_funcionarios.setItem(row_index, 0, QTableWidgetItem(funcionario_tarefa))
+                self.tabela_funcionarios.setItem(row_index, 1, QTableWidgetItem(str(dados['totais'])))
+                self.tabela_funcionarios.setItem(row_index, 2, QTableWidgetItem(f"{dados['medias']:.2f}"))
+
+                row_index += 1
+
+            self.tabela_funcionarios.resizeColumnsToContents()
+            print("Tabela preenchida.")
+
+            print("----- Fim de atualizar_tabela_funcionarios -----")
+        except Exception as e:
+            print(f"Erro em atualizar_tabela_funcionarios: {e}")
+
     def criar_aba_configuracoes(self):
         """Cria a aba 'Configurações'."""
         print("----- Iniciando criar_aba_configuracoes -----")
@@ -328,6 +396,7 @@ class MainWindow(QMainWindow):
                 self.campo_supervisor.setEnabled(False)
                 self.campo_unidade.setEnabled(False)
                 self.atualizar_seletor_mes_ano()  # Chame a função aqui!
+                self.atualizar_tabela_funcionarios() # Chame a função para atualizar a tabela de funcionários
                 print("----- Fim de validar_campos -----")
             else:
                 QMessageBox.warning(self, "Erro", "Preencha todos os campos!")
