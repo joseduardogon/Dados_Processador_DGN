@@ -1,69 +1,37 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QProgressBar
-from PyQt5.QtCore import Qt, QTimer, QRectF
-from PyQt5.QtGui import QFont, QPainterPath, QRegion
-from analista_dados.files.front_end.gui import MainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from front_end.gui_login import LoginWindow  # Importe a janela de login
+from front_end.loading_screen import LoadingScreen  # Importe a loading screen
 
-class SplashScreen(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Inicializando...")
-        self.setGeometry(0, 0, 300, 100)
-        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
-        self.setStyleSheet("background-color: white;")
-
-        label = QLabel("Inicializando...", self)
-        label.setGeometry(10, 10, 280, 20)  # Ajuste a posição para a barra
-        label.setAlignment(Qt.AlignCenter)
-        label.setFont(QFont("Arial", 14))  # Fonte menor
-
-        # Barra de Progresso
-        self.progresso = QProgressBar(self)
-        self.progresso.setGeometry(20, 50, 260, 15)  # Posição abaixo do label
-        self.progresso.setValue(0)
-
-        self.centrar_janela()
-        self.criar_mascara_arredondada(16)
-
-    def centrar_janela(self):
-        qr = self.frameGeometry()
-        cp = QApplication.desktop().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-
-    def criar_mascara_arredondada(self, radius):
-        path = QPainterPath()
-        path.addRoundedRect(QRectF(0, 0, self.width(), self.height()), radius, radius)
-        mask = QRegion(path.toFillPolygon().toPolygon())
-        self.setMask(mask)
 
 class App:
     def __init__(self):
         self.app = QApplication(sys.argv)
-        self.splash = SplashScreen()
-        self.splash.show()
 
-        # Configuração do timer para atualização da barra de progresso
-        self.timer_progresso = QTimer()
-        self.timer_progresso.timeout.connect(self.atualizar_progresso)
-        self.timer_progresso.start(50)  # A cada 100ms a barra é atualizada
+        # Inicia com a janela de login
+        self.login_window = LoginWindow()
+        self.login_window.show()
 
-        # Simula um processo de inicialização (3 segundos)
-        QTimer.singleShot(3000, self.iniciar_janela_principal)
+        # Conecta o sinal de login bem-sucedido à função de iniciar a loading screen
+        self.login_window.login_sucedido.connect(self.iniciar_loading_screen)
 
         sys.exit(self.app.exec_())
 
-    def iniciar_janela_principal(self):
-        self.janela_principal = MainWindow()
-        self.janela_principal.showMaximized()  # Maximiza a janela primeiro
-        self.splash.close()
+    def iniciar_loading_screen(self):
+        """Inicia a loading screen após o login bem-sucedido."""
+        self.loading_screen = LoadingScreen()
+        self.loading_screen.show()
+        self.login_window.close()  # Fecha a janela de login
 
-    def atualizar_progresso(self):
-        valor_atual = self.splash.progresso.value()
-        if valor_atual < 100:
-            self.splash.progresso.setValue(valor_atual + 3) # Incrementa de 1 em 1
-        else:
-            self.timer_progresso.stop()
+        # Conecta o sinal da loading screen à função de iniciar a janela principal
+        self.loading_screen.loading_completo.connect(self.iniciar_janela_principal)
+
+    def iniciar_janela_principal(self):
+        """Inicia a janela principal da aplicação."""
+        self.janela_principal = QMainWindow()
+        self.janela_principal.showMaximized()
+        self.loading_screen.close()
+
 
 if __name__ == '__main__':
     aplicacao = App()
