@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET
 from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade, obter_meses_anos_disponiveis
-from .estatisticas import criar_tabela_estatisticas
+from .estatisticas import criar_tabela_estatisticas, criar_tabela_funcionarios
 from analista_dados.files.back_end.desempenho_funcionario import obter_estatisticas_funcionario
 
 class MainWindow(QMainWindow):
@@ -335,9 +335,19 @@ class MainWindow(QMainWindow):
             estatisticas_funcionarios = obter_estatisticas_funcionario(unidade)
             print("Estatísticas do funcionário obtidas.")
 
+            # Obter todas as datas únicas
+            print("Obtendo datas únicas...")
+            todas_datas = set()
+            for func, dados in estatisticas_funcionarios.items():
+                for data in dados['dias']:
+                    todas_datas.add(data)
+            datas_ordenadas = sorted(todas_datas, reverse=True)
+            print("Datas únicas obtidas:", datas_ordenadas)
+
             # Define as colunas da tabela
             print("Definindo colunas da tabela...")
-            colunas = ["Funcionário - Tarefa", "Total", "Média"]
+            colunas = ["Funcionário - Tarefa", "Média"] + list(
+                datas_ordenadas)  # Colunas: Funcionário - Tarefa, Média e Datas
             self.tabela_funcionarios.setColumnCount(len(colunas))
             self.tabela_funcionarios.setHorizontalHeaderLabels(colunas)
             print("Colunas da tabela definidas.")
@@ -348,15 +358,23 @@ class MainWindow(QMainWindow):
 
             print("Preenchendo a tabela...")
             row_index = 0
-            for funcionario_tarefa, dados in estatisticas_funcionarios.items():
-                print(f"Processando funcionário/tarefa: {funcionario_tarefa}")
+            for funcionario, dados in estatisticas_funcionarios.items():
+                print(f"Processando funcionário: {funcionario}")
+                # Itera sobre as fases do funcionário
+                for fase in dados['fases']:
+                    self.tabela_funcionarios.insertRow(row_index)
+                    self.tabela_funcionarios.setItem(row_index, 0, QTableWidgetItem(f"{funcionario} - {fase}"))
+                    media_fase = estatisticas_funcionarios[funcionario]['medias'].get(fase, 0)
+                    self.tabela_funcionarios.setItem(row_index, 1, QTableWidgetItem(f"{media_fase:.2f}"))
 
-                self.tabela_funcionarios.insertRow(row_index)
-                self.tabela_funcionarios.setItem(row_index, 0, QTableWidgetItem(funcionario_tarefa))
-                self.tabela_funcionarios.setItem(row_index, 1, QTableWidgetItem(str(dados['totais'])))
-                self.tabela_funcionarios.setItem(row_index, 2, QTableWidgetItem(f"{dados['medias']:.2f}"))
+                    col_index = 2
+                    # Preenche os totais de cada data para a fase
+                    for data in datas_ordenadas:
+                        total = dados['dias'].get(data, {}).get(fase, 0)
+                        self.tabela_funcionarios.setItem(row_index, col_index, QTableWidgetItem(str(total)))
+                        col_index += 1
 
-                row_index += 1
+                    row_index += 1  # Incrementa o índice da linha para a próxima fase do funcionário
 
             self.tabela_funcionarios.resizeColumnsToContents()
             print("Tabela preenchida.")
