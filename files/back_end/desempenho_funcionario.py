@@ -3,7 +3,8 @@ from collections import defaultdict
 
 def obter_estatisticas_funcionario(unidade):
     """Obtém estatísticas dos funcionários por tarefa,
-       considerando o tempo gasto e evitando contagem duplicada de pastas.
+       considerando o tempo gasto, evitando contagem duplicada de pastas
+       e ignorando usuários específicos.
 
     Args:
         unidade (str): Nome da unidade.
@@ -11,6 +12,9 @@ def obter_estatisticas_funcionario(unidade):
     Returns:
         dict: Dicionário com estatísticas por funcionário e tarefa.
     """
+    # --- Lista de Usuários a Serem Ignorados ---
+    usuarios_ignorados = ["Admin", "Michael", "Kayo", "usu_robo_1", "usu_robo_2", "usu_robo_3", "usu_robo_4", "usu_robo_5", "usu_robo_6", "usu_robo_7", "usu_robo_8", "usu_robo_9", "usu_robo_10", "usu_robo_11"]  # Adicione os nomes dos usuários aqui
+    # --------------------------------------------
     print("----- Iniciando obter_estatisticas_funcionario -----")
     try:
         print("Conectando ao banco de dados...")
@@ -45,6 +49,12 @@ def obter_estatisticas_funcionario(unidade):
 
         print("Processando resultados da consulta...")
         for usuario, fase, tempo_gasto, fase_destino, total_imagens, total_docs_depois, pasta, data in cursor.fetchall():
+            # --- Ignorar Usuários ---
+            if usuario in usuarios_ignorados:
+                print(f"Ignorando usuário: {usuario}")
+                continue  # Pula para a próxima iteração do loop
+            # ------------------------
+
             chave = usuario
             print(
                 f"Dados: Usuário: {usuario}, Fase: {fase}, Data: {data}, Tempo Gasto: {tempo_gasto}, Total Imagens: {total_imagens}, Total Docs Depois: {total_docs_depois}, Pasta: {pasta}")
