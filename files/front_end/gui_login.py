@@ -6,16 +6,14 @@ from analista_dados.files.back_end.controle_login import verificar_tabela_login,
 
 
 class LoginWindow(QWidget):
-    login_sucedido = pyqtSignal()  # Sinal emitido quando o login for bem-sucedido
+    login_sucedido = pyqtSignal(dict)  # Sinal emitido quando o login for bem-sucedido
 
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Login")
         self.setGeometry(100, 100, 300, 200)
         self.setFixedSize(self.size())
-        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
         self.setStyleSheet("background-color: white;")
-        self.criar_mascara_arredondada(16)
 
         # Layouts
         layout_principal = QVBoxLayout()
@@ -48,12 +46,6 @@ class LoginWindow(QWidget):
         # Centralizar a janela
         self.centrar_janela()
 
-    def criar_mascara_arredondada(self, radius):
-        path = QPainterPath()
-        path.addRoundedRect(QRectF(0, 0, self.width(), self.height()), radius, radius)
-        mask = QRegion(path.toFillPolygon().toPolygon())
-        self.setMask(mask)
-
     def centrar_janela(self):
         qr = self.frameGeometry()
         cp = QApplication.desktop().availableGeometry().center()
@@ -79,9 +71,9 @@ class LoginWindow(QWidget):
                 # 4. Login bem-sucedido!
                 global usuario_atual  # Defina usuario_atual como global
                 usuario_atual = {"nome": nome_usuario, "tipo": tipo_usuario, "unidade": unidade}
-                QMessageBox.information(self, "Sucesso", "Login realizado com sucesso!")
-                self.login_sucedido.emit()  # Emite o sinal de login bem-sucedido
+                self.login_sucedido.emit(usuario_atual)  # Emite o sinal de login bem-sucedido
             else:
                 QMessageBox.warning(self, "Erro", "Senha incorreta!")
         else:
             QMessageBox.warning(self, "Erro", "Usuário não encontrado!")
+        print(f"gui_login: {usuario_atual}")

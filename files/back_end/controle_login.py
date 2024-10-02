@@ -27,7 +27,7 @@ def verificar_tabela_login():
 
             print("Inserindo usuários padrão...")
             usuarios_padrao = [
-                ("dev", "ard14", "admin", "admin"),
+                ("dev", "ard14", "dev", "admin"),
                 ("admin", "digidados", "admin", "admin")
             ]
             cursor.executemany("INSERT INTO usuarios VALUES (?, ?, ?, ?)", usuarios_padrao)

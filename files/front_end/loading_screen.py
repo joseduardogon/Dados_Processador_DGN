@@ -14,13 +14,13 @@ class LoadingScreen(QWidget):
         self.setStyleSheet("background-color: white;")
 
         label = QLabel("Inicializando...", self)
-        label.setGeometry(10, 10, 280, 20)
+        label.setGeometry(30, 10, 240, 15)
         label.setAlignment(Qt.AlignCenter)
         label.setFont(QFont("Arial", 14))
 
         # Barra de Progresso
         self.progresso = QProgressBar(self)
-        self.progresso.setGeometry(20, 50, 260, 15)
+        self.progresso.setGeometry(20, 50, 260, 10)
         self.progresso.setValue(0)
 
         self.centrar_janela()

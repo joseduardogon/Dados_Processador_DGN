@@ -1,5 +1,4 @@
 import sqlite3
-from types import NoneType
 
 def obter_estatisticas_unidade(unidade, data=None):
     """Obtém as estatísticas de imagens por fase para a unidade e data especificadas,
@@ -21,42 +20,79 @@ def obter_estatisticas_unidade(unidade, data=None):
 
         print("Executando consulta SQL...")
         if data:
-            cursor.execute("""
-                SELECT 
-                    fase,
-                    fase_destino,
-                    pasta,
-                    tempo_gasto,
-                    SUM(imgs_depois) AS total_imagens,
-                    SUM(docs_depois) AS total_docs_depois
-                FROM 
-                    atividades_digitalizacao
-                WHERE 
-                    unidade = ? AND STRFTIME('%Y-%m-%d', DATE(termino)) = ?
-                GROUP BY 
-                    fase, fase_destino, pasta
-                ORDER BY 
-                    fase; 
-            """, (unidade, data))
+            if unidade == "admin":  # Se a unidade for "admin", busca todas as unidades
+                cursor.execute("""
+                    SELECT 
+                        fase,
+                        fase_destino,
+                        pasta,
+                        tempo_gasto,
+                        SUM(imgs_depois) AS total_imagens,
+                        SUM(docs_depois) AS total_docs_depois
+                    FROM 
+                        atividades_digitalizacao
+                    WHERE 
+                        STRFTIME('%Y-%m-%d', DATE(termino)) = ?
+                    GROUP BY 
+                        fase, fase_destino, pasta
+                    ORDER BY 
+                        fase; 
+                """, (data,))
+            else:
+                cursor.execute("""
+                    SELECT 
+                        fase,
+                        fase_destino,
+                        pasta,
+                        tempo_gasto,
+                        SUM(imgs_depois) AS total_imagens,
+                        SUM(docs_depois) AS total_docs_depois
+                    FROM 
+                        atividades_digitalizacao
+                    WHERE 
+                        unidade = ? AND STRFTIME('%Y-%m-%d', DATE(termino)) = ?
+                    GROUP BY 
+                        fase, fase_destino, pasta
+                    ORDER BY 
+                        fase; 
+                """, (unidade, data))
         else:
-            cursor.execute("""
-                SELECT 
-                    STRFTIME('%Y-%m-%d', DATE(termino)) AS data,
-                    fase,
-                    fase_destino,
-                    pasta,
-                    tempo_gasto,
-                    SUM(imgs_depois) AS total_imagens,
-                    SUM(docs_depois) AS total_docs_depois
-                FROM 
-                    atividades_digitalizacao
-                WHERE 
-                    unidade = ?
-                GROUP BY 
-                    data, fase, fase_destino, pasta
-                ORDER BY 
-                    fase, data; 
-            """, (unidade,))
+            if unidade == "admin":
+                cursor.execute("""
+                    SELECT 
+                        STRFTIME('%Y-%m-%d', DATE(termino)) AS data,
+                        fase,
+                        fase_destino,
+                        pasta,
+                        tempo_gasto,
+                        SUM(imgs_depois) AS total_imagens,
+                        SUM(docs_depois) AS total_docs_depois
+                    FROM 
+                        atividades_digitalizacao
+                    GROUP BY 
+                        data, fase, fase_destino, pasta
+                    ORDER BY 
+                        fase, data;
+                    """)
+            else:
+                cursor.execute("""
+                    SELECT 
+                        STRFTIME('%Y-%m-%d', DATE(termino)) AS data,
+                        fase,
+                        fase_destino,
+                        pasta,
+                        tempo_gasto,
+                        SUM(imgs_depois) AS total_imagens,
+                        SUM(docs_depois) AS total_docs_depois
+                    FROM 
+                        atividades_digitalizacao
+                    WHERE 
+                        unidade = ?
+                    GROUP BY 
+                        data, fase, fase_destino, pasta
+                    ORDER BY 
+                        fase, data; 
+                """, (unidade,))
         print("Consulta executada.")
 
         estatisticas = {}
@@ -127,12 +163,43 @@ def obter_estatisticas_unidade(unidade, data=None):
 
                 if data not in estatisticas:
                     estatisticas[data] = {}
-                if fase not in estatisticas[data]:
-                    estatisticas[data][fase] = 0
-                estatisticas[data][fase] += total_imagens
-                fases_processadas.add(combinacao_fase_pasta)
-                print(
-                    f"Somando: Fase: {fase}, Total: {total_imagens}, Soma: {estatisticas[data][fase]}")
+                    self.tabela.fases_processadas_por_data[data] = set()
+                # --- Condições para somar a linha ---
+                if (combinacao_fase_pasta not in fases_processadas_por_data[data] and
+                        fase != fase_destino and
+                        "Suspenso" not in fase_destino):
+
+                    # --- Nova Condição: Tempo Gasto ---
+                    try:
+                        horas, minutos, segundos = map(int, tempo_gasto.split(':'))
+                        tempo_gasto_segundos = horas * 3600 + minutos * 60 + segundos
+
+                        # ---  Condição específica para as fases ---
+                        if (fase == "Verificação" or fase == "CLassificação" or fase == "Digitalização (Scanner)" or fase
+                                == "Controle de Qualidade"):
+                            if tempo_gasto_segundos > 5 * total_docs_depois:
+                                if fase not in estatisticas[data]:
+                                    estatisticas[data][fase] = 0
+                                estatisticas[data][fase] += total_imagens
+                                fases_processadas_por_data[data].add(combinacao_fase_pasta)
+                                print(
+                                    f"Somando: Fase: {fase}, Total: {total_imagens}, Soma: {estatisticas[data][fase]}")
+                            else:
+                                print(
+                                    f"Ignorando por tempo: Fase: {fase}, Tempo Gasto: {tempo_gasto_segundos} segundos, Docs. Depois: {total_docs_depois}")
+                        else:  # --- As demais fases sempre serão somadas
+                            if fase not in estatisticas[data]:
+                                estatisticas[data][fase] = 0
+                            estatisticas[data][fase] += total_imagens
+                            fases_processadas_por_data[data].add(combinacao_fase_pasta)
+                            print(
+                                f"Somando: Fase: {fase}, Total: {total_imagens}, Soma: {estatisticas[data][fase]}")
+                    except ValueError:
+                        print(f"Ignorando por formato de tempo inválido: {tempo_gasto}")
+                    # ------------------------------------
+
+                else:
+                    print(f"Ignorando: Fase: {fase}, Fase Destino: {fase_destino}, Pasta: {pasta}")
 
         conexao.close()
         print("Conexão fechada.")
@@ -155,17 +222,25 @@ def obter_meses_anos_disponiveis(unidade):
         print("Conexão estabelecida.")
 
         print("Executando consulta SQL (Meses/Anos)...")
-        cursor.execute("""
-            SELECT DISTINCT STRFTIME('%m/%Y', DATE(termino)) AS mes_ano_disponivel 
-            FROM atividades_digitalizacao
-            WHERE unidade = ?
-            ORDER BY mes_ano_disponivel
-        """, (unidade,))
+
+        if unidade == 'admin':
+            cursor.execute("""
+                            SELECT DISTINCT STRFTIME('%m/%Y', DATE(termino)) AS mes_ano_disponivel 
+                            FROM atividades_digitalizacao
+                            ORDER BY mes_ano_disponivel
+                        """)
+        else:
+            cursor.execute("""
+                SELECT DISTINCT STRFTIME('%m/%Y', DATE(termino)) AS mes_ano_disponivel 
+                FROM atividades_digitalizacao
+                WHERE unidade = ?
+                ORDER BY mes_ano_disponivel
+            """, (unidade,))
         print("Consulta SQL (Meses/Anos) executada.")
 
         print("Obtendo meses/anos...")
         meses_anos = [row[0] for row in cursor.fetchall()]
-        print("Meses/anos obtidos:", meses_anos) # Print para verificar a lista de meses/anos
+        print("Meses/anos obtidos:", meses_anos)  # Print para verificar a lista de meses/anos
 
         conexao.close()
         print("Conexão fechada.")
