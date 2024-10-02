@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import (QWidget, QLabel, QLineEdit, QVBoxLayout, QHBoxLayou
                              QTabWidget, QTableWidget, QComboBox, QTableWidgetItem, QMessageBox)
 from PyQt5.QtCore import Qt
 
-from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade, obter_meses_anos_disponiveis
+from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade, obter_meses_anos_disponiveis, obter_unidades_disponiveis
 from analista_dados.files.back_end.desempenho_funcionario import obter_estatisticas_funcionario
 from .estatisticas import criar_tabela_estatisticas, criar_tabela_funcionarios
 
@@ -39,6 +39,11 @@ class DesempenhoWidget(QWidget):
             # Layout horizontal para os seletores de data
             layout_seletores_data = QHBoxLayout()
 
+            # Seletor de Unidade
+            self.seletor_unidade = QComboBox(self)
+            layout_seletores_data.addWidget(self.seletor_unidade)
+            self.atualizar_seletor_unidades()
+
             # Seletor de Mês/Ano
             self.seletor_mes_ano = QComboBox(self)
             #self.seletor_mes_ano.currentIndexChanged.connect(self.habilitar_campo_dia)
@@ -49,7 +54,7 @@ class DesempenhoWidget(QWidget):
             self.campo_dia = QLineEdit(self)
             self.campo_dia.setPlaceholderText("Dia")
             self.campo_dia.setEnabled(True)
-            self.campo_dia.setFixedWidth(40)
+            self.campo_dia.setFixedWidth(80)
             layout_seletores_data.addWidget(self.campo_dia)
 
             # Botão "Gerar"
@@ -78,7 +83,6 @@ class DesempenhoWidget(QWidget):
         """Atualiza a tabela com as estatísticas da unidade."""
         print("----- Iniciando atualizar_tabela_unidade -----")
         try:
-            global usuario_atual
             unidade = self.usuario_atual['unidade']
             mes_ano = self.seletor_mes_ano.currentText()
             dia = self.campo_dia.text()
@@ -223,6 +227,31 @@ class DesempenhoWidget(QWidget):
                 print("Limpando seletores...")
                 self.seletor_mes_ano.clear()
                 self.seletor_mes_ano.addItems(meses_anos_disponiveis)
+                print("Seletores limpos.")
+
+                # Limpa e desabilita o campo de dia
+                print("Limpando e desabilitando campo de dia...")
+
+                print("----- Fim de atualizar_seletor_mes_ano -----")
+            except Exception as e:
+                print(f"Erro em atualizar_seletor_mes_ano: {e}")
+
+    def atualizar_seletor_unidades(self):  # Função movida para DesempenhoWidget
+            """Atualiza as opções de mês/ano no seletor."""
+            print("----- Iniciando atualizar_seletor_unidades -----")
+            try:
+                print("Obtendo unidade do campo de texto...")
+                unidade = self.usuario_atual['unidade']
+                print("Unidade obtida:", unidade)
+
+                print("Obtendo unidades disponíveis...")
+                unidades_disponiveis = obter_unidades_disponiveis(unidade)
+                print("unidades disponíveis obtidos.")
+
+                # Limpa e preenche o seletor de mes/ano
+                print("Limpando seletores...")
+                self.seletor_unidade.clear()
+                self.seletor_unidade.addItems(unidades_disponiveis)
                 print("Seletores limpos.")
 
                 # Limpa e desabilita o campo de dia

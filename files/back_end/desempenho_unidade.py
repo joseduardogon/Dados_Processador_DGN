@@ -292,3 +292,43 @@ def obter_meses_anos_disponiveis(
             f"Erro ao obter meses/anos disponíveis: {e}")  # Se um erro ocorrer, imprime uma mensagem de erro no console, incluindo a descrição do erro.
         print("----- Fim de obter_meses_anos_disponiveis -----")
         return []  # Retorna uma lista vazia, caso haja erro na função, evitando que a aplicação pare inesperadamente.
+
+def obter_unidades_disponiveis(unidade):
+    print(
+        "----- Iniciando obter_unidades_disponiveis -----")  # Imprime uma mensagem de debug no console.
+    try:
+        print("Conectando ao banco de dados...")
+        conexao = sqlite3.connect(
+            "database/banco_producao.db")  # Estabelece uma conexão com o banco de dados.
+        cursor = conexao.cursor()  # Cria um cursor para executar comandos no banco de dados.
+        print("Conexão estabelecida.")  # Imprime no console uma mensagem
+
+        print(
+            "Executando consulta SQL (Unidades)...")  # Imprime no console uma mensagem informando o início da execução da consulta SQL para obter os meses e anos.
+        # Verifica se a unidade é "admin"
+        if unidade == 'admin':  # Se unidade igual a admin selecionar todas as unidades:
+            cursor.execute("""
+                        SELECT DISTINCT unidade 
+                        FROM atividades_digitalizacao
+                        ORDER BY unidade
+                    """)
+            print("Obtendo Unidades...")
+            unidades = [row[0] for row in
+                        cursor.fetchall()]  # Obtém todos os resultados da consulta, que são tuplas contendo a string no formato 'MM/AAAA', e cria uma lista `meses_anos` apenas com esses valores.
+        else:  # Se unidade for diferente de admin selecionar somente a unidade do usuario:
+            print("Obtendo Unidades...")
+            unidades = [unidade]
+        print("Unidades obtidas:", unidades)  # Imprime no console os meses/anos encontrados no banco de dados.
+
+        conexao.close()  # Fecha a conexão com o banco de dados após a consulta.
+        print("Conexão fechada.")  # Imprime uma mensagem de debug.
+        print(
+            "----- Fim de obter_unidades_disponiveis -----")  # Imprime uma mensagem de debug no console, indicando o fim da função.
+        return unidades # Retorna a lista `meses_anos` contendo os meses e anos distintos, no formato "MM/AAAA", encontrados no banco de dados para a unidade especificada.
+
+    except sqlite3.Error as e:  # Captura um erro específico do SQLite (sqlite3.Error), caso ocorra durante a conexão com o banco ou a execução da consulta SQL.
+        print(
+            f"Erro ao obter unidades disponíveis: {e}")  # Se um erro ocorrer, imprime uma mensagem de erro no console, incluindo a descrição do erro.
+        print("----- Fim de obter_unidades_disponiveis -----")
+        return []  # Retorna uma lista vazia, caso haja erro na função, evitando que a aplicação pare inesperadamente.
+
