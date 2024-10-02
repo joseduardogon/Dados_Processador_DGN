@@ -43,6 +43,7 @@ class DesempenhoWidget(QWidget):
             self.seletor_mes_ano = QComboBox(self)
             #self.seletor_mes_ano.currentIndexChanged.connect(self.habilitar_campo_dia)
             layout_seletores_data.addWidget(self.seletor_mes_ano)
+            self.atualizar_seletor_mes_ano()
 
             # Campo para digitar o dia
             self.campo_dia = QLineEdit(self)
@@ -91,9 +92,33 @@ class DesempenhoWidget(QWidget):
             mes, ano = mes_ano.split('/')
             data_selecionada = f"{ano}-{mes}-{dia.zfill(2)}"  # Formato aaaa-mm-dd
 
-            print("----- Fim de atualizar_tabela_unidade -----")
-        except Exception as e:
-            print(f"Erro em atualizar_tabela_unidade: {e}")
+            estatisticas_unidade = obter_estatisticas_unidade(unidade, data_selecionada)
+
+            if not estatisticas_unidade:  # Verifica se o dicionário `estatisticas` está vazio.
+                QMessageBox.warning(self, "Aviso",
+                                    f"Não há dados disponíveis para a data {data_selecionada}.")
+
+                # --- Atualiza a tabela ---
+            self.tabela_unidade.setRowCount(0)
+            row_index = 0
+            for fase, total_imagens in estatisticas_unidade.items():
+                self.tabela_unidade.insertRow(row_index)
+                self.tabela_unidade.setItem(row_index, 0, QTableWidgetItem(
+                    str(data_selecionada)))
+                self.tabela_unidade.setItem(row_index, 1,
+                                            QTableWidgetItem(
+                                                fase))
+                self.tabela_unidade.setItem(row_index, 2, QTableWidgetItem(
+                    str(total_imagens)))
+                row_index += 1
+
+            self.tabela_unidade.resizeColumnsToContents()
+
+            print(
+                "----- Fim de atualizar_tabela_unidade -----")  # Imprime uma mensagem de debug no console, para indicar o término da função.
+        except Exception as e:  # Captura qualquer exceção (erro) que ocorra durante o processo.
+            print(
+                f"Erro em atualizar_tabela_unidade: {e}")  # Se houver um erro, imprime uma mensagem de erro no console com a descrição da exceção.
 
     def criar_subaba_funcionarios(self):
         """Cria a subaba 'Funcionarios'."""
@@ -181,3 +206,28 @@ class DesempenhoWidget(QWidget):
             print("----- Fim de atualizar_tabela_funcionarios -----")
         except Exception as e:
             print(f"Erro em atualizar_tabela_funcionarios: {e}")
+
+    def atualizar_seletor_mes_ano(self):  # Função movida para DesempenhoWidget
+            """Atualiza as opções de mês/ano no seletor."""
+            print("----- Iniciando atualizar_seletor_mes_ano -----")
+            try:
+                print("Obtendo unidade do campo de texto...")
+                unidade = self.usuario_atual['unidade']
+                print("Unidade obtida:", unidade)
+
+                print("Obtendo meses/anos disponíveis...")
+                meses_anos_disponiveis = obter_meses_anos_disponiveis(unidade)
+                print("Meses/anos disponíveis obtidos.")
+
+                # Limpa e preenche o seletor de mes/ano
+                print("Limpando seletores...")
+                self.seletor_mes_ano.clear()
+                self.seletor_mes_ano.addItems(meses_anos_disponiveis)
+                print("Seletores limpos.")
+
+                # Limpa e desabilita o campo de dia
+                print("Limpando e desabilitando campo de dia...")
+
+                print("----- Fim de atualizar_seletor_mes_ano -----")
+            except Exception as e:
+                print(f"Erro em atualizar_seletor_mes_ano: {e}")
