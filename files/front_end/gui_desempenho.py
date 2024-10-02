@@ -83,7 +83,7 @@ class DesempenhoWidget(QWidget):
         """Atualiza a tabela com as estatísticas da unidade."""
         print("----- Iniciando atualizar_tabela_unidade -----")
         try:
-            unidade = self.usuario_atual['unidade']
+            unidade = self.seletor_unidade.currentText()
             mes_ano = self.seletor_mes_ano.currentText()
             dia = self.campo_dia.text()
 
@@ -131,6 +131,14 @@ class DesempenhoWidget(QWidget):
             self.widget_funcionarios = QWidget()
             layout_funcionarios = QVBoxLayout(self.widget_funcionarios)
 
+            # Layout horizontal para os seletores de unidade
+            layout_seletores_unidade = QHBoxLayout()
+
+            # Seletor de Unidade
+            self.seletor_unidade = QComboBox(self)
+            layout_seletores_unidade.addWidget(self.seletor_unidade)
+            self.atualizar_seletor_unidades()
+
             # Layout horizontal para o botão "Gerar"
             layout_botao_gerar = QHBoxLayout()
             botao_gerar_funcionarios = QPushButton("Gerar", self)
@@ -144,6 +152,7 @@ class DesempenhoWidget(QWidget):
             self.tabela_funcionarios = criar_tabela_estatisticas({})
             layout_funcionarios.addWidget(self.tabela_funcionarios)
 
+            layout_funcionarios.addLayout(layout_seletores_unidade)
             layout_funcionarios.addLayout(layout_botao_gerar)
 
             self.abas_internas.addTab(self.widget_funcionarios, "Funcionarios")
@@ -156,7 +165,7 @@ class DesempenhoWidget(QWidget):
         """Atualiza a tabela com as estatísticas dos funcionários."""
         print("----- Iniciando atualizar_tabela_funcionarios -----")
         try:
-            unidade = self.usuario_atual['unidade']
+            unidade = self.seletor_unidade.currentText()
             print("Unidade obtida:", unidade)
 
             print("Obtendo estatísticas do funcionário...")
