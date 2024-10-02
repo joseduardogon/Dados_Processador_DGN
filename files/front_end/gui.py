@@ -6,6 +6,8 @@ from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET
 from .gui_desempenho import DesempenhoWidget
+from analista_dados.files.back_end.cadastro_funcionario import criar_tabela_funcionarios
+
 
 
 class MainWindow(QMainWindow):
@@ -156,6 +158,11 @@ class MainWindow(QMainWindow):
             botao_excluir_dados.setObjectName("botao_cancelar")
             botao_excluir_dados.clicked.connect(self.excluir_dados)
             layout_configuracoes.addWidget(botao_excluir_dados)
+
+            botao_funcionarios = QPushButton("Funcionarios", self)
+            botao_funcionarios.setObjectName("botao_funcionarios")
+            botao_funcionarios.clicked.connect(criar_tabela_funcionarios)
+            layout_configuracoes.addWidget(botao_funcionarios)
 
             widget_configuracoes.setLayout(layout_configuracoes)
             self.abas.addTab(widget_configuracoes, "Configurações")
