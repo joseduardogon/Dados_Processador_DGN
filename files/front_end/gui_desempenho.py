@@ -7,10 +7,13 @@ from analista_dados.files.back_end.desempenho_funcionario import obter_estatisti
 from .estatisticas import criar_tabela_estatisticas, criar_tabela_funcionarios
 
 class DesempenhoWidget(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, usuario, parent=None):
         """Inicializa a aba 'Desempenho'."""
         super().__init__(parent)
-        global usuario_atual  # Importe usuario_atual para usar nesta classe
+
+        # Armazene os dados do usuário
+        self.usuario_atual = usuario
+        print(f"gui_desempenho:{self.usuario_atual}")
 
         print("----- Iniciando __init__ da DesempenhoWidget -----")
         try:
@@ -38,20 +41,20 @@ class DesempenhoWidget(QWidget):
 
             # Seletor de Mês/Ano
             self.seletor_mes_ano = QComboBox(self)
-            self.seletor_mes_ano.currentIndexChanged.connect(self.habilitar_campo_dia)
+            #self.seletor_mes_ano.currentIndexChanged.connect(self.habilitar_campo_dia)
             layout_seletores_data.addWidget(self.seletor_mes_ano)
 
             # Campo para digitar o dia
             self.campo_dia = QLineEdit(self)
             self.campo_dia.setPlaceholderText("Dia")
-            self.campo_dia.setEnabled(False)
+            self.campo_dia.setEnabled(True)
             self.campo_dia.setFixedWidth(40)
             layout_seletores_data.addWidget(self.campo_dia)
 
             # Botão "Gerar"
             botao_gerar = QPushButton("Gerar", self)
             botao_gerar.setObjectName("botao_selecionar")
-            botao_gerar.setMaximumSize(80, 30)
+            botao_gerar.setMaximumSize(120, 40)
             botao_gerar.clicked.connect(self.atualizar_tabela_unidade)
             layout_seletores_data.addWidget(botao_gerar)
 
@@ -75,7 +78,7 @@ class DesempenhoWidget(QWidget):
         print("----- Iniciando atualizar_tabela_unidade -----")
         try:
             global usuario_atual
-            unidade = usuario_atual['unidade']
+            unidade = self.usuario_atual['unidade']
             mes_ano = self.seletor_mes_ano.currentText()
             dia = self.campo_dia.text()
 
@@ -92,7 +95,7 @@ class DesempenhoWidget(QWidget):
         except Exception as e:
             print(f"Erro em atualizar_tabela_unidade: {e}")
 
-    def criar_subaba_funcionarios(self, abas_internas):
+    def criar_subaba_funcionarios(self):
         """Cria a subaba 'Funcionarios'."""
         print("----- Iniciando criar_subaba_funcionarios -----")
         try:
@@ -103,7 +106,7 @@ class DesempenhoWidget(QWidget):
             layout_botao_gerar = QHBoxLayout()
             botao_gerar_funcionarios = QPushButton("Gerar", self)
             botao_gerar_funcionarios.setObjectName("botao_selecionar")
-            botao_gerar_funcionarios.setMaximumSize(80, 30)
+            botao_gerar_funcionarios.setMaximumSize(300, 40)
             botao_gerar_funcionarios.clicked.connect(self.atualizar_tabela_funcionarios)
             layout_botao_gerar.addWidget(botao_gerar_funcionarios)
             layout_botao_gerar.setAlignment(Qt.AlignCenter)
@@ -114,7 +117,7 @@ class DesempenhoWidget(QWidget):
 
             layout_funcionarios.addLayout(layout_botao_gerar)
 
-            abas_internas.addTab(self.widget_funcionarios, "Funcionarios")
+            self.abas_internas.addTab(self.widget_funcionarios, "Funcionarios")
 
             print("----- Fim de criar_subaba_funcionarios -----")
         except Exception as e:
@@ -124,8 +127,7 @@ class DesempenhoWidget(QWidget):
         """Atualiza a tabela com as estatísticas dos funcionários."""
         print("----- Iniciando atualizar_tabela_funcionarios -----")
         try:
-            global usuario_atual
-            unidade = usuario_atual['unidade']
+            unidade = self.usuario_atual['unidade']
             print("Unidade obtida:", unidade)
 
             print("Obtendo estatísticas do funcionário...")

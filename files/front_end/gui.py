@@ -5,9 +5,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET
-from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade, obter_meses_anos_disponiveis
-from .estatisticas import criar_tabela_estatisticas, criar_tabela_funcionarios
-from analista_dados.files.back_end.desempenho_funcionario import obter_estatisticas_funcionario
 from .gui_desempenho import DesempenhoWidget
 
 
@@ -141,7 +138,7 @@ class MainWindow(QMainWindow):
         print("----- Iniciando criar_aba_desempenho -----")
         try:
             # Crie a aba "Desempenho" com a classe DesempenhoWidget
-            self.desempenho_widget = DesempenhoWidget(self)
+            self.desempenho_widget = DesempenhoWidget(self.usuario_atual, self)
             self.abas.addTab(self.desempenho_widget, "Desempenho")
 
             print("----- Fim de criar_aba_desempenho -----")
@@ -172,7 +169,7 @@ class MainWindow(QMainWindow):
         try:
             arquivo, _ = QFileDialog.getOpenFileName(self, "Selecione um Arquivo")
             if arquivo:
-                if validar_arquivo(arquivo, usuario_atual['nome'], usuario_atual['unidade']):
+                if validar_arquivo(arquivo, self.usuario_atual['nome'], self.usuario_atual['unidade']):
                     print("Arquivo válido selecionado:", arquivo)
                     print("----- Fim de abrir_seletor_arquivo -----")
                 else:
