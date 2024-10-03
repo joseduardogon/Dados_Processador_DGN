@@ -117,7 +117,7 @@ class MainWindow(QMainWindow):
         try:
             widget_importar = QWidget()
             layout_importar = QVBoxLayout()
-            layout_botoes_arquivo = QHBoxLayout()
+            layout_botoes_arquivo = QVBoxLayout()
 
             self.botao_selecionar = QPushButton("Selecionar Arquivo", self)
             self.botao_selecionar.clicked.connect(self.abrir_seletor_arquivo)
@@ -126,6 +126,10 @@ class MainWindow(QMainWindow):
             else:
                 self.botao_selecionar.setEnabled(True)  # Botao desabilitado ate que o login seja feito
             layout_botoes_arquivo.addWidget(self.botao_selecionar)
+
+            # Crie o label para exibir o nome do arquivo
+            self.label_arquivo = QLabel("", self)
+            layout_botoes_arquivo.addWidget(self.label_arquivo)
 
             self.botao_processar = QPushButton("Processar Arquivo", self)
             self.botao_processar.clicked.connect(self.processar_arquivo)
@@ -193,17 +197,19 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print(f"Erro em criar_aba_configuracoes: {e}")
 
-    def abrir_seletor_arquivo(self, arquivo):
+    def abrir_seletor_arquivo(self):
         """Abre a janela de diálogo para seleção de arquivo e valida a extensão."""
         print("----- Iniciando abrir_seletor_arquivo -----")
         try:
             self.arquivo, _ = QFileDialog.getOpenFileName(self, "Selecione um Arquivo")
+            if self.arquivo:
+                self.label_doc()
         except Exception as e:
             print(f"Erro em abrir_seletor_arquivo: {e}")
 
     def processar_arquivo(self):
         if self.arquivo:
-            if validar_arquivo(self.arquivo, self.usuario_atual['nome'], self.usuario_atual['unidade']):
+            if validar_arquivo(self.arquivo, self.usuario_atual['nome'], self.usuario_atual['unidade'], self):
                 print("Arquivo válido selecionado:", self.arquivo)
                 print("----- Fim de abrir_seletor_arquivo -----")
             else:
@@ -224,3 +230,11 @@ class MainWindow(QMainWindow):
             print("----- Fim de excluir_dados -----")
         except Exception as e:
             print(f"Erro em excluir_dados: {e}")
+
+    def label_doc(self):  # Método da classe para atualizar o label
+        """Atualiza o label com o nome do arquivo."""
+        try:
+            self.label_arquivo.setText(self.arquivo)  # Atualize o texto do label
+            print("self.arquivo sucesso")
+        except Exception as e:
+            print(f"Erro em label_doc: {e}")
