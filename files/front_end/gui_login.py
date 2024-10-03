@@ -11,7 +11,7 @@ class LoginWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Login")
-        self.setGeometry(100, 100, 300, 200)
+        self.setGeometry(300, 300, 500, 250)
         self.setFixedSize(self.size())
         self.setStyleSheet("background-color: white;")
 
@@ -29,7 +29,6 @@ class LoginWindow(QWidget):
         self.campo_senha.setEchoMode(QLineEdit.Password)
 
         self.botao_entrar = QPushButton("Entrar", self)
-        self.botao_entrar.setObjectName("botao_selecionar")
         self.botao_entrar.clicked.connect(self.autenticar)
 
         # Adicionar widgets aos layouts

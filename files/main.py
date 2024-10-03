@@ -3,10 +3,12 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from front_end.gui_login import LoginWindow  # Importe a janela de login
 from front_end.loading_screen import LoadingScreen  # Importe a loading screen
 from front_end.gui import MainWindow
+from front_end.styles import STYLESHEET
 
 class App:
     def __init__(self):
         self.app = QApplication(sys.argv)
+        self.app.setStyleSheet(STYLESHEET)
 
         # Inicia com a janela de login
         self.login_window = LoginWindow()

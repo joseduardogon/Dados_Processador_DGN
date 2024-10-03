@@ -2,6 +2,10 @@
 # Define a stylesheet para a aplicação
 
 STYLESHEET = """
+    QMainWindow {
+        color: yellow;
+    }
+    
     QWidget { /* Aplica estilo a todos os widgets */
         font-family: Arial;  /* Define a fonte como Arial para todos os widgets */
         font-size: 12pt;   /* Define o tamanho da fonte como 12 pontos para todos os widgets */
@@ -11,6 +15,7 @@ STYLESHEET = """
         border: none;       /* Remove a borda padrão dos botões */
         padding: 10px 20px;  /* Define espaçamento interno (padding) dos botões: 10px acima/abaixo, 20px esquerda/direita */
         border-radius: 5px;  /* Define o raio das bordas dos botões para 5 pixels (arredondamento) */
+        color: green;
     }
 
     QPushButton#botao_confirmar { /* Aplica estilo ao botão com objectName "botao_confirmar" */
@@ -75,5 +80,38 @@ STYLESHEET = """
 
     QMenuBar::item:pressed {  /* Estilo quando o menu é pressionado */
         background: #ccc;       /* Cor de fundo cinza mais escuro */
+    }
+    
+    QTabWidget::pane { /* O painel que contém as abas */
+        border: 1px solid #ccc; 
+        border-top: none; /* Remove a borda superior */
+        background-color: #fff; 
+    }
+
+    QTabWidget::tab-bar { /* A barra que contém os nomes das abas */
+        alignment: center; /* Centraliza as abas */
+    }
+
+    QTabWidget::tab { /* Estilo para cada aba */
+        background: #eee; /* Cinza claro */
+        border: 1px solid #ccc;
+        border-bottom-left-radius: 4px; 
+        border-bottom-right-radius: 4px; 
+        padding: 5px 10px;
+        min-width: 80px; 
+    }
+
+    QTabWidget::tab:selected, QTabWidget::tab:hover {  /* Aba selecionada ou com mouse sobre */
+        background: #ddd; /* Cinza mais escuro */
+        font-weight: bold; 
+    }
+    
+    QTableWidget::item:selected { /* Célula selecionada */
+        background-color: #007BFF;  /* Azul */
+        color: white; 
+    }
+
+    QTableWidget::item:hover { /* Célula com mouse sobre */
+        background-color: #cce0ff;  /* Azul claro */
     }
 """

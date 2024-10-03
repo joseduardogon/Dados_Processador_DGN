@@ -20,7 +20,7 @@ class LoadingScreen(QWidget):
 
         # Barra de Progresso
         self.progresso = QProgressBar(self)
-        self.progresso.setGeometry(20, 50, 260, 10)
+        self.progresso.setGeometry(20, 50, 260, 20)
         self.progresso.setValue(0)
 
         self.centrar_janela()
