@@ -12,19 +12,26 @@ def criar_tabela_funcionarios():
                 nickname TEXT PRIMARY KEY,
                 nome TEXT,
                 primeira_producao TEXT,
-                ultima_producao TEXT
+                ultima_producao TEXT,
+                salario FLOAT
             )
         """)
         conexao.commit()
         conexao.close()
         print("Tabela 'funcionarios' criada (ou já existe).")
 
+        cadastrar_funcionarios()
+        print("Funcionarios Atualizados")
+
     except sqlite3.Error as e:
         print(f"Erro ao criar a tabela 'funcionarios': {e}")
 
+import sqlite3
+
 def cadastrar_funcionarios():
-    """Lê os nomes de usuários da tabela 'atividades_digitalizacao' e
-       os insere na tabela 'funcionarios', calculando a primeira e última produção.
+    """Lê os nomes de usuários da tabela 'atividades_digitalizacao',
+       verifica se já existem na tabela 'funcionarios', e os insere ou atualiza
+       os dados de primeira e última produção.
     """
     print("----- Iniciando cadastrar_funcionarios -----")
     try:
@@ -38,39 +45,66 @@ def cadastrar_funcionarios():
         """)
         nicknames = [row[0] for row in cursor.fetchall()]
 
-        # Para cada nickname, obter a primeira e última produção
+        # Para cada nickname, verificar se já existe e inserir ou atualizar
         for nickname in nicknames:
             print(f"Processando funcionário: {nickname}")
 
-            # Obter a primeira produção (data mais antiga)
-            cursor.execute("""
-                SELECT MIN(DATE(termino)) 
-                FROM atividades_digitalizacao 
-                WHERE usuario = ?
-            """, (nickname,))
-            primeira_producao = cursor.fetchone()[0]
+            # Verificar se o nickname já existe na tabela 'funcionarios'
+            cursor.execute("SELECT 1 FROM funcionarios WHERE nickname = ?", (nickname,))
+            funcionario_existe = cursor.fetchone() is not None
 
-            # Obter a última produção (data mais recente)
-            cursor.execute("""
-                SELECT MAX(DATE(termino)) 
-                FROM atividades_digitalizacao 
-                WHERE usuario = ?
-            """, (nickname,))
-            ultima_producao = cursor.fetchone()[0]
+            if funcionario_existe:
+                print(f"Funcionário '{nickname}' já existe. Atualizando datas de produção...")
+                # Obter a primeira produção (data mais antiga)
+                cursor.execute("""
+                    SELECT MIN(DATE(termino)) 
+                    FROM atividades_digitalizacao 
+                    WHERE usuario = ?
+                """, (nickname,))
+                primeira_producao = cursor.fetchone()[0]
 
-            # Inserir ou atualizar os dados na tabela 'funcionarios'
-            cursor.execute("""
-                INSERT OR REPLACE INTO funcionarios (nickname, nome, primeira_producao, ultima_producao) 
-                VALUES (?, ?, ?, ?)
-            """, (nickname, "", primeira_producao, ultima_producao)) # nome = ""
+                # Obter a última produção (data mais recente)
+                cursor.execute("""
+                    SELECT MAX(DATE(termino)) 
+                    FROM atividades_digitalizacao 
+                    WHERE usuario = ?
+                """, (nickname,))
+                ultima_producao = cursor.fetchone()[0]
+
+                # Atualizar as datas de produção
+                cursor.execute("""
+                    UPDATE funcionarios 
+                    SET primeira_producao = ?, ultima_producao = ? 
+                    WHERE nickname = ?
+                """, (primeira_producao, ultima_producao, nickname))
+
+            else:
+                print(f"Funcionário '{nickname}' não existe. Inserindo novo funcionário...")
+                # Obter a primeira produção (data mais antiga)
+                cursor.execute("""
+                    SELECT MIN(DATE(termino)) 
+                    FROM atividades_digitalizacao 
+                    WHERE usuario = ?
+                """, (nickname,))
+                primeira_producao = cursor.fetchone()[0]
+
+                # Obter a última produção (data mais recente)
+                cursor.execute("""
+                    SELECT MAX(DATE(termino)) 
+                    FROM atividades_digitalizacao 
+                    WHERE usuario = ?
+                """, (nickname,))
+                ultima_producao = cursor.fetchone()[0]
+
+                # Inserir o novo funcionário
+                cursor.execute("""
+                    INSERT INTO funcionarios (nickname, nome, primeira_producao, ultima_producao, salario) 
+                    VALUES (?, ?, ?, ?, ?)
+                """, (nickname, "", primeira_producao, ultima_producao, ""))
 
         conexao.commit()
         conexao.close()
-        print("Funcionários cadastrados com sucesso!")
+        print("Funcionários cadastrados/atualizados com sucesso!")
 
     except sqlite3.Error as e:
         print(f"Erro ao cadastrar funcionários: {e}")
-
-# --- Chamar as funções para criar a tabela e cadastrar os funcionários ---
-criar_tabela_funcionarios()
-cadastrar_funcionarios()
