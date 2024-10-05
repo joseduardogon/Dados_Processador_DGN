@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QSpinBox, QCheckBox
+from PySide6.QtWidgets import QTableWidget, QTableWidgetItem, QSpinBox, QCheckBox
 
 def criar_tabela_estatisticas(dados):
     """Cria uma tabela com as estatísticas da unidade.

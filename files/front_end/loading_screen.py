@@ -1,9 +1,9 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QProgressBar
-from PyQt5.QtCore import Qt, QTimer, QRectF, pyqtSignal
-from PyQt5.QtGui import QFont, QPainterPath, QRegion
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QProgressBar
+from PySide6.QtCore import Qt, QTimer, QRectF, Signal
+from PySide6.QtGui import QFont, QPainterPath, QRegion
 
 class LoadingScreen(QWidget):
-    loading_completo = pyqtSignal()  # Sinal emitido quando a loading screen termina
+    loading_completo = Signal()  # Sinal emitido quando a loading screen termina
 
     def __init__(self):
         super().__init__()

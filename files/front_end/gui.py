@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QFileDialog,
+from PySide6.QtWidgets import (QWidget, QApplication, QMainWindow, QPushButton, QFileDialog,
                              QMessageBox, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QMenuBar,
-                             QMenu, QAction, QTabWidget, QTableWidget, QComboBox, QTableWidgetItem)  # Importe QMainWindow
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+                             QMenu, QTabWidget, QTableWidget, QComboBox, QTableWidgetItem)  # Importe QMainWindow
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QPixmap
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 from .styles import STYLESHEET
 from .gui_desempenho import DesempenhoWidget

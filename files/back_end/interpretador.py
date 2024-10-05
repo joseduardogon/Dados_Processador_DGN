@@ -2,7 +2,7 @@ import os
 import sqlite3
 import openpyxl
 import datetime
-from PyQt5.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox
 import analista_dados.files.front_end.loading_interpretador as loading_interpretador
 
 global main_window

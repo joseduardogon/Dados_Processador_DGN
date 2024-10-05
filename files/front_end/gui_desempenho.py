@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import (QWidget, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QPushButton,
+from PySide6.QtWidgets import (QWidget, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QPushButton,
                              QTabWidget, QTableWidget, QComboBox, QTableWidgetItem, QMessageBox)
-from PyQt5.QtCore import Qt
+from PySide6.QtCore import Qt
 
 from analista_dados.files.back_end.desempenho_unidade import obter_estatisticas_unidade, obter_meses_anos_disponiveis, obter_unidades_disponiveis
 from analista_dados.files.back_end.desempenho_funcionario import obter_estatisticas_funcionario

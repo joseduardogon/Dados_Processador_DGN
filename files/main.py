@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow
 from front_end.gui_login import LoginWindow  # Importe a janela de login
 from front_end.loading_screen import LoadingScreen  # Importe a loading screen
 from front_end.gui import MainWindow

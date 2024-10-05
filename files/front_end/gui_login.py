@@ -1,12 +1,12 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox, QApplication
-from PyQt5.QtCore import Qt, QRectF, pyqtSignal
-from PyQt5.QtGui import QFont, QPainterPath, QRegion
+from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox, QApplication
+from PySide6.QtCore import Qt, QRectF, Signal
+from PySide6.QtGui import QFont, QPainterPath, QRegion
 
 from analista_dados.files.back_end.controle_login import verificar_tabela_login, obter_dados_usuario
 
 
 class LoginWindow(QWidget):
-    login_sucedido = pyqtSignal(dict)  # Sinal emitido quando o login for bem-sucedido
+    login_sucedido = Signal(dict)  # Sinal emitido quando o login for bem-sucedido
 
     def __init__(self):
         super().__init__()

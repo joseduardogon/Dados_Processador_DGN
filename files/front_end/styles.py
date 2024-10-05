@@ -3,7 +3,7 @@
 
 STYLESHEET = """
     QMainWindow {
-        color: yellow;
+        background-color: yellow;
     }
     
     QWidget { /* Aplica estilo a todos os widgets */
@@ -11,12 +11,25 @@ STYLESHEET = """
         font-size: 12pt;   /* Define o tamanho da fonte como 12 pontos para todos os widgets */
     }
 
-    QPushButton {  /* Aplica estilo a todos os botões (QPushButton) */
-        border: none;       /* Remove a borda padrão dos botões */
-        padding: 10px 20px;  /* Define espaçamento interno (padding) dos botões: 10px acima/abaixo, 20px esquerda/direita */
-        border-radius: 5px;  /* Define o raio das bordas dos botões para 5 pixels (arredondamento) */
-        color: green;
+    QPushButton {
+        border: 2px solid #8f8f91;
+        border-radius: 6px;
+        background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
+        min-width: 80px;
     }
+
+    QPushButton:pressed {
+        background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #dadbde, stop: 1 #f6f7fa);
+    }
+
+    QPushButton:flat {
+        border: none; /* no border for a flat push button */
+    }
+
+    QPushButton:default {
+        border-color: navy; /* make the default button prominent */
+    }}
 
     QPushButton#botao_confirmar { /* Aplica estilo ao botão com objectName "botao_confirmar" */
         background-color: #2196F3; /* Define a cor de fundo como azul (#2196F3) */
