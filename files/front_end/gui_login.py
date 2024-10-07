@@ -14,6 +14,7 @@ def main(page: ft.Page):
     page.window.always_on_top = True
     page.window.maximizable = False
     page.window.shadow = True
+    page.window.icon = "assets\\icon.ico"
 
     page.add(
         ft.Row(
