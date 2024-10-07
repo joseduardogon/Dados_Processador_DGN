@@ -1,55 +1,47 @@
-from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox, QApplication
-from PySide6.QtCore import Qt, QRectF, Signal
-from PySide6.QtGui import QFont, QPainterPath, QRegion
+import flet as ft
 
 from analista_dados.files.back_end.controle_login import verificar_tabela_login, obter_dados_usuario
 
+def main(page: ft.Page):
+    page.title = "Login - Ardia"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.window.width = 500
+    page.window.height = 300
+    page.window.resizable = False
+    page.window.center()
+    page.bgcolor = ft.colors.AMBER_300
+    page.window.always_on_top = True
+    page.window.maximizable = False
+    page.window.shadow = True
 
-class LoginWindow(QWidget):
-    login_sucedido = Signal(dict)  # Sinal emitido quando o login for bem-sucedido
-
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Login")
-        self.setGeometry(300, 300, 500, 250)
-        self.setFixedSize(self.size())
-        self.setStyleSheet("background-color: white;")
-
-        # Layouts
-        layout_principal = QVBoxLayout()
-        layout_campos = QVBoxLayout()
-        layout_botao = QHBoxLayout()
-
-        # Widgets
-        label_usuario = QLabel("Usuário:", self)
-        self.campo_usuario = QLineEdit(self)
-
-        label_senha = QLabel("Senha:", self)
-        self.campo_senha = QLineEdit(self)
-        self.campo_senha.setEchoMode(QLineEdit.Password)
-
-        self.botao_entrar = QPushButton("Entrar", self)
-        self.botao_entrar.clicked.connect(self.autenticar)
-
-        # Adicionar widgets aos layouts
-        layout_campos.addWidget(label_usuario)
-        layout_campos.addWidget(self.campo_usuario)
-        layout_campos.addWidget(label_senha)
-        layout_campos.addWidget(self.campo_senha)
-        layout_botao.addWidget(self.botao_entrar)
-
-        layout_principal.addLayout(layout_campos)
-        layout_principal.addLayout(layout_botao)
-        self.setLayout(layout_principal)
-
-        # Centralizar a janela
-        self.centrar_janela()
-
-    def centrar_janela(self):
-        qr = self.frameGeometry()
-        cp = QApplication.desktop().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
+    page.add(
+        ft.Row(
+            [
+                ft.Column([
+                    ft.Container(
+                        content=ft.Text("Non clickable"),
+                        alignment=ft.alignment.center,
+                        bgcolor=ft.colors.WHITE,
+                        width=450,
+                        height=200,
+                        border_radius=7,
+                    ),
+                    ft.FilledButton(
+                        text="Entrar",
+                        width = 450,
+                        style=ft.ButtonStyle(
+                            bgcolor=ft.colors.TEAL_ACCENT_700,
+                            shape=ft.RoundedRectangleBorder(radius=7),
+                        ),
+                    )
+                ]
+                ),
+            ],
+            spacing = 10,
+            alignment=ft.MainAxisAlignment.CENTER,
+        ),
+    )
 
     def autenticar(self):
         """Autentica o usuário."""
@@ -72,7 +64,9 @@ class LoginWindow(QWidget):
                 usuario_atual = {"nome": nome_usuario, "tipo": tipo_usuario, "unidade": unidade}
                 self.login_sucedido.emit(usuario_atual)  # Emite o sinal de login bem-sucedido
             else:
-                QMessageBox.warning(self, "Erro", "Senha incorreta!")
+                print( "Erro", "Senha incorreta!")
         else:
-            QMessageBox.warning(self, "Erro", "Usuário não encontrado!")
+            print("Erro", "Usuário não encontrado!")
         print(f"gui_login: {usuario_atual}")
+
+ft.app(main)

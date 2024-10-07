@@ -59,7 +59,7 @@ Rectangle {
             y: 4
             width: 180
             height: 43
-            source: "../../../front_end/logo.png"
+            source: "../../../front_end/logo_diginotas.png"
         }
     }
     Rectangle {

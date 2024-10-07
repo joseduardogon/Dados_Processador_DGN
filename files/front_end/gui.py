@@ -67,7 +67,7 @@ class MainWindow(QMainWindow):
         print("Adicionando logo...")
         try:
             label_logo = QLabel(self)
-            pixmap_logo = QPixmap("front_end/logo.png")
+            pixmap_logo = QPixmap("front_end/logo_diginotas.png")
             label_logo.setPixmap(pixmap_logo)
             label_logo.setFixedSize(pixmap_logo.width(), pixmap_logo.height())
             layout_logo.addWidget(label_logo)
