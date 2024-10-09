@@ -1,12 +1,16 @@
 import sqlite3
 
+from analista_dados.files.back_end.interpretador import caminho_arquivo
+
+caminho_db = "\\Users\\josed\\codes\\project\\analista_dados\\files\\database\\banco_producao.db"
+
 def verificar_tabela_login():
     """Verifica se a tabela 'usuarios' existe no banco de dados.
        Se não existir, cria a tabela com usuários padrão.
     """
     print("----- Verificando tabela de login -----")
     try:
-        conexao = sqlite3.connect("database/banco_producao.db")
+        conexao = sqlite3.connect(caminho_db)
         cursor = conexao.cursor()
 
         # Verifica se a tabela existe
@@ -54,7 +58,7 @@ def obter_dados_usuario(nome_usuario):
     """
     print(f"----- Buscando dados do usuário: {nome_usuario} -----")
     try:
-        conexao = sqlite3.connect("database/banco_producao.db")
+        conexao = sqlite3.connect(caminho_db)
         cursor = conexao.cursor()
         cursor.execute("SELECT senha, tipo_usuario, unidade FROM usuarios WHERE nome_usuario = ?", (nome_usuario,))
         usuario = cursor.fetchone()
@@ -64,3 +68,4 @@ def obter_dados_usuario(nome_usuario):
     except sqlite3.Error as e:
         print(f"Erro ao buscar dados do usuário: {e}")
         return None
+verificar_tabela_login()

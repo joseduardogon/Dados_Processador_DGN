@@ -13,7 +13,7 @@ def main(page: ft.Page):
     page.window.height = 300
     page.window.resizable = False
     page.window.center()
-    page.bgcolor = ft.colors.GREY_50
+    page.bgcolor = ft.colors.BLACK
     page.window.always_on_top = True
     page.window.maximizable = False
     page.window.shadow = True
@@ -39,17 +39,41 @@ def main(page: ft.Page):
             password=True,
             can_reveal_password=True,
     )
-    botao_entrar = ft.FilledButton(
-            text="Entrar",
-            width=450,
-            style=ft.ButtonStyle(
-                bgcolor=ft.colors.GREY_200,
-                color=ft.colors.GREEN_800,
-                shape=ft.RoundedRectangleBorder(radius=7),
-                overlay_color=ft.colors.LIGHT_GREEN_200,
+
+    def handle_close(e):
+        page.close(dlg_modal)
+        page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
+
+    dlg_modal = ft.AlertDialog(
+        modal=True,
+        title=ft.Text("Usuario ou Senha Incorretos"),
+        content=ft.Text("Confirme seus dados de acesso", color = ft.colors.WHITE),
+        actions=[
+            ft.TextButton("ok", on_click=handle_close),
+        ],
+        actions_alignment=ft.MainAxisAlignment.END,
+        on_dismiss=lambda e: page.add(
+            ft.Text("Modal dialog dismissed"),
         ),
-            on_click = autenticar(campo_usuario.value, campo_senha.value),  # Conecte o botão à função autenticar
-        )
+    )
+    def click_botao_entrar(e):
+        """Função chamada quando o botão 'Entrar' é clicado."""
+        try:
+            autenticar(campo_usuario, campo_senha, page)
+        except:
+            page.open(dlg_modal)
+
+    botao_entrar = ft.FilledButton(
+        text="Entrar",
+        width=450,
+        style=ft.ButtonStyle(
+            bgcolor=ft.colors.GREEN_400,
+            color=ft.colors.GREEN_900,
+            shape=ft.RoundedRectangleBorder(radius=7),
+            overlay_color=ft.colors.LIGHT_GREEN_200,
+        ),
+        on_click=click_botao_entrar,  # Passa a função de callback para on_click
+    )
     layout = ft.Column(
             [
                 ft.Container(
@@ -77,7 +101,7 @@ def main(page: ft.Page):
     page.theme = meu_tema()
     page.update()
 
-def autenticar(campo_usuario,campo_senha):  # Função para autenticar o usuário
+def autenticar(campo_usuario,campo_senha, page):  # Função para autenticar o usuário
     """Autentica o usuário."""
     nome_usuario = campo_usuario.value  # Obtenha o valor do campo de usuário
     senha_digitada = campo_senha.value  # Obtenha o valor do campo de senha
@@ -88,6 +112,8 @@ def autenticar(campo_usuario,campo_senha):  # Função para autenticar o usuári
     # 2. Buscar os dados do usuário no banco de dados
     dados_usuario = obter_dados_usuario(nome_usuario)
 
+    print(f'Usuario: {nome_usuario} Senha: {senha_digitada}')
+
     if dados_usuario:
         senha_banco, tipo_usuario, unidade = dados_usuario
 
@@ -96,8 +122,6 @@ def autenticar(campo_usuario,campo_senha):  # Função para autenticar o usuári
             # 4. Login bem-sucedido!
             global usuario_atual  # Defina usuario_atual como global
             usuario_atual = {"nome": nome_usuario, "tipo": tipo_usuario, "unidade": unidade}
-            #self.login_sucedido.data = usuario_atual  # Atribuir dados ao evento
-            #self.login_sucedido.set()  # Disparar o evento
         else:
             print("Erro", "Senha incorreta!")
     else:

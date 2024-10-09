@@ -2,12 +2,12 @@ import os
 import sqlite3
 import openpyxl
 import datetime
-from PySide6.QtWidgets import QMessageBox
-import analista_dados.files.front_end.loading_interpretador as loading_interpretador
+#from PySide6.QtWidgets import QMessageBox
+#import analista_dados.files.front_end.loading_interpretador as loading_interpretador
 
 global main_window
 
-def dicionario_xlsx(caminho_arquivo, supervisor, unidade, parent):
+def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
     """Processa um arquivo .xlsx e insere os dados no banco de dados."""
     print(f"--- Iniciando processamento de XLSX: {caminho_arquivo} ---")
     try:
@@ -16,7 +16,7 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade, parent):
 
         print("--- Planilha aberta com sucesso! ---")
 
-        conexao = sqlite3.connect("database/banco_producao.db")
+        conexao = sqlite3.connect("analista_dados/files/database/banco_producao.db")
         cursor = conexao.cursor()
         print("--- Conexão com banco de dados estabelecida! ---")
 
@@ -47,7 +47,7 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade, parent):
                    """)
         print("--- Tabela criada (ou já existente)! ---")
 
-        iniciar_loading_screen(parent)  # Chama a loading screen
+        #iniciar_loading_screen(parent)  # Chama a loading screen
         print("Sucesso loading screen")
 
         num_linhas = sheet.max_row - 1  # Obtém o número de linhas a serem processadas (excluindo cabeçalho)
@@ -84,14 +84,14 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade, parent):
             # --- Atualizar a Barra de Progresso ---
             linhas_processadas += 1
             progresso = int((linhas_processadas / num_linhas) * 100)
-            parent.loading_screen.atualizar_progresso(progresso)  # Chama o método da loading screen
+            #parent.loading_screen.atualizar_progresso(progresso)  # Chama o método da loading screen
 
         conexao.commit()
         conexao.close()
 
-        parent.loading_screen.finalizar_loading()  # Chama a função para finalizar a loading screen
-        QMessageBox.information(None, "Sucesso",
-                                f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
+        #parent.loading_screen.finalizar_loading()  # Chama a função para finalizar a loading screen
+        #QMessageBox.information(None, "Sucesso",
+                                #f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
 
         print(f"--- Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados. ---")
 
@@ -104,7 +104,7 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade, parent):
     """Processa um arquivo .txt e insere os dados no banco de dados."""
     print(f"--- Iniciando processamento de TXT: {caminho_arquivo} ---")
     try:
-        conexao = sqlite3.connect("database/banco_producao.db")
+        conexao = sqlite3.connect("analista_dados/files/database/banco_producao.db")
         cursor = conexao.cursor()
         print("--- Conexão com banco de dados estabelecida! ---")
 
@@ -141,7 +141,7 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade, parent):
             next(arquivo)  # Pula o cabeçalho
             linhas_processadas = 0
 
-            iniciar_loading_screen(parent)  # Chama a loading screen
+            #iniciar_loading_screen(parent)  # Chama a loading screen
             print("Sucesso loading screen")
             for linha in arquivo:
                 # Ignora linhas que começam com "Total"
@@ -179,14 +179,14 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade, parent):
 
                 linhas_processadas += 1
                 progresso = int((linhas_processadas / num_linhas) * 100)
-                parent.loading_screen.atualizar_progresso(progresso)
+                #parent.loading_screen.atualizar_progresso(progresso)
 
         conexao.commit()
         conexao.close()
 
-        parent.loading_screen.finalizar_loading()  # Chama a função para finalizar a loading screen
-        QMessageBox.information(None, "Sucesso",
-                                f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
+        #parent.loading_screen.finalizar_loading()  # Chama a função para finalizar a loading screen
+        #QMessageBox.information(None, "Sucesso",
+                                #f"Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados com sucesso!")
 
         print(f"--- Dados do arquivo '{caminho_arquivo}' inseridos no banco de dados. ---")
 
@@ -195,7 +195,7 @@ def dicionario_txt(caminho_arquivo, supervisor, unidade, parent):
     print(f"--- Fim do processamento de TXT: {caminho_arquivo} ---")
 
 
-def validar_arquivo(caminho_arquivo, supervisor, unidade, parent):
+def validar_arquivo(caminho_arquivo, supervisor, unidade):
     """Valida e processa o arquivo."""
     print(f"--- Iniciando validação do arquivo: {caminho_arquivo} ---")
     print(f"Supervisor: {supervisor}, Unidade: {unidade}")
@@ -213,7 +213,7 @@ def validar_arquivo(caminho_arquivo, supervisor, unidade, parent):
                 print(f"Erro: Cabeçalho do arquivo .txt inválido!")
                 return False
         print("--- Arquivo TXT válido! Chamando dicionario_txt... ---")
-        dicionario_txt(caminho_arquivo, supervisor, unidade, parent)
+        dicionario_txt(caminho_arquivo, supervisor, unidade)
         return True
     elif extensao.lower() == '.xlsx':
         try:
@@ -240,7 +240,7 @@ def validar_arquivo(caminho_arquivo, supervisor, unidade, parent):
             print(f"Erro ao abrir ou processar o arquivo .xlsx: {e}")
             return False
         print("--- Arquivo XLSX válido! Chamando dicionario_xlsx... ---")
-        dicionario_xlsx(caminho_arquivo, supervisor, unidade, parent)
+        dicionario_xlsx(caminho_arquivo, supervisor, unidade)
         return True
     else:
         print("--- Extensão de arquivo inválida! ---")
@@ -281,5 +281,10 @@ def converter_para_data(data_str, formato_entrada="%m/%d/%Y %H:%M:%S"):
 
 def iniciar_loading_screen(self):
     """Inicia a loading screen após o login bem-sucedido."""
-    self.loading_screen = loading_interpretador.LoadingScreen()
-    self.loading_screen.show()
+    #self.loading_screen = loading_interpretador.LoadingScreen()
+    #self.loading_screen.show()
+
+caminho_arquivo = 'C:\\Users\\josed\\codes\\project\\analista_dados\\dados_de_teste\\rastrear_usuario.xlsx'
+supervisor = 'jordana'
+unidade = 'SEMAD'
+validar_arquivo(caminho_arquivo, supervisor, unidade)
