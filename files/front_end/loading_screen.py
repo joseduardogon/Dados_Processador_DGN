@@ -1,59 +1,41 @@
-from PySide6.QtWidgets import QApplication, QWidget, QLabel, QProgressBar
-from PySide6.QtCore import Qt, QTimer, QRectF, Signal
-from PySide6.QtGui import QFont, QPainterPath, QRegion
 
-class LoadingScreen(QWidget):
-    loading_completo = Signal()  # Sinal emitido quando a loading screen termina
 
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Inicializando...")
-        self.setGeometry(0, 0, 300, 100)
-        self.setFixedSize(self.size())
-        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
-        self.setStyleSheet("background-color: white;")
+import flet as ft
+from time import sleep
 
-        label = QLabel("Inicializando...", self)
-        label.setGeometry(30, 10, 240, 15)
-        label.setAlignment(Qt.AlignCenter)
-        label.setFont(QFont("Arial", 14))
 
-        # Barra de Progresso
-        self.progresso = QProgressBar(self)
-        self.progresso.setGeometry(20, 50, 260, 20)
-        self.progresso.setValue(0)
+def main(page: ft.Page):
+        pass
+        page.window.width = 250
+        page.window.height = 100
+        page.bgcolor = ft.colors.WHITE
+        page.window.border_radius = 7
+        page.window.frameless = True
+        page.window.always_on_top = True
+        page.window.shadow = True
+        page.window.center()
+        page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-        self.centrar_janela()
-        self.criar_mascara_arredondada(16)
+        progress_bar = ft.ProgressBar(width=200, color="yellow")
+        texto_progresso = ft.Text(value="0%", size=16, color="black")
 
-        # Configuração do timer para atualização da barra de progresso
-        self.timer_progresso = QTimer()
-        self.timer_progresso.timeout.connect(self.atualizar_progresso)
-        self.timer_progresso.start(50)
+        layout = ft.Column(
+                controls=[
+                    ft.Text("Carregando...", size=20, weight=ft.FontWeight.BOLD, color="black"), # texto "Carregando"
+                    progress_bar, # Barra de progresso
+                    texto_progresso, # Texto do progresso
+                ],
+            spacing=10,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        )
 
-        # Simula um processo de inicialização (3 segundos)
-        QTimer.singleShot(3000, self.finalizar_loading)
+        page.add(layout)
 
-    def centrar_janela(self):
-        qr = self.frameGeometry()
-        cp = QApplication.desktop().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
+        for i in range(0, 101):
+            progress_bar.value = i * 0.01
+            loading_value = int(progress_bar.value * 100)
+            texto_progresso.value = f"{loading_value}%"
+            sleep(0.1)
+            page.update()
 
-    def criar_mascara_arredondada(self, radius):
-        path = QPainterPath()
-        path.addRoundedRect(QRectF(0, 0, self.width(), self.height()), radius, radius)
-        mask = QRegion(path.toFillPolygon().toPolygon())
-        self.setMask(mask)
-
-    def atualizar_progresso(self):
-        valor_atual = self.progresso.value()
-        if valor_atual < 100:
-            self.progresso.setValue(valor_atual + 3)
-        else:
-            self.timer_progresso.stop()
-
-    def finalizar_loading(self):
-        """Emite o sinal de loading completo e fecha a tela."""
-        self.loading_completo.emit()
-        self.close()
+ft.app(target=main)

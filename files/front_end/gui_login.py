@@ -10,10 +10,10 @@ def main(page: ft.Page):
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.window.width = 500
-    page.window.height = 300
+    page.window.height = 305
     page.window.resizable = False
     page.window.center()
-    page.bgcolor = ft.colors.BLACK
+    page.bgcolor = ft.colors.WHITE
     page.window.always_on_top = True
     page.window.maximizable = False
     page.window.shadow = True
@@ -68,7 +68,7 @@ def main(page: ft.Page):
         width=450,
         style=ft.ButtonStyle(
             bgcolor=ft.colors.GREEN_400,
-            color=ft.colors.GREEN_900,
+            color=ft.colors.WHITE,
             shape=ft.RoundedRectangleBorder(radius=7),
             overlay_color=ft.colors.LIGHT_GREEN_200,
         ),
