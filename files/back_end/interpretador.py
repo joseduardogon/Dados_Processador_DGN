@@ -284,7 +284,7 @@ def iniciar_loading_screen(self):
     #self.loading_screen = loading_interpretador.LoadingScreen()
     #self.loading_screen.show()
 
-caminho_arquivo = 'C:\\Users\\josed\\codes\\project\\analista_dados\\dados_de_teste\\rastrear_usuario.xlsx'
+"""caminho_arquivo = 'C:\\Users\\josed\\codes\\project\\analista_dados\\dados_de_teste\\rastrear_usuario.xlsx'
 supervisor = 'jordana'
 unidade = 'SEMAD'
-validar_arquivo(caminho_arquivo, supervisor, unidade)
+validar_arquivo(caminho_arquivo, supervisor, unidade)"""
