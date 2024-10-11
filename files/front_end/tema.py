@@ -21,5 +21,13 @@ def meu_tema():
         font_family="Roboto",
         page_transitions=ft.PageTransitionsTheme(
             android=ft.PageTransitionTheme.FADE_UPWARDS,
-        )
+        ),
+        tabs_theme=ft.TabsTheme(
+            overlay_color= {
+                ft.ControlState.FOCUSED: ft.colors.GREY_200,
+                ft.ControlState.HOVERED: ft.colors.GREY_300,
+                ft.ControlState.PRESSED: ft.colors.GREY_400,
+            },
+            indicator_color=ft.colors.YELLOW_700,
+        ),
     )

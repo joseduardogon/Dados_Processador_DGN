@@ -1,64 +1,88 @@
+from cProfile import label
+
 import flet as ft
+from tema import meu_tema
+from openpyxl.styles.alignment import horizontal_alignments
+from six import text_type
+
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 #from .gui_desempenho import DesempenhoWidget
 #from analista_dados.files.back_end.cadastro_funcionario import criar_tabela_funcionarios
 
 class MainWindow():
     def main_gui(page: ft.page):
+        pass
+        page.window.maximized=True
+        page.bgcolor = ft.colors.GREY_50
+        page.window.resizable = False
 
-        icon = ft.Text("teste")
+        icon = ft.Text("teste de ícone", color="black")
 
         t = ft.Tabs(
-            selected_index=1,
+            selected_index=0,
             animation_duration=300,
+            divider_color=ft.colors.YELLOW_700,
+            indicator_color=ft.colors.YELLOW_200,
+            indicator_tab_size=True,
+            indicator_thickness=7,
             tabs=[
                 ft.Tab(
-                    text="Tab 1",
+                    tab_content=ft.Text("Adicionar Dados", color="black"),
                     content=ft.Container(
                         content=ft.Text("This is Tab 1"), alignment=ft.alignment.center
                     ),
                 ),
                 ft.Tab(
-                    tab_content=ft.Icon(ft.icons.SEARCH),
+                    tab_content=ft.Text("Dashboards de Dados", color="black"),
                     content=ft.Text("This is Tab 2"),
                 ),
                 ft.Tab(
-                    text="Tab 3",
-                    icon=ft.icons.SETTINGS,
+                    tab_content=ft.Text("Cadastro de Funcionários", color="black"),
                     content=ft.Text("This is Tab 3"),
+                ),
+                ft.Tab(
+                    tab_content=ft.Icon(ft.icons.SETTINGS, color="black"),
+                    content=ft.Text("This is Tab 4"),
                 ),
             ],
             expand=1,
         )
 
-        layout = ft.Column(
-            [
-                ft.Container(
-                    content=ft.Row(
-                        [icon],
-                        alignment=ft.MainAxisAlignment.CENTER,
+        layout = ft.Container(
+            content=ft.Column([
+                    ft.Container(
+                        content=ft.Row(
+                            [icon],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                        ),
+                        alignment=ft.alignment.center,
+                        bgcolor=ft.colors.WHITE,
+                        width=450,
+                        height=80,
+                        border_radius=7,
                     ),
-                    alignment=ft.alignment.center,
-                    bgcolor=ft.colors.YELLOW_700,
-                    width=450,
-                    height=200,
-                    border_radius=7,
-                ),
-                ft.Container(
-                    content=ft.Row(
-                        [t],
-                        alignment=ft.MainAxisAlignment.CENTER,
+                    ft.Container(
+                        content=ft.Row(
+                            [t],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                        ),
+                        alignment=ft.alignment.center,
+                        bgcolor=ft.colors.WHITE,
+                        width=1920,
+                        height=990,
+                        border_radius=7,
                     ),
-                    alignment=ft.alignment.center,
-                    bgcolor=ft.colors.WHITE,
-                    border_radius=7,
-                ),
-            ],
-            spacing=10,
-            alignment=ft.MainAxisAlignment.CENTER,
+                ],
+                spacing=10,
+                horizontal_alignment=ft.CrossAxisAlignment.START,
+                alignment=ft.MainAxisAlignment.CENTER
+            ),
+            alignment = ft.alignment.center
         )
 
         page.add(layout)
+        page.theme = meu_tema()
+        page.update()
 
     def criar_aba_importar(self):
         """Cria a aba 'Importar Arquivo'."""
