@@ -1,6 +1,6 @@
 import sqlite3
 
-from analista_dados.files.back_end.interpretador import caminho_arquivo
+#from analista_dados.files.back_end.interpretador import caminho_arquivo
 
 caminho_db = "\\Users\\josed\\codes\\project\\analista_dados\\files\\database\\banco_producao.db"
 
