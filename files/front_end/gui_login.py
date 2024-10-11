@@ -4,7 +4,7 @@ from tema import meu_tema
 from analista_dados.files.back_end.controle_login import verificar_tabela_login, obter_dados_usuario
 
 
-def main(page: ft.Page):
+def login_window(page: ft.Page):
     pass
     page.title = "Login - Ardia"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
@@ -128,4 +128,4 @@ def autenticar(campo_usuario,campo_senha, page):  # Função para autenticar o u
         print("Erro", "Usuário não encontrado!")
     print(f"gui_login: {usuario_atual}")
 
-ft.app(target=main)
+ft.app(target=login_window)

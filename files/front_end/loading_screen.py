@@ -4,7 +4,7 @@ import flet as ft
 from time import sleep
 
 
-def main(page: ft.Page):
+def loading_window(page: ft.Page):
         pass
         page.window.width = 250
         page.window.height = 100
@@ -38,4 +38,4 @@ def main(page: ft.Page):
             sleep(0.1)
             page.update()
 
-ft.app(target=main)
+ft.app(target=loading_window)

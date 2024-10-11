@@ -6,8 +6,8 @@ from openpyxl.styles.alignment import horizontal_alignments
 from six import text_type
 
 from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
-#from .gui_desempenho import DesempenhoWidget
-#from analista_dados.files.back_end.cadastro_funcionario import criar_tabela_funcionarios
+
+from analista_dados.files.back_end.cadastro_funcionario import criar_tabela_funcionarios
 
 class MainWindow():
     def main_gui(page: ft.page):
@@ -15,6 +15,7 @@ class MainWindow():
         page.window.maximized=True
         page.bgcolor = ft.colors.GREY_50
         page.window.resizable = False
+        page.window.maximizable = False
 
         icon = ft.Text("teste de ícone", color="black")
 
@@ -80,9 +81,31 @@ class MainWindow():
             alignment = ft.alignment.center
         )
 
-        page.add(layout)
-        page.theme = meu_tema()
-        page.update()
+        def handle_close(e):
+            page.close(dlg_modal)
+            page.add(ft.Text(f"Modal dialog closed with action: {e.control.text}"))
+
+        dlg_modal = ft.AlertDialog(
+            modal=True,
+            title=ft.Text("Erro ao preocessar Dados"),
+            content=ft.Text(' ArdIA: "Entre em contato conosco para suporte"', color=ft.colors.WHITE),
+            actions=[
+                ft.TextButton("ok", on_click=handle_close),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+            on_dismiss=lambda e: page.add(
+                ft.Text("Modal dialog dismissed"),
+            )
+        ),
+
+        try:
+            page.add(layout)
+            page.theme = meu_tema()
+            page.update()
+            print('Página "layout" criada com sucesso')
+        except Exception as e:
+            page.open(dlg_modal)
+            print(f'Erro: {e}')
 
     def criar_aba_importar(self):
         """Cria a aba 'Importar Arquivo'."""
