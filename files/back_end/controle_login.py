@@ -1,8 +1,10 @@
 import sqlite3
+import os
 
 #from analista_dados.files.back_end.interpretador import caminho_arquivo
 
-caminho_db = "\\Users\\josed\\codes\\project\\analista_dados\\files\\database\\banco_producao.db"
+caminho_db = "database/banco_producao.db"
+os.makedirs(os.path.dirname(caminho_db), exist_ok=True)  # Cria o diretório se não existir
 
 def verificar_tabela_login():
     """Verifica se a tabela 'usuarios' existe no banco de dados.
