@@ -1,5 +1,6 @@
 import flet as ft
-from loading_screen import loading_window
+from front_end.loading_screen import loading_window
+import front_end.session as session
 
 from analista_dados.files.back_end.controle_login import verificar_tabela_login, obter_dados_usuario
 
@@ -79,6 +80,7 @@ def login_window(page: ft.Page):
             if senha_digitada == senha_banco:
                 # 4. Login bem-sucedido!
                 usuario_atual = {"nome": nome_usuario, "tipo": tipo_usuario, "unidade": unidade}
+                session.usuario_atual = usuario_atual
                 return True
             else:
                 print("Erro", "Senha incorreta!")
@@ -142,7 +144,7 @@ def login_window(page: ft.Page):
     except Exception as e:
         print(f'Erro Login: {e}')
 
-ft.app(target=login_window)
+#ft.app(target=login_window)
 
 '''def autenticar(campo_usuario,campo_senha, page):  # Função para autenticar o usuário
     print("iniciando autenticar")

@@ -3,7 +3,7 @@ import os
 
 #from analista_dados.files.back_end.interpretador import caminho_arquivo
 
-caminho_db = "database/banco_producao.db"
+caminho_db = "/Users/josed/codes/project/analista_dados/files/database/banco_producao.db"
 os.makedirs(os.path.dirname(caminho_db), exist_ok=True)  # Cria o diretório se não existir
 
 def verificar_tabela_login():
@@ -14,6 +14,22 @@ def verificar_tabela_login():
     try:
         conexao = sqlite3.connect(caminho_db)
         cursor = conexao.cursor()
+
+        query = f"SELECT * FROM {'usuarios'}"
+        cursor.execute(query)
+
+        # Obtém todos os registros da consulta
+        registros = cursor.fetchall()
+
+        # Se houver registros, itera sobre eles e exibe no terminal
+        if registros:
+            for registro in registros:
+                print(registro)  # Cada registro será uma tupla com os valores das colunas
+        else:
+            print(f"A tabela {'usuarios'} está vazia ou não existe.")
+
+        print(f'caminho: {os.path.abspath(caminho_db)}')
+
 
         # Verifica se a tabela existe
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuarios'")

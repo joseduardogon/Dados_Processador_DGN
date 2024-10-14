@@ -1,6 +1,6 @@
 # front_end/main.py
 import flet as ft
-from gui_login import login_window
+from front_end.gui_login import login_window
 
 def main(page: ft.Page):
     login_window(page)

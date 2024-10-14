@@ -1,9 +1,13 @@
 import flet as ft
-from tema import meu_tema
+from front_end.tema import meu_tema
+import front_end.session as session
+#from gui_login import dados_usuario
 #from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 
 #from analista_dados.files.back_end.cadastro_funcionario import criar_tabela_funcionarios
 
+def usuario(usuario_dados):
+    usuario_atual = usuario_dados
 
 def main_gui(page: ft.page):
     pass
@@ -105,6 +109,8 @@ def main_gui(page: ft.page):
     except Exception as e:
         page.open(dlg_modal)
         print(f'Erro: {e}')
+
+    print(session.usuario_atual)
 
 
 def criar_aba_importar(self):

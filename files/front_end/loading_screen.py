@@ -1,6 +1,6 @@
 import flet as ft
 from time import sleep
-from gui import main_gui
+from front_end.gui import main_gui
 
 
 def loading_window(page: ft.Page):
