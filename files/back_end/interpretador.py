@@ -3,14 +3,12 @@ import sqlite3
 import openpyxl
 import datetime
 
-from analista_dados.files.back_end.controle_login import caminho_db
-
 #from PySide6.QtWidgets import QMessageBox
 #import analista_dados.files.front_end.loading_interpretador as loading_interpretador
 
 global main_window
 
-from controle_login import caminho_db
+from back_end.db_path import caminho_db
 
 def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
     """Processa um arquivo .xlsx e insere os dados no banco de dados."""
