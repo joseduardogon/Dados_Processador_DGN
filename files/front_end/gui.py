@@ -2,12 +2,49 @@ import flet as ft
 from front_end.tema import meu_tema
 import front_end.session as session
 #from gui_login import dados_usuario
-#from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
+from analista_dados.files.back_end.interpretador import validar_arquivo, excluir_dados_banco
 
 #from analista_dados.files.back_end.cadastro_funcionario import criar_tabela_funcionarios
 
-def usuario(usuario_dados):
-    usuario_atual = usuario_dados
+arquivo_selecionado = None
+
+def abrir_seletor_arquivo(e):
+    global arquivo_selecionado
+    print("----- Iniciando abrir_seletor_arquivo -----")
+
+    # Verifica se um arquivo foi selecionado
+    if file_picker.result and file_picker.result.files:
+        arquivo_selecionado = file_picker.result.files[0]
+        print(f"Arquivo selecionado: {arquivo_selecionado.name}")
+
+        # Verifica a extensão do arquivo
+        if arquivo_selecionado.name.endswith(".txt") or arquivo_selecionado.name.endswith(".TXT"):  # Altere a extensão conforme necessário
+            label_resultado.value = f"Arquivo válido: {arquivo_selecionado.name}"
+        else:
+            label_resultado.value = "Extensão de arquivo inválida!"
+        print(label_resultado.value)
+        print(arquivo_selecionado.path)
+        print(session.usuario_atual['nome'])
+        print(session.usuario_atual['unidade'])
+
+# Instância de FilePicker para abrir o diálogo de seleção de arquivos
+file_picker = ft.FilePicker(on_result=abrir_seletor_arquivo)
+
+# Label para exibir o resultado da seleção
+label_resultado = ft.Text(value="Nenhum arquivo selecionado.")
+
+
+# Função para processar o arquivo após a seleção
+def processar_arquivo(e):
+    print("----- Iniciando processar_arquivo -----")
+    if arquivo_selecionado:
+        # Suponha que `validar_arquivo` seja uma função existente no seu projeto
+        if validar_arquivo(arquivo_selecionado.path, session.usuario_atual['nome'], session.usuario_atual['unidade']):
+            print("Arquivo válido selecionado:", arquivo_selecionado.name)
+            print("----- Fim de abrir_seletor_arquivo -----")
+        else:
+            label_resultado.value = "Tipo de arquivo inválido. Selecione um arquivo .txt ou .xlsx."
+            print("----- Fim de abrir_seletor_arquivo -----")
 
 def main_gui(page: ft.page):
     pass
@@ -20,7 +57,57 @@ def main_gui(page: ft.page):
     page.window.always_on_top = False
     page.update()
 
+    page.overlay.append(file_picker)
+
     icon = ft.Text("teste de ícone", color="black")
+
+    botao_importar = ft.FilledButton(
+        text="Importar Arquivo",
+        width=450,
+        style=ft.ButtonStyle(
+            bgcolor=ft.colors.WHITE,
+            color=ft.colors.BLACK,
+            shape=ft.RoundedRectangleBorder(radius=7),
+            overlay_color=ft.colors.GREY_200,
+        ),
+        on_click=lambda _: file_picker.pick_files(),  # Passa a função de callback para on_click
+    )
+
+    botao_processar = ft.FilledButton(
+        text="Processar Arquivo",
+        width=450,
+        style=ft.ButtonStyle(
+            bgcolor=ft.colors.WHITE,
+            color=ft.colors.BLACK,
+            shape=ft.RoundedRectangleBorder(radius=7),
+            overlay_color=ft.colors.GREY_200,
+        ),
+        on_click= processar_arquivo,  # Passa a função de callback para on_click
+    )
+
+    import_layout = ft.Row([
+        ft.Column([
+            ft.Container(
+                content=ft.Column([
+                        ft.Text(value=arquivo_selecionado, size=12, weight=ft.FontWeight.BOLD),
+                    botao_importar,
+                    botao_processar,
+                ],
+                alignment=ft.MainAxisAlignment.START,
+                ),
+            alignment=ft.alignment.center,
+            bgcolor=ft.colors.YELLOW_700,
+            border_radius=7,
+            height = 600
+            ),
+        ],
+        spacing=10,
+        alignment=ft.MainAxisAlignment.START,
+        width = 500,
+        height = 900,
+        )
+    ]
+    )
 
     t = ft.Tabs(
         selected_index=0,
@@ -32,9 +119,7 @@ def main_gui(page: ft.page):
         tabs=[
             ft.Tab(
                 tab_content=ft.Text("Adicionar Dados", color="black"),
-                content=ft.Container(
-                    content=ft.Text("This is Tab 1"), alignment=ft.alignment.center
-                ),
+                content=import_layout,
             ),
             ft.Tab(
                 tab_content=ft.Text("Dashboards de Dados", color="black"),
@@ -203,26 +288,6 @@ def criar_aba_configuracoes(self):
         print(f"Erro em criar_aba_configuracoes: {e}")"""
 
 
-def abrir_seletor_arquivo(self):
-    """Abre a janela de diálogo para seleção de arquivo e valida a extensão."""
-    print("----- Iniciando abrir_seletor_arquivo -----")
-    """try:
-        self.arquivo, _ = QFileDialog.getOpenFileName(self, "Selecione um Arquivo")
-        if self.arquivo:
-            self.label_doc()
-    except Exception as e:
-        print(f"Erro em abrir_seletor_arquivo: {e}")"""
-
-
-def processar_arquivo(self):
-    """if self.arquivo:
-        if validar_arquivo(self.arquivo, self.usuario_atual['nome'], self.usuario_atual['unidade'], self):
-            print("Arquivo válido selecionado:", self.arquivo)
-            print("----- Fim de abrir_seletor_arquivo -----")
-        else:
-            QMessageBox.warning(self, "Erro",
-                                "Tipo de arquivo inválido. Selecione um arquivo .txt ou .xlsx.")
-            print("----- Fim de abrir_seletor_arquivo -----")"""
 
 
 def excluir_dados(self):

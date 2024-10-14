@@ -2,10 +2,15 @@ import os
 import sqlite3
 import openpyxl
 import datetime
+
+from analista_dados.files.back_end.controle_login import caminho_db
+
 #from PySide6.QtWidgets import QMessageBox
 #import analista_dados.files.front_end.loading_interpretador as loading_interpretador
 
 global main_window
+
+from controle_login import caminho_db
 
 def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
     """Processa um arquivo .xlsx e insere os dados no banco de dados."""
@@ -16,7 +21,7 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
 
         print("--- Planilha aberta com sucesso! ---")
 
-        conexao = sqlite3.connect("analista_dados/files/database/banco_producao.db")
+        conexao = sqlite3.connect(caminho_db)
         cursor = conexao.cursor()
         print("--- Conexão com banco de dados estabelecida! ---")
 
@@ -100,11 +105,11 @@ def dicionario_xlsx(caminho_arquivo, supervisor, unidade):
     print(f"--- Fim do processamento de XLSX: {caminho_arquivo} ---")
 
 
-def dicionario_txt(caminho_arquivo, supervisor, unidade, parent):
+def dicionario_txt(caminho_arquivo, supervisor, unidade):
     """Processa um arquivo .txt e insere os dados no banco de dados."""
     print(f"--- Iniciando processamento de TXT: {caminho_arquivo} ---")
     try:
-        conexao = sqlite3.connect("analista_dados/files/database/banco_producao.db")
+        conexao = sqlite3.connect(caminho_db)
         cursor = conexao.cursor()
         print("--- Conexão com banco de dados estabelecida! ---")
 
@@ -250,7 +255,7 @@ def validar_arquivo(caminho_arquivo, supervisor, unidade):
 def excluir_dados_banco():
     """Exclui todos os dados da tabela 'atividades_digitalizacao'."""
     try:
-        conexao = sqlite3.connect("database/banco_producao.db")
+        conexao = sqlite3.connect(caminho_db)
         cursor = conexao.cursor()
         cursor.execute("DELETE FROM atividades_digitalizacao")
         conexao.commit()

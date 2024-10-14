@@ -6,7 +6,7 @@ from front_end.gui import main_gui
 def loading_window(page: ft.Page):
     pass
     page.window.width = 250
-    page.window.height = 100
+    page.window.height = 150
     page.bgcolor = ft.colors.WHITE
     page.window.border_radius = 7
     page.window.always_on_top = True
